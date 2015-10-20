@@ -5,11 +5,14 @@ Ext.define("IBApp.controller.MainMenu", {
             // We're going to lookup our views by xtype.
             mainMenuView: 'mainmenuview',
             roomBookingView: 'roombookingview',
+            myMeetingsView:'mymeetingsview',
             roomBookSuccessView: 'roombooksuccessview'
         },
         control: {
         	mainMenuView: {
-        		roomBookingCommand: 'onRoomBookingCommand'
+        		roomBookingCommand: 'onRoomBookingCommand',
+        		MyMeetingsCommand:'onMyMeetingsCommand',
+        		MeetingRequestCommand:'onMeetingRequestCommand',
         	},
         	roomBookingView: {
         		backToMainMenuCommand: 'onBacktoMainMenuCommand',
@@ -31,7 +34,16 @@ Ext.define("IBApp.controller.MainMenu", {
     onRoomBookingCommand: function () {
         Ext.Viewport.animateActiveItem(this.getRoomBookingView(), this.getSlideLeftTransition());
     },
-
+    
+    onMyMeetingsCommand: function () {
+        Ext.Viewport.animateActiveItem(this.getMyMeetingsView(), this.getSlideLeftTransition());
+    },
+    
+    
+    onMeetingRequestCommand: function () {
+        Ext.Viewport.animateActiveItem(this.getMeetingRequestView(), this.getSlideLeftTransition());
+    },
+    
     onBacktoMainMenuCommand: function() {
     	this.activateMainMenuView();
     },

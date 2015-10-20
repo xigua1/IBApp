@@ -20,10 +20,11 @@ Ext.application({
 
     views: [
         'Login', 'MainMenu', 'UserInfoList', 'RoomBooking',
-        'RoomSearchResult', 'RoomBookSuccess'
+        'RoomSearchResult', 'RoomBookSuccess','MyMeetings',
+        'MeetingRequest'
     ],
 
-    controllers: ['Login', 'MainMenu', 'RoomBooking'],
+    controllers: ['Login', 'MainMenu', 'RoomBooking','MyMeetings','MeetingRequest'],
 
     models: ['UserInfo', 'MeetingType'],
 
@@ -58,7 +59,9 @@ Ext.application({
             {xtype: 'mainmenuview'},
             {xtype: 'roombookingview'},
             {xtype: 'roomsearchresultview'},
-            {xtype: 'roombooksuccessview'}
+            {xtype: 'roombooksuccessview'},
+            {xtype: 'mymeetingsview'},
+            {xtype: 'meetingrequestview'},
         ]);
 
     },
