@@ -5,7 +5,8 @@ Ext.define("IBApp.controller.RoomBooking", {
             // We're going to lookup our views by xtype.
             roomBookingView: 'roombookingview',
             roomSearchResultView: 'roomsearchresultview',
-            roomBookSuccessView: 'roombooksuccessview'
+            roomBookSuccessView: 'roombooksuccessview',
+            meetingRequestView: 'meetingrequestview'
         },
         control: {
         	roomBookingView: {
@@ -15,6 +16,9 @@ Ext.define("IBApp.controller.RoomBooking", {
                 backButtonCommand: 'onBackButtonCommand',
                 roomBookButtonCommand: 'onRoomBookButtonCommand'
             },
+            roomBookSuccessView: {
+            	modifyMeetingInfoButtonCommand: 'onModifyMeetingInfoButtonCommand'
+            }
         }
     },
 
@@ -36,6 +40,10 @@ Ext.define("IBApp.controller.RoomBooking", {
 
     onRoomBookButtonCommand: function (){
         Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), this.getSlideLeftTransition());
+    },
+    
+    onModifyMeetingInfoButtonCommand: function () {
+    	  Ext.Viewport.animateActiveItem(this.getMeetingRequestView(), this.getSlideLeftTransition());
     }
 
 });

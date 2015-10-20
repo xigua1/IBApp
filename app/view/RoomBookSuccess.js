@@ -93,14 +93,18 @@ Ext.define('IBApp.view.RoomBookSuccess', {
                 delegate: '#backButton'
             },
             {
-                // fn: 'onBackButtonTap',
-                // event: 'tap',
-                // delegate: '#link'
+                fn: 'onModifyMeetingInfoButton',
+                event: 'tap',
+                delegate: '#modifyMeetingInfoButton'
             },
         ]
     },
 
     onBackButtonTap: function(button, e, eOpts) {
         this.fireEvent("backButtonCommand");
+    },
+    
+    onModifyMeetingInfoButton: function(button, e, eOpts) {
+        this.fireEvent("modifyMeetingInfoButtonCommand");
     }
 });

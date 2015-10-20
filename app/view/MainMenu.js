@@ -1,6 +1,6 @@
 Ext.define('IBApp.view.MainMenu', {
 	extend: 'Ext.Panel',
-	requires: ['Ext.Img', 'IBApp.view.UserInfoList', 'IBApp.view.RoomBooking'],
+	requires: ['Ext.Img', 'IBApp.view.UserInfoList', 'IBApp.view.RoomBooking','IBApp.view.MeetingRequest'],
 	xtype: 'mainmenuview',
 
 	config: {
@@ -159,7 +159,7 @@ Ext.define('IBApp.view.MainMenu', {
 	},
 
 	onMyMeetingsTap: function() {
-		Ext.Msg.alert("aaaa");
+		this.fireEvent('MyMeetingsCommand');
 	},
 
 	onRoomBookingTap: function() {
