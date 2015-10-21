@@ -1847,7 +1847,8 @@ Ext.Loader.addClassPathMappings({
   "Ext.device.sqlite.SQLResultSet": "../../touch/src/device/sqlite/Sencha.js",
   "Ext.device.sqlite.SQLResultSetRowList": "../../touch/src/device/sqlite/Sencha.js",
   "Ext.device.sqlite.SQLTransaction": "../../touch/src/device/sqlite/Sencha.js",
-  "IBApp": "../../app"
+  "IBApp": "../../app",
+  "TouchCalendarViewModel": "../../touch/src/ux/TouchCalendarView.js"
 });
 
 Ext.ClassManager.addNameAlternateMappings({
@@ -2448,6 +2449,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.ContextMenu": [],
   "Ext.ux.MenuButton": [],
   "Ext.ux.TabMenuButton": [],
+  "Ext.ux.TouchCalendar": [],
+  "Ext.ux.TouchCalendarView": [],
   "Ext.ux.device.Analytics": [],
   "Ext.ux.device.Twitter": [],
   "Ext.ux.device.analytics.Abstract": [],
@@ -2480,6 +2483,8 @@ Ext.ClassManager.addNameAlternateMappings({
   ],
   "IBApp.controller.Login": [],
   "IBApp.controller.MainMenu": [],
+  "IBApp.controller.MeetingRequest": [],
+  "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
   "IBApp.model.MeetingType": [],
   "IBApp.model.UserInfo": [],
@@ -2488,10 +2493,13 @@ Ext.ClassManager.addNameAlternateMappings({
   "IBApp.view.Login": [],
   "IBApp.view.Main": [],
   "IBApp.view.MainMenu": [],
+  "IBApp.view.MeetingRequest": [],
+  "IBApp.view.MyMeetings": [],
   "IBApp.view.RoomBookSuccess": [],
   "IBApp.view.RoomBooking": [],
   "IBApp.view.RoomSearchResult": [],
-  "IBApp.view.UserInfoList": []
+  "IBApp.view.UserInfoList": [],
+  "TouchCalendarViewModel": []
 });
 
 Ext.ClassManager.addNameAliasMappings({
@@ -3181,6 +3189,12 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.ContextMenu": [],
   "Ext.ux.MenuButton": [],
   "Ext.ux.TabMenuButton": [],
+  "Ext.ux.TouchCalendar": [
+    "widget.calendar"
+  ],
+  "Ext.ux.TouchCalendarView": [
+    "widget.touchcalendarview"
+  ],
   "Ext.ux.device.Analytics": [],
   "Ext.ux.device.Twitter": [],
   "Ext.ux.device.analytics.Abstract": [],
@@ -3217,6 +3231,8 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.WindowsPhone": [],
   "IBApp.controller.Login": [],
   "IBApp.controller.MainMenu": [],
+  "IBApp.controller.MeetingRequest": [],
+  "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
   "IBApp.model.MeetingType": [],
   "IBApp.model.UserInfo": [],
@@ -3235,6 +3251,12 @@ Ext.ClassManager.addNameAliasMappings({
   "IBApp.view.MainMenu": [
     "widget.mainmenuview"
   ],
+  "IBApp.view.MeetingRequest": [
+    "widget.meetingrequestview"
+  ],
+  "IBApp.view.MyMeetings": [
+    "widget.mymeetingsview"
+  ],
   "IBApp.view.RoomBookSuccess": [
     "widget.roombooksuccessview"
   ],
@@ -3246,7 +3268,8 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "IBApp.view.UserInfoList": [
     "widget.userinfolist"
-  ]
+  ],
+  "TouchCalendarViewModel": []
 });
 
 
