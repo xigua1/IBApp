@@ -101,7 +101,7 @@
         	xtype: 'textfield',
         	name: 'service',
         	label: '服务',
-          placeHolder:'茶水、投影仪、话筒'
+            placeHolder:'茶水、投影仪、话筒、白板笔、签到表'
         };
  
         this.add([
