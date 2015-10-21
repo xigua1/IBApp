@@ -24,11 +24,11 @@ Ext.application({
         'MeetingRequest'
     ],
 
-    controllers: ['Login', 'MainMenu', 'RoomBooking','MyMeetings','MeetingRequest'],
+    controllers: ['Login', 'MainMenu', 'RoomBooking','MyMeetings'],
 
-    models: ['UserInfo', 'MeetingType'],
+    models: ['UserInfo', 'MeetingType','PlaceType'],
 
-    stores: ['UserInfo', 'MeetingType'],
+    stores: ['UserInfo', 'MeetingType','PlaceType'],
 
     icon: {
         '57': 'resources/icons/Icon.png',
