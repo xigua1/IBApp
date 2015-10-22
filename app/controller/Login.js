@@ -33,7 +33,31 @@ Ext.define('IBApp.controller.Login', {
 			message: 'Signing In...'
 		});
 
-		//me.sessionToken = loginResponse.sessionToken;
+		/* 从后台进行验证 */
+		// Ext.Ajax.request({
+		// 	url: 'logoff.ashx',
+		// 	method: 'post',
+		// 	params: {
+		// 		user: username,
+		// 		pwd: password
+		// 	},
+		// 	success: function (response) {
+		// 		var loginResponse = Ext.JSON.decode(response.responseText);
+		// 		if (loginResponse.success === "true") {
+	 //                // The server will send a token that can be used throughout the app to confirm that the user is authenticated.
+	 //                me.sessionToken = loginResponse.sessionToken;
+	 //                me.signInSuccess();
+	 //            } else {
+	 //                me.signInFailure(loginResponse.message);
+	 //            }
+		// 	},
+		// 	failure: function (response) {
+		// 		me.sessionToken = null;
+		// 		me.signInFailure('Login failed. Please try again later.');
+		// 	}
+		// });
+
+		// just for test, will be deleted after debug
 		me.signInSuccess();
 	},
 
