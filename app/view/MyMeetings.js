@@ -36,12 +36,16 @@ Ext.define('IBApp.view.MyMeetings', {
 
         var eventList = Ext.create('Ext.dataview.List', {
         	docked: 'bottom',
+            onItemDisclosure: true,
         	height: 110,
         	itemTpl: '{event} {title}',
         	store: new Ext.data.Store({
                 model: 'IBApp.model.MyMeetingsEvent',
                 data: []
-            })
+            }),
+            listeners: {
+                disclose: { fn: this.onNotesListDisclose, scope: this }
+            }
         });
 
         this.add([
@@ -52,7 +56,9 @@ Ext.define('IBApp.view.MyMeetings', {
                 items: [{
                     xtype: 'segmentedbutton',
                     allowMultiple: false,
-                    items: [{
+                    items: [
+                    backButton,
+                    {
                         text: 'Month',
                         pressed: true,
                         handler: function(){
@@ -130,15 +136,15 @@ Ext.define('IBApp.view.MyMeetings', {
             //显示
             // Ext.Viewport.setActiveItem(panel);
 
-        var starttime = record.get("start"),
-            endtime = record.get("end");
+        // var starttime = record.get("start"),
+        //     endtime = record.get("end");
 
-        var nextpage = Ext.create('IBApp.view.RoomBookSuccess', function () {
-            this.fireEvent('pushContentCommand',me,starttime,endtime);
+        // var nextpage = Ext.create('IBApp.view.RoomBookSuccess', function () {
+        //     this.fireEvent('pushContentCommand',me,starttime,endtime);
 
-        });
+        // });
 
-        Ext.Viewport.setActiveItem(nextpage);
+        // Ext.Viewport.setActiveItem(nextpage);
             // this.fireEvent('pushContentCommand');
         // this.fireEvent('pushContentCommand',this, starttime, endtime);
     
@@ -147,8 +153,20 @@ Ext.define('IBApp.view.MyMeetings', {
         });
     },
 
+
+    onPushContentCommand:function () {
+        this.fireEvent('pushContentCommand');
+    },
+
+
+    onNotesListDisclose: function (list, record, target, index, evt, options) {
+        console.log("editNoteCommand");
+        this.fireEvent('editNoteCommand', this, record);
+    },
+
+
     onBackButtonTap: function() {
-       this.fireEvent("MyMeetingsToMainMenuCommand");
+        this.fireEvent("MyMeetingsToMainMenuCommand");
         // this.fireEvent("pushContentCommand");
     },  
 

@@ -11,7 +11,7 @@ Ext.define("IBApp.controller.MyMeetings", {
         control: {
             myMeetingsView: {
                 MyMeetingsToMainMenuCommand: 'onMyMeetingsToMainMenuCommand',
-                pushContentCommand:'onPushContentCommand'
+                editNoteCommand:'onEditNoteCommand'
             },
            
         }
@@ -28,10 +28,17 @@ Ext.define("IBApp.controller.MyMeetings", {
     onMyMeetingsToMainMenuCommand: function() {
         Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
     },
-    
-    onPushContentCommand: function(view,starttime,endtime) {
-        Ext.Msg.alert('starttime');
+
+    onEditNoteCommand: function(list, record, target, index, evt, options) {
+        //Ext.Msg.alert('starttime');
+        var starttime = record.get("start"),
+             endtime = record.get("end");
+
+
         console.log('starttime: ' + starttime + '\n' + 'endtime: ' + endtime);
+
+
+        
         Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), this.getSlideLeftTransition());
         // Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
     }
