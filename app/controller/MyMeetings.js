@@ -7,6 +7,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             mainMenuView: 'mainmenuview',
             myMeetingsView: 'mymeetingsview',
             roomBookSuccessView: 'roombooksuccessview',
+            meetingRequestView:'meetingrequestview',
         },
         control: {
             myMeetingsView: {
@@ -38,8 +39,8 @@ Ext.define("IBApp.controller.MyMeetings", {
         console.log('starttime: ' + starttime + '\n' + 'endtime: ' + endtime);
 
 
-        
-        Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), this.getSlideLeftTransition());
+
+        Ext.Viewport.animateActiveItem(this.getMeetingRequestView(), this.getSlideLeftTransition());
         // Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
     }
 });
