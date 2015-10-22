@@ -4,16 +4,16 @@ Ext.define("IBApp.controller.MyMeetings", {
         refs: {
             // We're going to lookup our views by xtype.
             //roomBookingView: 'roombookingview',
+            mainMenuView: 'mainmenuview',
             myMeetingsView: 'mymeetingsview',
+            roomBookSuccessView: 'roombooksuccessview',
         },
         control: {
-        	myMeetingsView: {
-        		//roomSearchSubmitCommand: 'onRoomSearchSubmitCommand'
-        	},
-            //roomSearchResultView: {
-              //  backButtonCommand: 'onBackButtonCommand',
-              //  roomBookButtonCommand: 'onRoomBookButtonCommand'
-           // },
+            myMeetingsView: {
+                MyMeetingsToMainMenuCommand: 'onMyMeetingsToMainMenuCommand',
+                pushContentCommand:'onPushContentCommand'
+            },
+           
         }
     },
 
@@ -25,6 +25,14 @@ Ext.define("IBApp.controller.MyMeetings", {
         return { type: 'slide', direction: 'right' };
     },
 
+    onMyMeetingsToMainMenuCommand: function() {
+        Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
+    },
     
-
+    onPushContentCommand: function(view,starttime,endtime) {
+        Ext.Msg.alert('starttime');
+        console.log('starttime: ' + starttime + '\n' + 'endtime: ' + endtime);
+        Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), this.getSlideLeftTransition());
+        // Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
+    }
 });

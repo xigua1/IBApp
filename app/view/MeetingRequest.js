@@ -136,7 +136,7 @@
     },
 
     onBackButtonTap: function() {
-    	this.fireEvent("meetingbackToMainMenuCommand");
+    	this.fireEvent("meetingRequestToMainMenuCommand");
     },
 
     

@@ -1,14 +1,15 @@
-// always base events from today
 var day = (new Date()).getDate(),
     month = (new Date()).getMonth(),
     year = (new Date()).getFullYear();
 
-Ext.define("IBApp.store.MyMeetingEvent", {
+
+Ext.define("IBApp.store.MyMeetingsEvent", {
     extend: "Ext.data.Store",
-    model: "IBApp.model.MyMeetingEvent",
-    xtype: 'mymeetingeventstore',
+    xtype: 'mymeetingseventstore',
+
     config: {
-        data: [{
+        model: "IBApp.model.MyMeetingsEvent",
+     data: [{
             event: '8.03 - 8:05',
             title: 'Event Name 1',
             start: new Date(year, month, day, 8, 3),

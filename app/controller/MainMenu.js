@@ -6,7 +6,8 @@ Ext.define("IBApp.controller.MainMenu", {
             mainMenuView: 'mainmenuview',
             roomBookingView: 'roombookingview',
             myMeetingsView:'mymeetingsview',
-            roomBookSuccessView: 'roombooksuccessview'
+            roomBookSuccessView: 'roombooksuccessview',
+            meetingRequestView:'meetingrequestview',
         },
         control: {
         	mainMenuView: {
@@ -19,6 +20,9 @@ Ext.define("IBApp.controller.MainMenu", {
         	},
             roomBookSuccessView: {
                 backButtonCommand: 'activateMainMenuView'
+            },
+            meetingRequestView: {
+                meetingRequestToMainMenuCommand:'activateMainMenuView'
             }
         }
     },

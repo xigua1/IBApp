@@ -1,28 +1,24 @@
-Ext.define("IBApp.model.MyMeetingEvent", {
-	extend: "Ext.data.Model",
+Ext.define("IBApp.model.MyMeetingsEvent", {
+    extend: "Ext.data.Model",
 	config: {
-		fields: [
-		{
+		fields: [{
 			name: 'event',
 			type: 'string'
-		}, 
-		{
+		}, {
 			name: 'title',
 			type: 'string'
-		}, 
-		{
+		}, {
 			name: 'start',
 			type: 'date',
 			dateFormat: 'c'
-		}, 
-		{
+		}, {
 			name: 'end',
 			type: 'date',
 			dateFormat: 'c'
-		}, 
-		{
+		}, {
 			name: 'css',
 			type: 'string'
 		}]
+
 	}
 });

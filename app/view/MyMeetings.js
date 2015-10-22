@@ -16,7 +16,15 @@ Ext.define('IBApp.view.MyMeetings', {
     initialize: function () {
     	this.callParent(arguments);
 
-    	var eventStore = Ext.create('IBApp.store.MyMeetingEvent');
+        var backButton = {
+            xtype: 'button',
+            ui: 'back',
+            text: '首页',
+            handler: this.onBackButtonTap,
+            scope: this
+        };
+
+    	var eventStore = Ext.create('IBApp.store.MyMeetingsEvent');
 
     	var calendar = new Ext.ux.TouchCalendarView({
             viewMode: 'month',
@@ -31,7 +39,7 @@ Ext.define('IBApp.view.MyMeetings', {
         	height: 110,
         	itemTpl: '{event} {title}',
         	store: new Ext.data.Store({
-                model: 'IBApp.model.MyMeetingEvent',
+                model: 'IBApp.model.MyMeetingsEvent',
                 data: []
             })
         });
@@ -94,5 +102,54 @@ Ext.define('IBApp.view.MyMeetings', {
 		calendar.on('eventdrag', function(draggable, eventRecord, e){
 		    console.log('eventdrag');
 		});
+
+        eventList.on("itemtap",function(list,index,target,record,e,opt){  
+        // var txt="yourname is "+record.get("name");
+            // var panel=Ext.create("Ext.Panel",{
+                // fullscreen:true,
+                // html:txt,
+                // items:[{
+                // xtype:'toolbar',
+                // docked:'top',
+                // items:[{
+                //     xtype:'button',
+                //     ui:'back',
+                //     text:'返回',
+                //     handler:function(){ 
+                //         Ext.Viewport.setActiveItem(calendarPanel);
+                //         panel.destroy(); 
+                //     }
+                //   },
+
+                //   ]
+                // }]
+
+            // });
+            //添加到容器
+            // Ext.Viewport.add(panel);
+            //显示
+            // Ext.Viewport.setActiveItem(panel);
+
+        var starttime = record.get("start"),
+            endtime = record.get("end");
+
+        var nextpage = Ext.create('IBApp.view.RoomBookSuccess', function () {
+            this.fireEvent('pushContentCommand',me,starttime,endtime);
+
+        });
+
+        Ext.Viewport.setActiveItem(nextpage);
+            // this.fireEvent('pushContentCommand');
+        // this.fireEvent('pushContentCommand',this, starttime, endtime);
+    
+           
+ 
+        });
     },
+
+    onBackButtonTap: function() {
+       this.fireEvent("MyMeetingsToMainMenuCommand");
+        // this.fireEvent("pushContentCommand");
+    },  
+
 });
