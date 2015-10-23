@@ -24,13 +24,13 @@ Ext.define('IBApp.controller.Login', {
 		    loginView = me.getLoginView();
 
 		if (username.length === 0 || password.length === 0) {
-			loginView.showSignInFailedMessage('Please enter your username and password.');
+			loginView.showSignInFailedMessage('请输入用户名和密码.');
 			return;
 		}
 
 		loginView.setMasked({
 			xtype: 'loadmask',
-			message: 'Signing In...'
+			message: '登录中...'
 		});
 
 		/* 从后台进行验证 */
@@ -53,7 +53,7 @@ Ext.define('IBApp.controller.Login', {
 		// 	},
 		// 	failure: function (response) {
 		// 		me.sessionToken = null;
-		// 		me.signInFailure('Login failed. Please try again later.');
+		// 		me.signInFailure('登录失败...请重试.');
 		// 	}
 		// });
 
