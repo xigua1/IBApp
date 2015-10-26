@@ -37,7 +37,7 @@ Ext.define('IBApp.view.MyMeetings', {
         var eventList = Ext.create('Ext.dataview.List', {
         	docked: 'bottom',
             onItemDisclosure: true,
-        	height: 400,
+        	height: 250,
         	itemTpl: '{event} {title}',
         	// store: new Ext.data.Store({
          //        model: 'IBApp.model.MyMeetingsEvent',
@@ -45,7 +45,18 @@ Ext.define('IBApp.view.MyMeetings', {
             // }),
             store:Ext.getStore('MyMeetingsEvent'),
             listeners: {
-                disclose: { fn: this.onNotesListDisclose, scope: this }
+                disclose: { fn: this.onNotesListDisclose, scope: this },
+                initialize: function(list) {
+                    var today = Ext.Date.clearTime(new Date(), true).getTime();
+                    calendar.eventStore.clearFilter();
+                    calendar.eventStore.filterBy(function(record){
+                        var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+
+                        return (startDate <= today) && (endDate >= today);
+                    }, this);
+
+                    list.getStore().setData(calendar.eventStore.getRange());
+                }
             }
         });
 
