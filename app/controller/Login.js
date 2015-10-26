@@ -67,6 +67,16 @@ Ext.define('IBApp.controller.Login', {
 	    mainMenuView = this.getMainMenuView();
 	    loginView.setMasked(false);
 
+	    // set userInfoStore;
+	    var curUser = Ext.create('IBApp.model.UserInfo', {
+	    	'id': '80101234',
+	    	'imgURL': './resources/icons/profile.png',
+	    	'userName': '韩梅梅',
+	    	'userRole': 'admin',
+	    });
+	    Ext.getStore("userInfoStore").add(curUser);
+	    /* setFunctionIcon via userRole */
+	    mainMenuView.setFunctionIcon(curUser.get('userRole'));
 	    Ext.Viewport.animateActiveItem(mainMenuView, this.getSlideLeftTransition());
 	},
 
