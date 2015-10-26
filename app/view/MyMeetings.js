@@ -24,6 +24,15 @@ Ext.define('IBApp.view.MyMeetings', {
             scope: this
         };
 
+        var searchButton = {
+            xtype: 'button',
+            ui: 'action',
+            iconCls: 'search',
+            // text: '搜索',
+            handler: this.onSearchButtonTap,
+            scope: this
+        };
+
     	var eventStore = Ext.create('IBApp.store.MyMeetingsEvent');
 
     	var calendar = new Ext.ux.TouchCalendarView({
@@ -37,15 +46,26 @@ Ext.define('IBApp.view.MyMeetings', {
         var eventList = Ext.create('Ext.dataview.List', {
         	docked: 'bottom',
             onItemDisclosure: true,
-        	height: 400,
-        	itemTpl: '{event} {title}',
-        	// store: new Ext.data.Store({
-         //        model: 'IBApp.model.MyMeetingsEvent',
-         //        data: []
-            // }),
-            store:Ext.getStore('MyMeetingsEvent'),
+        	height: 250,
+        	itemTpl: '<div class="list-item-title">{event}</div><div class="list-item-narrative">{title}</div>',
+            emptyText: '<div class="notes-list-empty-text">没有会议</div>',
+        	store: new Ext.data.Store({
+                model: 'IBApp.model.MyMeetingsEvent',
+                data: []
+            }),
             listeners: {
-                disclose: { fn: this.onNotesListDisclose, scope: this }
+                disclose: { fn: this.onNotesListDisclose, scope: this },
+                initialize: function(list) {
+                    var today = Ext.Date.clearTime(new Date(), true).getTime();
+                    calendar.eventStore.clearFilter();
+                    calendar.eventStore.filterBy(function(record){
+                        var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+
+                        return (startDate <= today) && (endDate >= today);
+                    }, this);
+
+                    list.getStore().setData(calendar.eventStore.getRange());
+                }
             }
         });
 
@@ -54,40 +74,25 @@ Ext.define('IBApp.view.MyMeetings', {
         	{
                 xtype: 'toolbar',
                 docked: 'top',
-                items: [{
-                    xtype: 'segmentedbutton',
-                    allowMultiple: false,
-                    items: [
+                title: '我的会议',
+                items: [
                     backButton,
-                    {
-                        text: 'Month',
-                        pressed: true,
-                        handler: function(){
-                            calendar.setViewMode('month');
-                        }
-                    }, {
-                        text: 'Week',
-                        handler: function(){
-                            calendar.setViewMode('week');
-                        }
-                    }]
-                }]
+                    { xtype: 'spacer' },
+                    searchButton
+                ]
         	}, 
         	eventList
         	]
-        );
+        ); 
 
 		calendar.on('selectionchange', function(calendarview, newDate, prevDate){
-		    console.log('selectionchange');
 		    // var eventList = this.getDockedItems()[1];
 
 		    calendar.eventStore.clearFilter();
 		    calendar.eventStore.filterBy(function(record){
 		        var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-
 		        return (startDate <= newDate) && (endDate >= newDate);
 		    }, this);
-
 
 		    eventList.getStore().setData(calendar.eventStore.getRange());
 		});
@@ -169,6 +174,10 @@ Ext.define('IBApp.view.MyMeetings', {
     onBackButtonTap: function() {
         this.fireEvent("MyMeetingsToMainMenuCommand");
         // this.fireEvent("pushContentCommand");
-    },  
+    },
+
+    onSearchButtonTap: function() {
+
+    },
 
 });
