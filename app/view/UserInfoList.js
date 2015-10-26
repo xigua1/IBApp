@@ -15,7 +15,7 @@ Ext.define('IBApp.view.UserInfoList', {
 	xtype: 'userinfolist',
 
 	config: {
-		store: {xtype : 'userinfostore'},
+		store: 'userInfoStore',
 		itemTpl: userInfoTemplate,
 		disableSelection: true,
 		scrollable: {
