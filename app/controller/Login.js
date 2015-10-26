@@ -1,5 +1,6 @@
 Ext.define('IBApp.controller.Login', {
 	extend: 'Ext.app.Controller',
+	requires: ['IBApp.store.UserInfo'],
 	config: {
 		refs: {
 			loginView: 'loginview',
@@ -74,7 +75,7 @@ Ext.define('IBApp.controller.Login', {
 	    	'userName': '韩梅梅',
 	    	'userRole': 'admin',
 	    });
-	    Ext.getStore("userInfoStore").add(curUser);
+	    Ext.getStore("UserInfo").add(curUser);
 	    /* setFunctionIcon via userRole */
 	    mainMenuView.setFunctionIcon(curUser.get('userRole'));
 	    Ext.Viewport.animateActiveItem(mainMenuView, this.getSlideLeftTransition());
