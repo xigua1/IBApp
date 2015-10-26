@@ -109,6 +109,10 @@
         {
             "path": "resources/css/Ext.ux.TouchCalendarSimpleEvents.css",
             "update": "delta"
+        },
+        {
+            "path": "resources/css/skin1.css",
+            "update": "delta"
         }
     ],
 

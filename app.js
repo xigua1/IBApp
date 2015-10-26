@@ -19,7 +19,7 @@ Ext.application({
     ],
 
     views: [
-        'Login', 'MainMenu', 'UserInfoList', 'RoomBooking',
+        'Login', 'MainMenu', 'RoomBooking', 
         'RoomSearchResult', 'RoomBookSuccess','MyMeetings',
         'MeetingRequest'
     ],

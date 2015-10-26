@@ -108,3 +108,9 @@
   top: 10px;
   color: #666;
 }
+
+.touch-calendar-view table.month {
+
+  height: 300px;
+
+}
