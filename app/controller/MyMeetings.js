@@ -12,6 +12,7 @@ Ext.define("IBApp.controller.MyMeetings", {
         control: {
             myMeetingsView: {
                 MyMeetingsToMainMenuCommand: 'onMyMeetingsToMainMenuCommand',
+                meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
                 editNoteCommand:'onEditNoteCommand'
             },
            
@@ -28,6 +29,10 @@ Ext.define("IBApp.controller.MyMeetings", {
 
     onMyMeetingsToMainMenuCommand: function() {
         Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
+    },
+
+    onMeetingRequestToMyMeetingsCommand: function() {
+        Ext.Viewport.animateActiveItem(this.getMyMeetingsView(), this.getSlideLeftTransition());
     },
 
     onEditNoteCommand: function(list, record, target, index, evt, options) {

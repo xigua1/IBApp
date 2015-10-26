@@ -8,12 +8,14 @@ Ext.define("IBApp.controller.MainMenu", {
             myMeetingsView:'mymeetingsview',
             roomBookSuccessView: 'roombooksuccessview',
             meetingRequestView:'meetingrequestview',
+            deviceControlView:'devicecontrolview',
         },
         control: {
         	mainMenuView: {
         		roomBookingCommand: 'onRoomBookingCommand',
         		MyMeetingsCommand:'onMyMeetingsCommand',
         		MeetingRequestCommand:'onMeetingRequestCommand',
+                
         	},
         	roomBookingView: {
         		backToMainMenuCommand: 'onBacktoMainMenuCommand',
@@ -22,8 +24,17 @@ Ext.define("IBApp.controller.MainMenu", {
                 backButtonCommand: 'activateMainMenuView'
             },
             meetingRequestView: {
-                meetingRequestToMainMenuCommand:'activateMainMenuView'
-            }
+                meetingRequestToMainMenuCommand:'activateMainMenuView',
+                meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
+                meetingRequestToRoomBookSuccessCommand:'onMeetingRequestToRoomBookSuccessCommand',
+                deviceControlViewCommand:'onDeviceControlViewCommand',
+
+            },
+            deviceControlView: {
+                deviceControlToMeetingRequestCommand:'onDeviceControlToMeetingRequestCommand',
+            },
+
+
         }
     },
 
@@ -43,7 +54,10 @@ Ext.define("IBApp.controller.MainMenu", {
         Ext.Viewport.animateActiveItem(this.getMyMeetingsView(), this.getSlideLeftTransition());
     },
     
-    
+    onMeetingRequestToMyMeetingsCommand: function () {
+        Ext.Viewport.animateActiveItem(this.getMyMeetingsView(), this.getSlideRightTransition());
+    },
+
     onMeetingRequestCommand: function () {
         Ext.Viewport.animateActiveItem(this.getMeetingRequestView(), this.getSlideLeftTransition());
     },
@@ -54,6 +68,18 @@ Ext.define("IBApp.controller.MainMenu", {
 
     activateMainMenuView: function() {
     	Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
+    },
+
+    onDeviceControlToMeetingRequestCommand: function () {
+        Ext.Viewport.animateActiveItem(this.getMeetingRequestView(), this.getSlideRightTransition());
+    },
+
+    onMeetingRequestToRoomBookSuccessCommand: function() {
+        Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), this.getSlideLeftTransition());
+    },
+
+    onDeviceControlViewCommand: function() {
+        Ext.Viewport.animateActiveItem(this.getDeviceControlView(), this.getSlideLeftTransition());
     }
 
 });

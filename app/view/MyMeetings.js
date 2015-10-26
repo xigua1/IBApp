@@ -37,12 +37,13 @@ Ext.define('IBApp.view.MyMeetings', {
         var eventList = Ext.create('Ext.dataview.List', {
         	docked: 'bottom',
             onItemDisclosure: true,
-        	height: 110,
+        	height: 400,
         	itemTpl: '{event} {title}',
-        	store: new Ext.data.Store({
-                model: 'IBApp.model.MyMeetingsEvent',
-                data: []
-            }),
+        	// store: new Ext.data.Store({
+         //        model: 'IBApp.model.MyMeetingsEvent',
+         //        data: []
+            // }),
+            store:Ext.getStore('MyMeetingsEvent'),
             listeners: {
                 disclose: { fn: this.onNotesListDisclose, scope: this }
             }

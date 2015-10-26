@@ -21,14 +21,14 @@ Ext.application({
     views: [
         'Login', 'MainMenu', 'RoomBooking', 
         'RoomSearchResult', 'RoomBookSuccess','MyMeetings',
-        'MeetingRequest'
+        'MeetingRequest','DeviceControl'
     ],
 
     controllers: ['Login', 'MainMenu', 'RoomBooking','MyMeetings'],
 
-    models: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent'],
+    models: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode'],
 
-    stores: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent'],
+    stores: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode'],
 
     icon: {
         '57': 'resources/icons/Icon.png',
@@ -62,6 +62,7 @@ Ext.application({
             {xtype: 'roombooksuccessview'},
             {xtype: 'mymeetingsview'},
             {xtype: 'meetingrequestview'},
+            {xtype: 'devicecontrolview'},
         ]);
 
     },
