@@ -98,6 +98,7 @@ Ext.define('IBApp.view.MainMenu', {
 				imageSrc: './resources/icons/scan_code.png',
 				text: '扫码签到',
 			});
+			rowPanel1.removeAll();
 			rowPanel1.add(funcIcon1);
 			rowPanel1.add(funcIcon2);
 			rowPanel1.add(funcIcon3);
@@ -114,6 +115,7 @@ Ext.define('IBApp.view.MainMenu', {
 				text: '服务任务',
 			});
 			var funcIcon6 = Ext.create('IBApp.view.FuncIcon');
+			rowPanel2.removeAll();
 			rowPanel2.add(funcIcon4);
 			rowPanel2.add(funcIcon5);
 			rowPanel2.add(funcIcon6);
@@ -135,6 +137,7 @@ Ext.define('IBApp.view.MainMenu', {
 				imageSrc: './resources/icons/scan_code.png',
 				text: '扫码签到',
 			});
+			rowPanel1.removeAll();
 			rowPanel1.add(funcIcon1);
 			rowPanel1.add(funcIcon2);
 			rowPanel1.add(funcIcon3);
