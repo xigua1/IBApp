@@ -29,9 +29,9 @@ Ext.define('IBApp.view.Login', {
 				items: [
 					{
 						xtype: 'textfield',
-						itemId: 'userNameTextField',
-						placeHolder: '用户名',
-						name: 'userNameTextField',
+						itemId: 'userIdTextField',
+						placeHolder: '用户编号',
+						name: 'userIdTextField',
 						required: true
 					},
 					{
@@ -63,20 +63,20 @@ Ext.define('IBApp.view.Login', {
 
 	onLogInButtonTap: function () {
 	    var me = this;
-	    var usernameField = me.down('#userNameTextField'),
+	    var useridField = me.down('#userIdTextField'),
 	        passwordField = me.down('#passwordTextField'),
 	        label = me.down('#signInFailedLabel');
 
 	    label.hide();
-	    var username = usernameField.getValue(),
+	    var userid = useridField.getValue(),
 	        password = passwordField.getValue();
 
 	    // Using a delayed task in order to give the hide animation above
 	    // time to finish before executing the next steps.
 	    var task = Ext.create('Ext.util.DelayedTask', function () {
 	        label.setHtml('');
-	        me.fireEvent('signInCommand', me, username, password);
-	        usernameField.setValue('');
+	        me.fireEvent('signInCommand', me, userid, password);
+	        useridField.setValue('');
 	        passwordField.setValue('');
 	    });
 

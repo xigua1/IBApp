@@ -18,13 +18,13 @@ Ext.define('IBApp.controller.Login', {
 
 	sessionToken: null,
 
-	onSignInCommand: function(view, username, password) {
-		console.log('Username: ' + username + '\n' + 'Password: ' + password);
+	onSignInCommand: function(view, userid, password) {
+		console.log('userid: ' + userid + '\n' + 'Password: ' + password);
 
 		var me = this,
 		    loginView = me.getLoginView();
 
-		if (username.length === 0 || password.length === 0) {
+		if (userid.length === 0 || password.length === 0) {
 			loginView.showSignInFailedMessage('请输入用户名和密码.');
 			return;
 		}
@@ -39,7 +39,7 @@ Ext.define('IBApp.controller.Login', {
 		// 	url: 'logoff.ashx',
 		// 	method: 'post',
 		// 	params: {
-		// 		user: username,
+		// 		user: userid,
 		// 		pwd: password
 		// 	},
 		// 	success: function (response) {
