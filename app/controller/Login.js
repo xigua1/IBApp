@@ -16,7 +16,8 @@ Ext.define('IBApp.controller.Login', {
 		}
 	},
 
-	sessionToken: null,
+	// sessionToken: null,
+	sessionId: null,
 
 	onSignInCommand: function(view, userid, password) {
 		console.log('userid: ' + userid + '\n' + 'Password: ' + password);
@@ -35,49 +36,61 @@ Ext.define('IBApp.controller.Login', {
 		});
 
 		/* 从后台进行验证 */
-		// Ext.Ajax.request({
-		// 	url: 'logoff.ashx',
-		// 	method: 'post',
-		// 	params: {
-		// 		user: userid,
-		// 		pwd: password
-		// 	},
-		// 	success: function (response) {
-		// 		var loginResponse = Ext.JSON.decode(response.responseText);
-		// 		if (loginResponse.success === "true") {
-	 //                // The server will send a token that can be used throughout the app to confirm that the user is authenticated.
-	 //                me.sessionToken = loginResponse.sessionToken;
-	 //                me.signInSuccess();
-	 //            } else {
-	 //                me.signInFailure(loginResponse.message);
-	 //            }
-		// 	},
-		// 	failure: function (response) {
-		// 		me.sessionToken = null;
-		// 		me.signInFailure('登录失败...请重试.');
-		// 	}
-		// });
+		Ext.Ajax.request({
+			url: 'http://192.168.20.110/BackEndTest/Authority.php',
+			method: 'POST',
+			disableCaching: false,
+			// headers: {
+		 //        "Content-Type": "application/json",
+		 //        "Access-Control-Allow-Origin": "*",
+		 //    },
+			// dataType: 'jsonp',
+			withCredentials: true,
+    		useDefaultXhrHeader: false,
+			params: {
+				user: userid,
+				pwd: password
+			},
+			success: function (response) {
+				var loginResponse = Ext.JSON.decode(response.responseText);
+				if (loginResponse.success === true) {
+	                // The server will send a token that can be used throughout the app to confirm that the user is authenticated.
+	                // me.sessionToken = loginResponse.sessionToken;
+	                sessionId = loginResponse.sessionId;
+
+	                /* set userInfoStore */
+	                var curUser = Ext.create('IBApp.model.UserInfo', {
+	                	'id': loginResponse.userInfo[0].id,
+	                	'imgURL': './resources/icons/profile.png',
+	                	'userName': loginResponse.userInfo[0].userName,
+	                	'userRole': loginResponse.userInfo[0].userAuthority,
+	                });
+                    Ext.getStore("UserInfo").add(curUser);
+
+	                me.signInSuccess(curUser.get('userRole'));
+
+	            } else {
+	                me.signInFailure(loginResponse.message);
+	            }
+			},
+			failure: function (response) {
+				me.sessionId = null;
+				me.signInFailure('登录失败...请重试.');
+			}
+		});
 
 		// just for test, will be deleted after debug
-		me.signInSuccess();
+		// me.signInSuccess();
 	},
 
-	signInSuccess: function () {
+	signInSuccess: function (userRole) {
 	    console.log('Signed in.');
 	    var loginView = this.getLoginView();
 	    mainMenuView = this.getMainMenuView();
 	    loginView.setMasked(false);
 
-	    // set userInfoStore;
-	    var curUser = Ext.create('IBApp.model.UserInfo', {
-	    	'id': '80101234',
-	    	'imgURL': './resources/icons/profile.png',
-	    	'userName': '韩梅梅',
-	    	'userRole': 'admin',
-	    });
-	    Ext.getStore("UserInfo").add(curUser);
 	    /* setFunctionIcon via userRole */
-	    mainMenuView.setFunctionIcon(curUser.get('userRole'));
+	    mainMenuView.setFunctionIcon(userRole);
 	    Ext.Viewport.animateActiveItem(mainMenuView, this.getSlideLeftTransition());
 	},
 
