@@ -2450,6 +2450,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.MenuButton": [],
   "Ext.ux.TabMenuButton": [],
   "Ext.ux.TouchCalendar": [],
+  "Ext.ux.TouchCalendarSimpleEvents": [],
   "Ext.ux.TouchCalendarView": [],
   "Ext.ux.device.Analytics": [],
   "Ext.ux.device.Twitter": [],
@@ -2483,12 +2484,15 @@ Ext.ClassManager.addNameAlternateMappings({
   ],
   "IBApp.controller.Login": [],
   "IBApp.controller.MainMenu": [],
-  "IBApp.controller.MeetingRequest": [],
   "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
   "IBApp.model.MeetingType": [],
+  "IBApp.model.MyMeetingEvent": [],
+  "IBApp.model.PlaceType": [],
   "IBApp.model.UserInfo": [],
   "IBApp.store.MeetingType": [],
+  "IBApp.store.MyMeetingEvent": [],
+  "IBApp.store.PlaceType": [],
   "IBApp.store.UserInfo": [],
   "IBApp.view.Login": [],
   "IBApp.view.Main": [],
@@ -3192,6 +3196,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.TouchCalendar": [
     "widget.calendar"
   ],
+  "Ext.ux.TouchCalendarSimpleEvents": [],
   "Ext.ux.TouchCalendarView": [
     "widget.touchcalendarview"
   ],
@@ -3231,13 +3236,20 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.WindowsPhone": [],
   "IBApp.controller.Login": [],
   "IBApp.controller.MainMenu": [],
-  "IBApp.controller.MeetingRequest": [],
   "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
   "IBApp.model.MeetingType": [],
+  "IBApp.model.MyMeetingEvent": [],
+  "IBApp.model.PlaceType": [],
   "IBApp.model.UserInfo": [],
   "IBApp.store.MeetingType": [
     "widget.meetingtypestore"
+  ],
+  "IBApp.store.MyMeetingEvent": [
+    "widget.mymeetingeventstore"
+  ],
+  "IBApp.store.PlaceType": [
+    "widget.placetypestore"
   ],
   "IBApp.store.UserInfo": [
     "widget.userinfostore"
