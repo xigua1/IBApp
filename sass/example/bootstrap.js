@@ -2450,6 +2450,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.MenuButton": [],
   "Ext.ux.TabMenuButton": [],
   "Ext.ux.TouchCalendar": [],
+  "Ext.ux.TouchCalendarSimpleEvents": [],
   "Ext.ux.TouchCalendarView": [],
   "Ext.ux.device.Analytics": [],
   "Ext.ux.device.Twitter": [],
@@ -2483,13 +2484,20 @@ Ext.ClassManager.addNameAlternateMappings({
   ],
   "IBApp.controller.Login": [],
   "IBApp.controller.MainMenu": [],
-  "IBApp.controller.MeetingRequest": [],
   "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
   "IBApp.model.MeetingType": [],
+  "IBApp.model.MyMeetingsEvent": [],
+  "IBApp.model.PlaceType": [],
+  "IBApp.model.SceneMode": [],
   "IBApp.model.UserInfo": [],
   "IBApp.store.MeetingType": [],
+  "IBApp.store.MyMeetingsEvent": [],
+  "IBApp.store.PlaceType": [],
+  "IBApp.store.SceneMode": [],
   "IBApp.store.UserInfo": [],
+  "IBApp.view.DeviceControl": [],
+  "IBApp.view.FuncIcon": [],
   "IBApp.view.Login": [],
   "IBApp.view.Main": [],
   "IBApp.view.MainMenu": [],
@@ -3192,6 +3200,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.TouchCalendar": [
     "widget.calendar"
   ],
+  "Ext.ux.TouchCalendarSimpleEvents": [],
   "Ext.ux.TouchCalendarView": [
     "widget.touchcalendarview"
   ],
@@ -3231,16 +3240,33 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.WindowsPhone": [],
   "IBApp.controller.Login": [],
   "IBApp.controller.MainMenu": [],
-  "IBApp.controller.MeetingRequest": [],
   "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
   "IBApp.model.MeetingType": [],
+  "IBApp.model.MyMeetingsEvent": [],
+  "IBApp.model.PlaceType": [],
+  "IBApp.model.SceneMode": [],
   "IBApp.model.UserInfo": [],
   "IBApp.store.MeetingType": [
     "widget.meetingtypestore"
   ],
+  "IBApp.store.MyMeetingsEvent": [
+    "widget.mymeetingseventstore"
+  ],
+  "IBApp.store.PlaceType": [
+    "widget.placetypestore"
+  ],
+  "IBApp.store.SceneMode": [
+    "widget.scenemodestore"
+  ],
   "IBApp.store.UserInfo": [
-    "widget.userinfostore"
+    "widget.userInfoStore"
+  ],
+  "IBApp.view.DeviceControl": [
+    "widget.devicecontrolview"
+  ],
+  "IBApp.view.FuncIcon": [
+    "widget.funciconview"
   ],
   "IBApp.view.Login": [
     "widget.loginview"
