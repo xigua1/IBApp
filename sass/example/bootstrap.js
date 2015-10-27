@@ -2487,6 +2487,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
   "IBApp.model.MeetingType": [],
+<<<<<<< HEAD
   "IBApp.model.MyMeetingsEvent": [],
   "IBApp.model.PlaceType": [],
   "IBApp.model.SceneMode": [],
@@ -2495,6 +2496,14 @@ Ext.ClassManager.addNameAlternateMappings({
   "IBApp.store.MyMeetingsEvent": [],
   "IBApp.store.PlaceType": [],
   "IBApp.store.SceneMode": [],
+=======
+  "IBApp.model.MyMeetingEvent": [],
+  "IBApp.model.PlaceType": [],
+  "IBApp.model.UserInfo": [],
+  "IBApp.store.MeetingType": [],
+  "IBApp.store.MyMeetingEvent": [],
+  "IBApp.store.PlaceType": [],
+>>>>>>> origin/master
   "IBApp.store.UserInfo": [],
   "IBApp.view.DeviceControl": [],
   "IBApp.view.FuncIcon": [],
@@ -3243,22 +3252,35 @@ Ext.ClassManager.addNameAliasMappings({
   "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
   "IBApp.model.MeetingType": [],
+<<<<<<< HEAD
   "IBApp.model.MyMeetingsEvent": [],
   "IBApp.model.PlaceType": [],
   "IBApp.model.SceneMode": [],
+=======
+  "IBApp.model.MyMeetingEvent": [],
+  "IBApp.model.PlaceType": [],
+>>>>>>> origin/master
   "IBApp.model.UserInfo": [],
   "IBApp.store.MeetingType": [
     "widget.meetingtypestore"
   ],
+<<<<<<< HEAD
   "IBApp.store.MyMeetingsEvent": [
     "widget.mymeetingseventstore"
+=======
+  "IBApp.store.MyMeetingEvent": [
+    "widget.mymeetingeventstore"
+>>>>>>> origin/master
   ],
   "IBApp.store.PlaceType": [
     "widget.placetypestore"
   ],
+<<<<<<< HEAD
   "IBApp.store.SceneMode": [
     "widget.scenemodestore"
   ],
+=======
+>>>>>>> origin/master
   "IBApp.store.UserInfo": [
     "widget.userInfoStore"
   ],

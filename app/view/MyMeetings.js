@@ -47,6 +47,14 @@ Ext.define('IBApp.view.MyMeetings', {
         	docked: 'bottom',
             onItemDisclosure: true,
         	height: 250,
+
+        	// itemTpl: '{event} {title}',
+        	// store: new Ext.data.Store({
+         //        model: 'IBApp.model.MyMeetingsEvent',
+         //        data: []
+            // }),
+            // store:Ext.getStore('MyMeetingsEvent'),
+
         	itemTpl: ['<div class="list-item-title">{title}</div>',
             '<div class="list-item-narrative">{event} {location}<span class="status">{status}</span></div>'
             ].join(""),
@@ -56,6 +64,7 @@ Ext.define('IBApp.view.MyMeetings', {
                 model: 'IBApp.model.MyMeetingsEvent',
                 data: []
             }),
+
             listeners: {
                 disclose: { fn: this.onNotesListDisclose, scope: this },
                 initialize: function(list) {
