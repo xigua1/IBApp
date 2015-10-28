@@ -37,15 +37,10 @@ Ext.define('IBApp.controller.Login', {
 
 		/* 从后台进行验证 */
 		Ext.Ajax.request({
-			url: 'http://192.168.20.118/BackEndTest/Authority.php',
+			url: 'http://192.168.31.232/BackEndTest/Authority.php',
 			method: 'POST',
 			disableCaching: false,
-			// headers: {
-		 //        "Content-Type": "application/json",
-		 //        "Access-Control-Allow-Origin": "*",
-		 //    },
-			// dataType: 'jsonp',
-			withCredentials: true,
+			// withCredentials: true,
     		useDefaultXhrHeader: false,
 			params: {
 				user: userid,
