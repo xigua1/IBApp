@@ -18,11 +18,14 @@ Ext.define('IBApp.view.UserInfoList', {
 		store: 'UserInfo',
 		itemTpl: userInfoTemplate,
 		disableSelection: true,
+		onItemDisclosure: true,
 		scrollable: {
             disabled: true
         },
-		onItemDisclosure: function(record, element, index, e) {
-			Ext.Msg.alert("click " + record.get('userName'));
+		listeners: {
+		    itemtap: function (list, index, target, record, e, eOpts) {
+		    	Ext.Msg.alert("click " + record.get('userName'));
+		    },
 		}
 	}
 });

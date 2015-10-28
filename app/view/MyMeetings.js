@@ -47,18 +47,9 @@ Ext.define('IBApp.view.MyMeetings', {
         	docked: 'bottom',
             onItemDisclosure: true,
         	height: 250,
-
-        	// itemTpl: '{event} {title}',
-        	// store: new Ext.data.Store({
-         //        model: 'IBApp.model.MyMeetingsEvent',
-         //        data: []
-            // }),
-            // store:Ext.getStore('MyMeetingsEvent'),
-
         	itemTpl: ['<div class="list-item-title">{title}</div>',
             '<div class="list-item-narrative">{event} {location}<span class="status">{status}</span></div>'
             ].join(""),
-            // '<div class="list-item-title">{title}</div><div class="list-item-narrative">{event}</div>',
             emptyText: '<div class="notes-list-empty-text">没有会议</div>',
         	store: new Ext.data.Store({
                 model: 'IBApp.model.MyMeetingsEvent',
@@ -66,7 +57,7 @@ Ext.define('IBApp.view.MyMeetings', {
             }),
 
             listeners: {
-                disclose: { fn: this.onNotesListDisclose, scope: this },
+                itemtap: { fn: this.onMeetingsListTap, scope: this },
                 initialize: function(list) {
                     var today = Ext.Date.clearTime(new Date(), true).getTime();
                     calendar.eventStore.clearFilter();
@@ -177,8 +168,9 @@ Ext.define('IBApp.view.MyMeetings', {
     },
 
 
-    onNotesListDisclose: function (list, record, target, index, evt, options) {
+    onMeetingsListTap: function (list, index, target, record, e, eOpts) {
         console.log("editNoteCommand");
+        console.log(record.get('title'));
         this.fireEvent('editNoteCommand', this, record);
     },
 
