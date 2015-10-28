@@ -65,6 +65,11 @@ Ext.application({
             {xtype: 'devicecontrolview'},
         ]);
 
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'login'}));
+
+        document.addEventListener('backbutton', function() {
+            history.go(-1);
+        });
     },
 
     onUpdated: function() {
