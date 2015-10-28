@@ -37,7 +37,7 @@ Ext.define('IBApp.controller.Login', {
 
 		/* 从后台进行验证 */
 		Ext.Ajax.request({
-			url: 'http://192.168.20.110/BackEndTest/Authority.php',
+			url: 'http://192.168.20.118/BackEndTest/Authority.php',
 			method: 'POST',
 			disableCaching: false,
 			// headers: {
