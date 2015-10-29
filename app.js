@@ -67,9 +67,12 @@ Ext.application({
 
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'login'}));
 
-        document.addEventListener('backbutton', function() {
-            history.go(-1);
-        });
+        document.addEventListener("backbutton", function() {
+            var curUrl = window.location.hash;
+            if ((curUrl !='#mainmenu') && (curUrl !='#login')) {
+                window.history.go(-1);
+            }
+        }, false);
     },
 
     onUpdated: function() {
@@ -82,5 +85,5 @@ Ext.application({
                 }
             }
         );
-    }
+    },
 });

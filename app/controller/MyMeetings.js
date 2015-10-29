@@ -3,36 +3,51 @@ Ext.define("IBApp.controller.MyMeetings", {
     config: {
         refs: {
             // We're going to lookup our views by xtype.
-            //roomBookingView: 'roombookingview',
-            mainMenuView: 'mainmenuview',
             myMeetingsView: 'mymeetingsview',
-            roomBookSuccessView: 'roombooksuccessview',
             meetingRequestView:'meetingrequestview',
+            deviceControlView:'devicecontrolview',
         },
         control: {
             myMeetingsView: {
-                MyMeetingsToMainMenuCommand: 'onMyMeetingsToMainMenuCommand',
-                meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
                 editNoteCommand:'onEditNoteCommand'
             },
-           
+            meetingRequestView: {
+                meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
+                meetingRequestToRoomBookSuccessCommand:'onMeetingRequestToRoomBookSuccessCommand',
+                deviceControlViewCommand:'onDeviceControlViewCommand',
+            },
+            deviceControlView: {
+                deviceControlToMeetingRequestCommand:'onDeviceControlToMeetingRequestCommand',
+            },
+        },
+        routes: {
+            'meetingrequest': 'showMeetingRequestView',
+            'devicecontrol': 'showDeviceControlView',
         }
     },
 
-    getSlideLeftTransition: function () {
-        return { type: 'slide', direction: 'left' };
+    showMeetingRequestView: function() {
+        Ext.Viewport.animateActiveItem(this.getMeetingRequestView(), 'fade');
     },
 
-    getSlideRightTransition: function () {
-        return { type: 'slide', direction: 'right' };
+    showDeviceControlView: function() {
+        Ext.Viewport.animateActiveItem(this.getDeviceControlView(), 'fade');
     },
 
-    onMyMeetingsToMainMenuCommand: function() {
-        Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
+    onMeetingRequestToMyMeetingsCommand: function () {
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'mymeetings'}));
     },
 
-    onMeetingRequestToMyMeetingsCommand: function() {
-        Ext.Viewport.animateActiveItem(this.getMyMeetingsView(), this.getSlideLeftTransition());
+    onDeviceControlToMeetingRequestCommand: function () {
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'meetingrequest'}));
+    },
+
+    onMeetingRequestToRoomBookSuccessCommand: function() {
+        Ext.Msg.alert('会议内容修改成功！');
+    },
+
+    onDeviceControlViewCommand: function() {
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
     },
 
     onEditNoteCommand: function(list, record, target, index, evt, options) {
@@ -40,12 +55,8 @@ Ext.define("IBApp.controller.MyMeetings", {
         var starttime = record.get("start"),
              endtime = record.get("end");
 
-
         console.log('starttime: ' + starttime + '\n' + 'endtime: ' + endtime);
 
-
-
-        Ext.Viewport.animateActiveItem(this.getMeetingRequestView(), this.getSlideLeftTransition());
-        // Ext.Viewport.animateActiveItem(this.getMainMenuView(), this.getSlideRightTransition());
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'meetingrequest'}));
     }
 });

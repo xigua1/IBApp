@@ -6,7 +6,6 @@ Ext.define("IBApp.controller.RoomBooking", {
             roomBookingView: 'roombookingview',
             roomSearchResultView: 'roomsearchresultview',
             roomBookSuccessView: 'roombooksuccessview',
-            meetingRequestView: 'meetingrequestview'
         },
         control: {
         	roomBookingView: {
@@ -17,33 +16,42 @@ Ext.define("IBApp.controller.RoomBooking", {
                 roomBookButtonCommand: 'onRoomBookButtonCommand'
             },
             roomBookSuccessView: {
-            	modifyMeetingInfoButtonCommand: 'onModifyMeetingInfoButtonCommand'
+                backButtonCommand: 'onBacktoMainMenuCommand',
+            	modifyMeetingInfoButtonCommand: 'onModifyMeetingInfoButtonCommand',
             }
+        },
+        routes: {
+            'roomsearchresult': 'showRoomSearchResultView',
+            'roombooksuccess': 'showRoomBookSuccessView',
         }
     },
 
-    getSlideLeftTransition: function () {
-        return { type: 'slide', direction: 'left' };
+    showRoomSearchResultView: function() {
+        Ext.Viewport.animateActiveItem(this.getRoomSearchResultView(), 'fade');
     },
 
-    getSlideRightTransition: function () {
-        return { type: 'slide', direction: 'right' };
+    showRoomBookSuccessView: function() {
+        Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), 'fade');
     },
 
     onRoomSearchSubmitCommand: function () {
-        Ext.Viewport.animateActiveItem(this.getRoomSearchResultView(), this.getSlideLeftTransition());
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roomsearchresult'}));
     },
 
     onBackButtonCommand: function (){
-        Ext.Viewport.animateActiveItem(this.getRoomBookingView(), this.getSlideRightTransition());
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roombooking'}));
     },
 
     onRoomBookButtonCommand: function (){
-        Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), this.getSlideLeftTransition());
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roombooksuccess'}));
     },
     
     onModifyMeetingInfoButtonCommand: function () {
-    	  Ext.Viewport.animateActiveItem(this.getMeetingRequestView(), this.getSlideLeftTransition());
-    }
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'meetingrequest'}));
+    },
+
+    onBacktoMainMenuCommand: function() {
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'mainmenu'}));
+    },
 
 });

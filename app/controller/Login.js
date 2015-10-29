@@ -13,11 +13,18 @@ Ext.define('IBApp.controller.Login', {
 			mainMenuView: {
 				signOffCommand: 'onSignOffCommand'
 			}
+		},
+		routes: {
+			'login': 'showLoginView',
 		}
 	},
 
 	// sessionToken: null,
 	sessionId: null,
+
+	showLoginView: function() {
+		Ext.Viewport.animateActiveItem(this.getLoginView(), 'fade');
+	},
 
 	onSignInCommand: function(view, userid, password) {
 		console.log('userid: ' + userid + '\n' + 'Password: ' + password);
@@ -86,7 +93,7 @@ Ext.define('IBApp.controller.Login', {
 
 	    /* setFunctionIcon via userRole */
 	    mainMenuView.setFunctionIcon(userRole);
-	    Ext.Viewport.animateActiveItem(mainMenuView, this.getSlideLeftTransition());
+	    this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'mainmenu'}));
 	},
 
 	getSlideLeftTransition: function () {
@@ -121,6 +128,6 @@ Ext.define('IBApp.controller.Login', {
 	    //     }
 	    // });
 
-	    Ext.Viewport.animateActiveItem(this.getLoginView(), this.getSlideRightTransition());
+	    this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'login'}));
 	}
 });
