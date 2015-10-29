@@ -47,8 +47,10 @@ Ext.define('IBApp.view.MyMeetings', {
         	docked: 'bottom',
             onItemDisclosure: true,
         	height: 250,
-        	itemTpl: ['<div class="list-item-title">{title}</div>',
-            '<div class="list-item-narrative">{event} {location}<span class="status">{status}</span></div>'
+            itemHeight: 70,
+            style: 'border-top: 1px solid #f0f0f0',
+        	itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status-{statusEn}">{status}</span></div>',
+            '<div class="list-item-narrative">{event}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{location}</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有会议</div>',
         	store: new Ext.data.Store({

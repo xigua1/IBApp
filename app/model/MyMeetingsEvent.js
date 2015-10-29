@@ -32,6 +32,9 @@ Ext.define("IBApp.model.MyMeetingsEvent", {
 		}, {
 			name: 'status',
 			type: 'string'
+		},{
+			name: 'statusEn',
+			type: 'string'
 		}]
 
 	}
