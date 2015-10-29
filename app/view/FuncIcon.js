@@ -18,7 +18,7 @@ Ext.define('IBApp.view.FuncIcon', {
 	    var image = Ext.create('Ext.Img', {
 	    	itemId: this.config.imageId,
 	    	src: this.config.imageSrc,
-	    	style: 'width:100%;height:80%;margin:auto',
+	    	style: 'width:100%;height:70%;margin:auto',
 	    });
 
 	    this.add([
