@@ -39,7 +39,7 @@ Ext.define("IBApp.controller.RoomBooking", {
     },
 
     onBackButtonCommand: function (){
-        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roombooking'}));
+        window.history.go(-1);
     },
 
     onRoomBookButtonCommand: function (){
