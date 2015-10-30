@@ -9,7 +9,7 @@ Ext.define("IBApp.controller.MyMeetings", {
         },
         control: {
             myMeetingsView: {
-                editNoteCommand:'onEditNoteCommand'
+                meetingsListCommand:'onMeetingsListCommand'
             },
             meetingRequestView: {
                 meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
@@ -50,13 +50,8 @@ Ext.define("IBApp.controller.MyMeetings", {
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
     },
 
-    onEditNoteCommand: function(list, record, target, index, evt, options) {
-        //Ext.Msg.alert('starttime');
-        var starttime = record.get("start"),
-             endtime = record.get("end");
-
-        console.log('starttime: ' + starttime + '\n' + 'endtime: ' + endtime);
-
+    onMeetingsListCommand: function(record) {
+        this.getMeetingRequestView().modifyMeetingDetails(record);
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'meetingrequest'}));
     }
 });

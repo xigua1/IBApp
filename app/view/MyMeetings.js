@@ -49,7 +49,7 @@ Ext.define('IBApp.view.MyMeetings', {
         	height: 250,
             itemHeight: 70,
             style: 'border-top: 1px solid #f0f0f0',
-        	itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status-{statusEn}">{status}</span></div>',
+        	itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{status}</span></div>',
             '<div class="list-item-narrative">{event}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{location}</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有会议</div>',
@@ -171,9 +171,7 @@ Ext.define('IBApp.view.MyMeetings', {
 
 
     onMeetingsListTap: function (list, index, target, record, e, eOpts) {
-        console.log("editNoteCommand");
-        console.log(record.get('title'));
-        this.fireEvent('editNoteCommand', this, record);
+        this.fireEvent('meetingsListCommand', record);
     },
 
 

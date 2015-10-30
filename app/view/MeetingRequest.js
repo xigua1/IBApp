@@ -1,6 +1,5 @@
 ﻿Ext.define('IBApp.view.MeetingRequest', {
     extend: 'Ext.form.Panel',
-    extend:'Ext.Container',
     xtype: 'meetingrequestview',
   
     requires:[
@@ -23,7 +22,7 @@
         var backButton = {
         	xtype: 'button',
         	ui: 'back',
-        	text: '上一页',
+        	text: '后退',
         	handler: this.onBackButtonTap,
         	scope: this
         };
@@ -31,7 +30,7 @@
         /*编辑按钮*/
         var editButton = {
             xtype:'button',
-            text:'。。。',
+            iconCls: 'more',
             ui:'action',
             id:'edit',
             handler:function(){
@@ -95,27 +94,26 @@
             editButton
             ]
         };
-        
+
+        /* 会议详情表单各控件的name值与model保持一致，用于setRecord */      
 
         /*会议名称*/
         var meetingNameText = {
         	xtype: 'textfield',
-        	name: 'meetingName',
+        	name: 'title',
         	label: '名称',
           id:'meetingNameTextid',
           readOnly:true,
-          value:'党组织活动会议通知'
-          // placeHolder:'会议名称'
         };
         
 	      /* 会议开始时间 */
         var startDateTime = {
           	xtype: 'datetimepickerfield',
-          	name: 'startDateTime24hrdt',
+          	name: 'start',
           	label: '开始时间',
             id:'startDateTimeid',
             readOnly:true,
-          	value: new Date(),
+          	// value: new Date(),
           	dateTimeFormat: 'Y-m-d H:i',
           	picker: {
           	minuteInterval: 15,
@@ -127,11 +125,11 @@
         /* 会议结束时间 */
         var endDateTime = {
         	xtype: 'datetimepickerfield',
-        	name: 'endDateTime24hrdt',
+        	name: 'end',
         	label: '结束时间',
           id:'endDateTimeid',
           readOnly:true,
-        	value: new Date(),
+        	// value: new Date(),
         	dateTimeFormat: 'Y-m-d H:i',
         	picker: {
         		minuteInterval: 15,
@@ -144,7 +142,7 @@
         var placeTypeSelector = {
         	xtype: 'selectfield',
           // xtype: 'textfield',
-        	name: 'meetingType',
+        	name: 'location',
         	label: '地点',
           id:'placeTypeSelectorid',
           readOnly:true,
@@ -159,36 +157,38 @@
         /*组织者*/
         var organizerNameText = {
         	xtype: 'textfield',
-        	name: 'organizerName',
+        	name: 'organizer',
         	label: '组织者',
           id:'organizerNameTextid',
           readOnly:true,
-          value:'张三'
-          // placeHolder:'张三'
         };
         
         /*与会人员*/
         var participatorNameText = {
         	xtype: 'textfield',
-        	name: 'participatorName',
+        	name: 'participants',
         	label: '与会人员',
           id:'participatorNameTextid',
           readOnly:true,
-          value:'李四、张某某、蒋某'
-          // placeHolder:'李四、张某某、蒋某'
         };
         
         /*服务*/
         var serviceText = {
         	xtype: 'textfield',
-        	name: 'service',
+        	name: 'services',
         	label: '服务',
           id:'serviceTextid',
           readOnly:true,
-          value:'茶水、投影仪、话筒、白板笔、签到表'
-          // placeHolder:'茶水、投影仪、话筒、白板笔、签到表'
         };
 
+        /*会议摘要*/
+        var meetingText = {
+            xtype: 'textareafield',
+            label: '会议摘要',
+            name: 'abstract',
+            readOnly:true,
+            id:'meetingTextid',
+        };
 
         /*提交按钮*/
         var requestBotton = {
@@ -203,40 +203,56 @@
             scope: this
      
         };
-        /*会议摘要*/
-        var meetingText = {
-            xtype: 'textareafield',
-            readOnly:true,
-            id:'meetingTextid',
-            value: '关于开展创建学习型、创新型、服务型党组织活动的通知,活动的主要内容是参观铁道博物馆，电影博物馆和798艺术区'
+
+        /*隐藏信息*/
+        var meetingIdText = {
+          xtype: 'hiddenfield',
+          name: 'meetingId',
+        };
+        var eventText = {
+          xtype: 'hiddenfield',
+          name: 'event',
+        };
+        var statusText = Ext.create('Ext.field.Hidden', {
+          name: 'status',
+          id: 'statusText'
+        });
+        var statusEnText = {
+          xtype: 'hiddenfield',
+          name: 'statusEn',
+          id: 'statusEnText'
         };
 
-
+        var meetingStatusLabel = {
+          xtype: 'label',
+          id: 'meetingStatusLabel'
+          // html: ['<p>',
+          //   '</p>'
+          // ].join(""),
+          // cls: 'meeting-status-closed'
+        };
 
         this.add([
         	topToolbar,
+          meetingStatusLabel,
         	{
         		xtype: 'fieldset',
         		title: '会议表单',
         		items: [
-        			meetingNameText,
-        			startDateTime,
-        			endDateTime,
-        			placeTypeSelector,
-        			organizerNameText,
-        			participatorNameText,
-        			serviceText,	
-
-        		]
-        	},  
-        	{
-        		xtype: 'fieldset',
-            title: '会议摘要',
-           
-            items: [
-            meetingText,
-            ]            
-        	},
+              meetingNameText,
+              startDateTime,
+              endDateTime,
+              placeTypeSelector,
+              organizerNameText,
+              participatorNameText,
+              serviceText,  
+              meetingText,
+              meetingIdText,
+              eventText,
+              statusText,
+              statusEnText
+            ]
+          },
           requestBotton,
 
         ]);
@@ -317,6 +333,23 @@
       this.actions.hide(); 
       
     },
+
+    modifyMeetingDetails: function(record) {
+      this.setRecord(record);
+
+      var str = this.down('#statusText').getValue();
+      var strEn = this.down('#statusEnText').getValue();
+
+      this.down('#meetingStatusLabel').setHtml([
+          '<p>',
+          str,
+          '</p>'
+        ].join(""));
+      this.down('#meetingStatusLabel').setCls([
+        'detail-meeting-status ',
+        strEn
+      ].join(""));
+    }
 });       
         
     
