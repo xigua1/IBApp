@@ -118,7 +118,9 @@
           	picker: {
           	minuteInterval: 15,
           	ampm: false,
-          	slotOrder: ['year','month','day','hour','minute']
+          	slotOrder: ['year','month','day','hour','minute'],
+            doneButton: '确定',
+            cancelButton: '取消',
         	}
         };
 
@@ -134,24 +136,19 @@
         	picker: {
         		minuteInterval: 15,
         		ampm: false,
-        		slotOrder: ['year','month','day','hour','minute']
+        		slotOrder: ['year','month','day','hour','minute'],
+            doneButton: '确定',
+            cancelButton: '取消',
         	}
         };
         
         /* 地点 */
-        var placeTypeSelector = {
-        	xtype: 'selectfield',
-          // xtype: 'textfield',
+        var placeTypeText = {
+          xtype: 'textfield',
         	name: 'location',
         	label: '地点',
-          id:'placeTypeSelectorid',
+          id:'placeTypeTextid',
           readOnly:true,
-          // value:'B0910 小型会议室',
-          store: {xtype: 'placetypestore'},
-          valueField: 'id',
-          displayField: 'type',
-          handler: this.onPlaceSelectTap,
-          scope: this
         };
 
         /*组织者*/
@@ -226,26 +223,60 @@
         var meetingStatusLabel = {
           xtype: 'label',
           id: 'meetingStatusLabel'
-          // html: ['<p>',
-          //   '</p>'
-          // ].join(""),
-          // cls: 'meeting-status-closed'
         };
 
         this.add([
         	topToolbar,
-          meetingStatusLabel,
-        	{
-        		xtype: 'fieldset',
-        		title: '会议表单',
-        		items: [
+          {
+            xtype: 'fieldset',
+            items: [
+              meetingStatusLabel,
               meetingNameText,
               startDateTime,
               endDateTime,
-              placeTypeSelector,
+              {
+                xtype: 'panel',
+                items: [
+                  placeTypeText,
+                  {xtype: 'button',
+                  id: 'placeModifyBtn',
+                  style: 'position: absolute; width:50px; left:75%; top:5px; border:none',
+                  hidden: true,
+                  text: '修改',
+                  scope: this,
+                  handler: this.onPlaceModifyBtn,
+                  }
+                ]
+              },
               organizerNameText,
-              participatorNameText,
-              serviceText,  
+              {
+                xtype: 'panel',
+                items: [
+                  participatorNameText,
+                  {xtype: 'button',
+                  id: 'participatorModifyBtn',
+                  style: 'position: absolute; width:50px; left:75%; top:5px; border:none',
+                  hidden: true,
+                  text: '修改',
+                  scope: this,
+                  handler: this.onParticipatorModifyBtn,
+                  }
+                ]
+              },
+              {
+                xtype: 'panel',
+                items: [
+                  serviceText,
+                  {xtype: 'button',
+                  id: 'serviceModifyBtn',
+                  style: 'position: absolute; width:50px; left:75%; top:5px; border:none',
+                  hidden: true,
+                  text: '修改',
+                  scope: this,
+                  handler: this.onServiceModifyBtn,
+                  }
+                ]
+              },
               meetingText,
               meetingIdText,
               eventText,
@@ -269,20 +300,20 @@
         var MeetingNT = me.down('#meetingNameTextid');
         var startDT = me.down('#startDateTimeid');
         var endDT = me.down('#endDateTimeid');
-        var placeTS = me.down('#placeTypeSelectorid');
+        var placeMB = me.down('#placeModifyBtn');
         var organizerNT = me.down('#organizerNameTextid');
-        var participatorNT = me.down('#participatorNameTextid');
-        var serviceT = me.down('#serviceTextid');
+        var participatorMB = me.down('#participatorModifyBtn');
+        var serviceMB = me.down('#serviceModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(false);
         startDT.setReadOnly(false);
         endDT.setReadOnly(false);
-        placeTS.setReadOnly(false);
-        organizerNT.setReadOnly(false);
-        participatorNT.setReadOnly(false);
-        serviceT.setReadOnly(false);
+        placeMB.setHidden(false);
+        // organizerNT.setReadOnly(false);  /*不允许修改会议组织者*/
+        participatorMB.setHidden(false);
+        serviceMB.setHidden(false);
         requestB.setHidden(false);
         meetingT.setReadOnly(false);
 
@@ -295,20 +326,20 @@
         var MeetingNT = me.down('#meetingNameTextid');
         var startDT = me.down('#startDateTimeid');
         var endDT = me.down('#endDateTimeid');
-        var placeTS = me.down('#placeTypeSelectorid');
+        var placeMB = me.down('#placeModifyBtn');
         var organizerNT = me.down('#organizerNameTextid');
-        var participatorNT = me.down('#participatorNameTextid');
-        var serviceT = me.down('#serviceTextid');
+        var participatorMB = me.down('#participatorModifyBtn');
+        var serviceMB = me.down('#serviceModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(true);
         startDT.setReadOnly(true);
         endDT.setReadOnly(true);
-        placeTS.setReadOnly(true);
-        organizerNT.setReadOnly(true);
-        participatorNT.setReadOnly(true);
-        serviceT.setReadOnly(true);
+        placeMB.setHidden(true);
+        // organizerNT.setReadOnly(true);
+        participatorMB.setHidden(true);
+        serviceMB.setHidden(true);
         requestB.setHidden(true);
         meetingT.setReadOnly(true);
 
@@ -324,8 +355,17 @@
       this.onNoEditButtonTap();
     },
 
-    onPlaceSelectTap: function() {
-      this.fireEvent("roomBookingCommand");
+    onPlaceModifyBtn: function() {
+
+      // this.fireEvent("roomBookingCommand");
+    },
+
+    onParticipatorModifyBtn: function() {
+
+    },
+
+    onServiceModifyBtn: function() {
+
     },
 
     onControlDeviceTap: function() {
