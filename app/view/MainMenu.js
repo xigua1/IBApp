@@ -17,7 +17,8 @@ Ext.define('IBApp.view.MainMenu', {
 						xtype: 'button',
 						itemId: 'LogoutButton',
 						text: '退出',
-						align: 'right'
+						align: 'right',
+						// style: 'background-image: url(resources/images/qr_scanner.png); background-size: auto 100%; background-repeat:no-repeat;'
 					}
 				]
 			},
@@ -63,6 +64,11 @@ Ext.define('IBApp.view.MainMenu', {
 				delegate: '#roomBooking',
 				event: 'tap',
 				fn: 'onRoomBookingTap'
+			},
+			{
+				delegate: '#scanningCode',
+				event: 'tap',
+				fn: 'onScanningCodeTap'
 			}
 		]
 	},
@@ -77,6 +83,37 @@ Ext.define('IBApp.view.MainMenu', {
 
 	onRoomBookingTap: function() {
 		this.fireEvent('roomBookingCommand');
+	},
+
+	onScanningCodeTap: function() {
+		cordova.plugins.barcodeScanner.scan(
+	        function (result) {
+				if (!result.cancelled) {
+					Ext.Msg.show({
+						title: '会议信息：',
+						message: result.text,
+						buttons: [
+							{
+								text: '签到',
+								ui: 'action'
+							},
+							{
+								text: '取消',
+								itemId: 'cancel'
+							}
+						],
+						fn: function(button) {
+							if (button == '签到') {
+								Ext.Msg.alert('会议签到成功');
+							};
+						}
+					});
+				};
+	        }, 
+	        function (error) {
+	            alert("扫描失败: " + error);
+	        }
+	    );
 	},
 
 	setFunctionIcon: function(userRole) {
