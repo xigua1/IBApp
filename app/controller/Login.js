@@ -19,7 +19,6 @@ Ext.define('IBApp.controller.Login', {
 		}
 	},
 
-	// sessionToken: null,
 	sessionId: null,
 
 	showLoginView: function() {
@@ -43,36 +42,37 @@ Ext.define('IBApp.controller.Login', {
 		});
 
 		/* 从后台进行验证 */
+		var url = 'http://10.2.49.254:8080/pactera-jeesite/restService/userservice/0.1/login/doGetAuthenticationInfo/' + userid + '/' + password;
 		Ext.Ajax.request({
-			url: 'http://192.168.31.232/BackEndTest/Authority.php',
-			method: 'POST',
+			// url: 'http://192.168.31.232/BackEndTest/Authority.php',
+			url: url,
+			method: 'GET',
 			disableCaching: false,
-			// withCredentials: true,
+			withCredentials: true,
     		useDefaultXhrHeader: false,
-			params: {
-				user: userid,
-				pwd: password
-			},
+			// params: {
+			// 	user: userid,
+			// 	pwd: password
+			// },
 			success: function (response) {
 				var loginResponse = Ext.JSON.decode(response.responseText);
-				if (loginResponse.success === true) {
+				if (loginResponse.success === 'true') {
 	                // The server will send a token that can be used throughout the app to confirm that the user is authenticated.
-	                // me.sessionToken = loginResponse.sessionToken;
 	                sessionId = loginResponse.sessionId;
 
 	                /* set userInfoStore */
 	                var curUser = Ext.create('IBApp.model.UserInfo', {
-	                	'id': loginResponse.userInfo[0].id,
+	                	'id': loginResponse.id,
 	                	'imgURL': './resources/icons/profile.png',
-	                	'userName': loginResponse.userInfo[0].userName,
-	                	'userRole': loginResponse.userInfo[0].userAuthority,
+	                	'userName': loginResponse.userName,
+	                	// 'userRole': loginResponse.userAuthority,
 	                });
                     Ext.getStore("UserInfo").add(curUser);
 
-	                me.signInSuccess(curUser.get('userRole'));
+	                me.signInSuccess('admin'/*curUser.get('userRole')*/);
 
 	            } else {
-	                me.signInFailure(loginResponse.message);
+	                me.signInFailure(loginResponse.erroMsg);
 	            }
 			},
 			failure: function (response) {
@@ -106,7 +106,7 @@ Ext.define('IBApp.controller.Login', {
 
 	signInFailure: function (message) {
 	    var loginView = this.getLoginView();
-	    loginView.showSignInFailedMessage(message);
+	    loginView.showSignInFailedMessage(message.split('：', 2)[0]);
 	    loginView.setMasked(false);
 	},
 
