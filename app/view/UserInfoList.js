@@ -4,7 +4,7 @@ var userInfoTemplate = new Ext.XTemplate(
 	'<div class="user-profile-title">{userName}<sup>2</sup></div>',
 	'<div class="user-profile-narrative">',
 	'<p>{id}</p>',
-	'<p>{userRole}</p>',
+	// '<p>{userRoles}</p>',
 	'</div>',
 	'</tpl>'
 );

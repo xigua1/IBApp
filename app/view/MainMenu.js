@@ -116,8 +116,8 @@ Ext.define('IBApp.view.MainMenu', {
 	    );
 	},
 
-	setFunctionIcon: function(userRole) {
-		if (userRole === 'admin') {
+	setFunctionIcon: function(userRoles) {
+		if (userRoles.indexOf('APP_ADMIN') != -1) {
 			/* 系统管理员权限 可使用所有功能模块 */
 			var rowPanel1 = this.down('#rowPanel1');
 			var funcIcon1 = Ext.create('IBApp.view.FuncIcon', {
@@ -157,7 +157,7 @@ Ext.define('IBApp.view.MainMenu', {
 			rowPanel2.add(funcIcon5);
 			rowPanel2.add(funcIcon6);
 		}
-		else if (userRole === 'normal') {
+		else if (userRoles.indexOf('APP_USER') != -1) {
 			var rowPanel1 = this.down('#rowPanel1');
 			var funcIcon1 = Ext.create('IBApp.view.FuncIcon', {
 				imageId: 'myMeetings',

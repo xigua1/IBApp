@@ -6,7 +6,8 @@ Ext.define("IBApp.model.UserInfo", {
             { name: 'id', type: 'int' },
             { name: 'imgURL', type: 'string'},
             { name: 'userName', type: 'string' },
-            { name: 'userRole', type: 'string' },
+            { name: 'userRoles', type: 'string' },
+            { name: 'userPermissions', type: 'string' },
         ]
     }
 });

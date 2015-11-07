@@ -55,6 +55,7 @@ Ext.define('IBApp.controller.Login', {
 			},
 			success: function (response) {
 				var loginResponse = Ext.JSON.decode(response.responseText);
+				console.log(loginResponse);
 				if (loginResponse.success === 'true') {
 	                // The server will send a token that can be used throughout the app to confirm that the user is authenticated.
 	                sessionId = loginResponse.sessionId;
@@ -64,11 +65,13 @@ Ext.define('IBApp.controller.Login', {
 	                	'id': loginResponse.id,
 	                	'imgURL': './resources/icons/profile.png',
 	                	'userName': loginResponse.userName,
-	                	// 'userRole': loginResponse.userAuthority,
+	                	'userRoles': loginResponse.userRoles,
+	                	'userPermissions': loginResponse.userPermissions,
 	                });
+	                Ext.getStore("UserInfo").removeAll();
                     Ext.getStore("UserInfo").add(curUser);
 
-	                me.signInSuccess('admin'/*curUser.get('userRole')*/);
+	                me.signInSuccess(curUser.get('userRoles'));
 
 	            } else {
 	                me.signInFailure(loginResponse.erroMsg);
@@ -84,14 +87,14 @@ Ext.define('IBApp.controller.Login', {
 		// me.signInSuccess();
 	},
 
-	signInSuccess: function (userRole) {
+	signInSuccess: function (userRoles) {
 	    console.log('Signed in.');
 	    var loginView = this.getLoginView();
 	    mainMenuView = this.getMainMenuView();
 	    loginView.setMasked(false);
 
 	    /* setFunctionIcon via userRole */
-	    mainMenuView.setFunctionIcon(userRole);
+	    mainMenuView.setFunctionIcon(userRoles);
 	    this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'mainmenu'}));
 	},
 
@@ -105,7 +108,7 @@ Ext.define('IBApp.controller.Login', {
 
 	signInFailure: function (message) {
 	    var loginView = this.getLoginView();
-	    loginView.showSignInFailedMessage(message.split('：', 2)[0]);
+	    loginView.showSignInFailedMessage(message);
 	    loginView.setMasked(false);
 	},
 
