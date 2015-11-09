@@ -117,9 +117,13 @@ Ext.define('IBApp.view.MainMenu', {
 	},
 
 	setFunctionIcon: function(userRoles) {
+		var rowPanel1 = this.down('#rowPanel1');
+		var rowPanel2 = this.down('#rowPanel2');
+		rowPanel1.removeAll();
+		rowPanel2.removeAll();
+
 		if (userRoles.indexOf('APP_ADMIN') != -1) {
 			/* 系统管理员权限 可使用所有功能模块 */
-			var rowPanel1 = this.down('#rowPanel1');
 			var funcIcon1 = Ext.create('IBApp.view.FuncIcon', {
 				imageId: 'myMeetings',
 				imageSrc: './resources/icons/my_meeting.png',
@@ -135,12 +139,10 @@ Ext.define('IBApp.view.MainMenu', {
 				imageSrc: './resources/icons/scan_code.png',
 				text: '扫码签到',
 			});
-			rowPanel1.removeAll();
 			rowPanel1.add(funcIcon1);
 			rowPanel1.add(funcIcon2);
 			rowPanel1.add(funcIcon3);
 
-			var rowPanel2 = this.down('#rowPanel2');
 			var funcIcon4 = Ext.create('IBApp.view.FuncIcon', {
 				imageId: 'meetingRoomManage',
 				imageSrc: './resources/icons/room_manage.png',
@@ -152,13 +154,11 @@ Ext.define('IBApp.view.MainMenu', {
 				text: '服务任务',
 			});
 			var funcIcon6 = Ext.create('IBApp.view.FuncIcon');
-			rowPanel2.removeAll();
 			rowPanel2.add(funcIcon4);
 			rowPanel2.add(funcIcon5);
 			rowPanel2.add(funcIcon6);
 		}
 		else if (userRoles.indexOf('APP_USER') != -1) {
-			var rowPanel1 = this.down('#rowPanel1');
 			var funcIcon1 = Ext.create('IBApp.view.FuncIcon', {
 				imageId: 'myMeetings',
 				imageSrc: './resources/icons/my_meeting.png',
@@ -174,7 +174,6 @@ Ext.define('IBApp.view.MainMenu', {
 				imageSrc: './resources/icons/scan_code.png',
 				text: '扫码签到',
 			});
-			rowPanel1.removeAll();
 			rowPanel1.add(funcIcon1);
 			rowPanel1.add(funcIcon2);
 			rowPanel1.add(funcIcon3);
