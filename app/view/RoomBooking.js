@@ -1,3 +1,5 @@
+var meetingTypeSelector;
+
 Ext.define("IBApp.view.RoomBooking", {
     extend: "Ext.form.Panel",
     requires: ['Ext.form.FieldSet', 'Ext.ux.field.DateTimePicker', 'IBApp.store.MeetingType'],
@@ -25,14 +27,16 @@ Ext.define("IBApp.view.RoomBooking", {
         };
 
         /* 会议类型 */
-        var meetingTypeSelector = {
-        	xtype: 'selectfield',
-        	name: 'meetingType',
-        	label: '会议类型',
+        meetingTypeSelector = Ext.create('Ext.field.Select', {
+            name: 'meetingType',
+            label: '会议类型',
             store: {xtype: 'meetingtypestore'},
-            valueField: 'id',
-            displayField: 'type',
-        };
+            valueField: 'mtTypeId',
+            displayField: 'mtTypeName',
+            listeners: {
+                change: { fn: this.onMeetingTypeChange, scope: this },
+            },
+        });
 
         /* 与会人数 */
         var attendanceEditor = {
@@ -86,6 +90,7 @@ Ext.define("IBApp.view.RoomBooking", {
         	{
         		xtype: 'fieldset',
         		title: '所需设备',
+                id: 'devices',
         		defaults: {
         			xtype: 'checkboxfield',
         		},
@@ -107,6 +112,24 @@ Ext.define("IBApp.view.RoomBooking", {
         			},
         		]
         	},
+            {
+                xtype: 'fieldset',
+                title: '所需服务',
+                id: 'services',
+                defaults: {
+                    xtype: 'numberfield',
+                },
+                items: [
+                    {
+                        name: 'tea',
+                        label: '茶水',
+                    },
+                    {
+                        name: 'board',
+                        label: '白板',
+                    },
+                ]
+            },
         	{
         		xtype: 'button',
         		itemId: 'submitButton',
@@ -123,6 +146,20 @@ Ext.define("IBApp.view.RoomBooking", {
     },
 
     onSubmitButtonTap: function() {
+        console.log(this.getValues());        
         this.fireEvent('roomSearchSubmitCommand');
-    }
+    },
+
+    updateMeetingTypeSelector: function(userId) {
+        // meetingTypeSelector.getStore().getProxy().setExtraParam('userId', userId);
+        meetingTypeSelector.getStore().getProxy().setUrl('http://10.2.49.252:8080/mtservice/restService/0.1/mttype/mttypelist/' + userId);
+        meetingTypeSelector.getStore().load();
+    },
+
+    onMeetingTypeChange: function() {
+        Ext.Msg.alert(meetingTypeSelector.getValue());
+
+        var meetingTypeId = meetingTypeSelector.getValue();
+
+    },
 });
