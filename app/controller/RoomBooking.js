@@ -9,6 +9,7 @@ Ext.define("IBApp.controller.RoomBooking", {
         },
         control: {
         	roomBookingView: {
+                mtTypeChangeCommand: 'onMtTypeChangeCommand',
         		roomSearchSubmitCommand: 'onRoomSearchSubmitCommand'
         	},
             roomSearchResultView: {
@@ -32,6 +33,25 @@ Ext.define("IBApp.controller.RoomBooking", {
 
     showRoomBookSuccessView: function() {
         Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), 'fade');
+    },
+
+    onMtTypeChangeCommand: function(view, mtTypeId) {
+        var me = this;
+        var devices;
+
+        var urlDeviceType = 'http://10.2.49.252:8080/mtservice/restService/0.1/baDevType/devTypeList/' + mtTypeId;
+        Ext.Ajax.request({
+            url: urlDeviceType,
+            method: 'GET',
+            disableCaching: false,
+            success: function (response) {
+                devices = Ext.JSON.decode(response.responseText);
+                me.getRoomBookingView().showDevices(devices);
+            },
+            failure: function (response) {
+                me.getRoomBookingView().showMessages('访问失败');
+            }
+        });
     },
 
     onRoomSearchSubmitCommand: function () {

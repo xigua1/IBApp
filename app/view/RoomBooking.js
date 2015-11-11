@@ -1,5 +1,3 @@
-var meetingTypeSelector;
-
 Ext.define("IBApp.view.RoomBooking", {
     extend: "Ext.form.Panel",
     requires: ['Ext.form.FieldSet', 'Ext.ux.field.DateTimePicker', 'IBApp.store.MeetingType'],
@@ -27,8 +25,9 @@ Ext.define("IBApp.view.RoomBooking", {
         };
 
         /* 会议类型 */
-        meetingTypeSelector = Ext.create('Ext.field.Select', {
-            name: 'meetingType',
+        var meetingTypeSelector = Ext.create('Ext.field.Select', {
+            name: 'mtTypeId',
+            itemId: 'meetingTypeSelector',
             label: '会议类型',
             store: {xtype: 'meetingtypestore'},
             valueField: 'mtTypeId',
@@ -41,17 +40,18 @@ Ext.define("IBApp.view.RoomBooking", {
         /* 与会人数 */
         var attendanceEditor = {
         	xtype: 'numberfield',
-        	name: 'attendance',
+        	name: 'attendNum',
         	label: '与会人数',
+            value: 3,
         	minValue: 1,
-        	maxValue: 100,
+        	maxValue: 1000,
         	increment: 1,
         };
 
 		/* 会议开始时间 */
         var startDateTime = {
         	xtype: 'datetimepickerfield',
-        	name: 'startDateTime24hrdt',
+        	name: 'beginDate',
         	label: '开始时间',
         	value: new Date(),
         	dateTimeFormat: 'Y-m-d H:i',
@@ -65,7 +65,7 @@ Ext.define("IBApp.view.RoomBooking", {
         /* 会议结束时间 */
         var endDateTime = {
         	xtype: 'datetimepickerfield',
-        	name: 'endDateTime24hrdt',
+        	name: 'endDate',
         	label: '结束时间',
         	value: new Date(),
         	dateTimeFormat: 'Y-m-d H:i',
@@ -89,47 +89,9 @@ Ext.define("IBApp.view.RoomBooking", {
         	},
         	{
         		xtype: 'fieldset',
-        		title: '所需设备',
-                id: 'devices',
-        		defaults: {
-        			xtype: 'checkboxfield',
-        		},
-        		items: [
-        			{
-        				name: 'touyingyi',
-        				label: '投影仪',
-        				value: 'touyingyi'
-        			},
-        			{
-        				name: 'audio ',
-        				label: '音响',
-        				value: 'audio'
-        			},
-        			{
-        				name: 'video',
-        				label: '视频',
-        				value: 'video'
-        			},
-        		]
+        		title: '请选择所需设备',
+                itemId: 'devicesFieldset',
         	},
-            {
-                xtype: 'fieldset',
-                title: '所需服务',
-                id: 'services',
-                defaults: {
-                    xtype: 'numberfield',
-                },
-                items: [
-                    {
-                        name: 'tea',
-                        label: '茶水',
-                    },
-                    {
-                        name: 'board',
-                        label: '白板',
-                    },
-                ]
-            },
         	{
         		xtype: 'button',
         		itemId: 'submitButton',
@@ -146,20 +108,45 @@ Ext.define("IBApp.view.RoomBooking", {
     },
 
     onSubmitButtonTap: function() {
-        console.log(this.getValues());        
-        this.fireEvent('roomSearchSubmitCommand');
+        var formValuesObj = this.getValues(true, true);  
+        this.fireEvent('roomSearchSubmitCommand', this, formValuesObj);
     },
 
     updateMeetingTypeSelector: function(userId) {
-        // meetingTypeSelector.getStore().getProxy().setExtraParam('userId', userId);
-        meetingTypeSelector.getStore().getProxy().setUrl('http://10.2.49.252:8080/mtservice/restService/0.1/mttype/mttypelist/' + userId);
-        meetingTypeSelector.getStore().load();
+        // mtTypeSelector.getStore().getProxy().setExtraParam('userId', userId);
+        /* 目前GET方法采用的地址拼接的方式 */
+        var mtTypeSelector = this.down('#meetingTypeSelector');
+        mtTypeSelector.getStore().getProxy().setUrl('http://10.2.49.252:8080/mtservice/restService/0.1/mttype/mttypelist/' + userId);
+        mtTypeSelector.getStore().load();
     },
 
     onMeetingTypeChange: function() {
-        Ext.Msg.alert(meetingTypeSelector.getValue());
+        var mtTypeSelector = this.down('#meetingTypeSelector');
+        var mtTypeId = mtTypeSelector.getValue();
 
-        var meetingTypeId = meetingTypeSelector.getValue();
-
+        this.fireEvent('mtTypeChangeCommand', this, mtTypeId);
     },
+
+    showDevices: function(devicesArray) {
+        var deviceFieldset = this.down('#devicesFieldset');
+        var arrLen = devicesArray.length;
+
+        deviceFieldset.removeAll();
+
+        for (var i=0; i < arrLen; i++) {
+            var device = Ext.create('Ext.field.Checkbox', {
+                name: 'devTypeIds',
+                label: devicesArray[i].devTypeName,
+                value: devicesArray[i].devTypeId
+            });
+            if (devicesArray[i].flag == 2) {
+                device.disable();
+            }
+            deviceFieldset.add(device);
+        }
+    },
+
+    showMessages: function(message) {
+        Ext.Msg.alert(message);
+    }
 });
