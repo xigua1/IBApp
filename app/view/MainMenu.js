@@ -69,6 +69,11 @@ Ext.define('IBApp.view.MainMenu', {
 				delegate: '#scanningCode',
 				event: 'tap',
 				fn: 'onScanningCodeTap'
+			},
+			{
+				delegate: '#deviceControl',
+				event: 'tap',
+				fn: 'onDeviceControlTap'
 			}
 		]
 	},
@@ -83,6 +88,10 @@ Ext.define('IBApp.view.MainMenu', {
 
 	onRoomBookingTap: function() {
 		this.fireEvent('roomBookingCommand');
+	},
+
+	onDeviceControlTap: function() {
+		this.fireEvent('deviceControlCommand');
 	},
 
 	onScanningCodeTap: function() {
@@ -144,16 +153,20 @@ Ext.define('IBApp.view.MainMenu', {
 			rowPanel1.add(funcIcon3);
 
 			var funcIcon4 = Ext.create('IBApp.view.FuncIcon', {
+				imageId: 'deviceControl',
+				imageSrc: './resources/icons/device_control.png',
+				text: '设备控制',
+			});
+			var funcIcon5 = Ext.create('IBApp.view.FuncIcon', {
 				imageId: 'meetingRoomManage',
 				imageSrc: './resources/icons/room_manage.png',
 				text: '会议室管理',
 			});
-			var funcIcon5 = Ext.create('IBApp.view.FuncIcon', {
-				imageId: 'serve_list',
-				imageSrc: './resources/icons/serve_list.png',
+			var funcIcon6 = Ext.create('IBApp.view.FuncIcon', {
+				imageId: 'serverList',
+				imageSrc: './resources/icons/server_list.png',
 				text: '服务任务',
 			});
-			var funcIcon6 = Ext.create('IBApp.view.FuncIcon');
 			rowPanel2.add(funcIcon4);
 			rowPanel2.add(funcIcon5);
 			rowPanel2.add(funcIcon6);
