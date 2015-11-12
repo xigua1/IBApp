@@ -21,11 +21,8 @@ Ext.application({
     views: [
         'Login', 'MainMenu', 'RoomBooking', 
         'RoomSearchResult', 'RoomBookSuccess','MyMeetings',
-<<<<<<< HEAD
-        'MeetingRequest', 'DevCtrRoomList', 'DeviceControl'
-=======
-        'MeetingRequest','DeviceControl','Search','SearchList',
->>>>>>> 541e42b983932040e7ec9d22b45a09858a2f9f9e
+        'MeetingRequest', 'DevCtrRoomList', 'DeviceControl',
+        'Search','SearchList',
     ],
 
     controllers: ['Login', 'MainMenu', 'RoomBooking','MyMeetings'],
