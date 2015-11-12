@@ -21,7 +21,11 @@ Ext.application({
     views: [
         'Login', 'MainMenu', 'RoomBooking', 
         'RoomSearchResult', 'RoomBookSuccess','MyMeetings',
+<<<<<<< HEAD
         'MeetingRequest', 'DevCtrRoomList', 'DeviceControl'
+=======
+        'MeetingRequest','DeviceControl','Search','SearchList',
+>>>>>>> 541e42b983932040e7ec9d22b45a09858a2f9f9e
     ],
 
     controllers: ['Login', 'MainMenu', 'RoomBooking','MyMeetings'],
@@ -64,6 +68,7 @@ Ext.application({
             {xtype: 'meetingrequestview'},
             {xtype: 'devctrroomlistview'},
             {xtype: 'devicecontrolview'},
+            {xtype: 'searchview'},
         ]);
 
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'login'}));

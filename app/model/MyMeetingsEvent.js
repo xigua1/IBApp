@@ -1,58 +1,146 @@
 Ext.define("IBApp.model.MyMeetingsEvent", {
     extend: "Ext.data.Model",
+
 	config: {
 		fields: [
 		{
-			name: 'meetingId',
+			//用户ID
+			name: 'userId',
 			type: 'string'
-		}, {
-			// 会议起止的时分格式显示
-			name: 'event',
+		}, 
+		{
+			//会议类型ID 
+			name: 'mtTypeId',
 			type: 'string'
-		}, {
-			name: 'title',
+		}, 
+		{//会议类型名称
+			name: 'mtTypeName',
 			type: 'string'
-		}, {
-			name: 'start',
-			type: 'date',
-			dateFormat: 'c'
-		}, {
-			name: 'end',
-			type: 'date',
-			dateFormat: 'c'
-		}, {
-			name: 'location',
-			type: 'string'
-		}, {
-			name: 'organizer',
-			type: 'string'
-		}, {
-			name: 'participants',
-			type: 'string'
-		}, {
-			name: 'services',
-			type: 'string'
-		}, {
-			name: 'status',
-			type: 'string'
-		}, {
-			name: 'statusEn',
-			type: 'string'
-		}, {
-			name: 'abstract',
-			type: 'string'
-		}],
-		validations: [
-			{type: 'presence', field: 'id', message: 'id必须输入'},
-			{type: 'presence', field: 'event', message: 'event必须输入'},
-			{type: 'presence', field: 'title', message: '会议名称必须输入'},
-			{type: 'presence', field: 'start', message: '会议开始时间必须输入'},
-			{type: 'presence', field: 'end', message: '会议结束时间必须输入'},
-			{type: 'presence', field: 'location', message: '会议地点必须输入'},
-			{type: 'presence', field: 'organizer', message: '会议组织者必须输入'},
-			{type: 'presence', field: 'participants', message: '与会者必须输入'},
-			{type: 'presence', field: 'status', message: '会议状态必须输入'},
-			{type: 'presence', field: 'statusEn', message: 'statusEn必须输入'},
-		]
+		}, 
+		{
+			//参会人数
+			name: 'attendNum',
+			type: 'string',
+		}, 
+		// {
+		// 	//主办单位ID
+		// 	name: 'sponsorId',
+		// 	type: 'string',
+		// }, 
+		// {
+		// 	//主办单位名称
+		// 	name: 'sponsorName',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//会议组织者ID
+		// 	name: 'organizerId',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//会议组织者姓名
+		// 	name: 'organizerName',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//会议组织者手机
+		// 	name: 'organizerPhone',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//会议主题
+		// 	name: 'mtTheme',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//会议主讲人
+		// 	name: 'speaker',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//会议内容
+		// 	name: 'mtContent',
+		// 	type: 'string'
+		// },
+		// {
+		// 	//迎宾词
+		// 	name: 'welcomeWords',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//会议开始时间
+		// 	name: 'mtBeginTime',
+		// 	type: 'string'
+		// },
+		// {
+		// 	//会议结束时间
+		// 	name: 'mtEndTime',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//会议资料
+		// 	name: 'mtData',
+		// 	type: 'string'
+		// },
+		// {
+		// 	//是否有服务
+		// 	name: 'hasService',
+		// 	type: 'string'
+		// }, 
+		// {
+		// 	//是否有领导
+		// 	name: 'hasBoos',
+		// 	type: 'string'
+		// },
+		// {
+		// 	//申报日期
+		// 	name: 'postDate',
+		// 	type: 'string'
+		// },
+		// {
+		// 	//会议标识 1-正在审核；2-未开始；3-已结束；4-已取消；5-草稿；6-删除；
+		// 	name: 'mtFlag',
+		// 	type: 'string'
+		// },
+		// {
+		// 	//会议二维码存放地址
+		// 	name: 'mtQrcode',
+		// 	type: 'string'
+		// },
+		// {
+		// 	//是否为自己组织标识 1-自己组织；2-非自己组织 
+		// 	name: 'isOrganizer',
+		// 	type: 'string'
+		// }],
+		// associations: [{  
+		// 	//会议所占会议室信息列表
+  //           type: 'hasOne',   
+  //           model: 'Rooms',   
+  //           name:'rooms',   
+  //           associationKey:'rooms'  
+        ]  
 	}
 });
+
+Ext.define('Rooms',{  
+    extend: 'Ext.data.Model',  
+  
+    config: {  
+        fields: [
+		{
+			//会议室ID
+			name: 'roomId',
+			type: 'string'
+		}, 
+		{
+			//会议室名称
+			name: 'roomName',
+			type: 'string'
+		}, 
+		{
+			//会议室门牌号
+			name: 'roomNum',
+			type: 'string'
+		}]
+    }  
+});  
