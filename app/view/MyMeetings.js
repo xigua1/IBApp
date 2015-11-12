@@ -181,7 +181,7 @@ Ext.define('IBApp.view.MyMeetings', {
     },
 
     onSearchButtonTap: function() {
-
+        this.fireEvent("searchviewCommand");
     },
 
 });
