@@ -139,8 +139,8 @@ Ext.define("IBApp.view.RoomBooking", {
                 label: devicesArray[i].devTypeName,
                 value: devicesArray[i].devTypeId
             });
-            if (devicesArray[i].flag == 2) {
-                device.disable();
+            if (devicesArray[i].flag == 1) {
+                device.check();
             }
             deviceFieldset.add(device);
         }
