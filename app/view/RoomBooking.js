@@ -92,6 +92,11 @@ Ext.define("IBApp.view.RoomBooking", {
         		title: '请选择所需设备',
                 itemId: 'devicesFieldset',
         	},
+            {
+                xtype: 'fieldset',
+                title: '请选择所需服务',
+                itemId: 'servicesFieldset',
+            },
         	{
         		xtype: 'button',
         		itemId: 'submitButton',
@@ -143,6 +148,23 @@ Ext.define("IBApp.view.RoomBooking", {
                 device.check();
             }
             deviceFieldset.add(device);
+        }
+    },
+
+    showServices: function(servicesArray) {
+        var serviceFieldset = this.down('#servicesFieldset');
+        var arrLen = servicesArray.length;
+
+        serviceFieldset.removeAll();
+
+        for (var i=0; i < arrLen; i++) {
+            var service = Ext.create('Ext.field.Number', {
+                name: 'serviceTypeIds',
+                label: servicesArray[i].serviceName,
+                value: servicesArray[i].serviceId,
+                placeHolder: '个数',
+            });
+            serviceFieldset.add(service);
         }
     },
 

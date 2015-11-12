@@ -37,7 +37,7 @@ Ext.define("IBApp.controller.RoomBooking", {
 
     onMtTypeChangeCommand: function(view, mtTypeId) {
         var me = this;
-        var devices;
+        var devices = null, services = null;
 
         var urlDeviceType = 'http://10.2.49.252:8080/mtservice/restService/0.1/baDevType/devTypeList/' + mtTypeId;
         Ext.Ajax.request({
@@ -49,13 +49,55 @@ Ext.define("IBApp.controller.RoomBooking", {
                 me.getRoomBookingView().showDevices(devices);
             },
             failure: function (response) {
-                me.getRoomBookingView().showMessages('访问失败');
+                me.getRoomBookingView().showMessages('获取设备列表失败');
+            }
+        });
+
+        var urlServiceType = 'http://10.2.49.252:8080/mtservice/restService/0.1/mtService/mtServiceList/' + mtTypeId;
+        Ext.Ajax.request({
+            url: urlServiceType,
+            method: 'GET',
+            disableCaching: false,
+            success: function (response) {
+                services = Ext.JSON.decode(response.responseText);
+                me.getRoomBookingView().showServices(services);
+            },
+            failure: function (response) {
+                me.getRoomBookingView().showMessages('获取服务列表失败');
             }
         });
     },
 
-    onRoomSearchSubmitCommand: function () {
-        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roomsearchresult'}));
+    onRoomSearchSubmitCommand: function (view, obj) {
+        console.log(obj);
+        if (obj.attendNum == null) {
+            this.getRoomBookingView().showMessages('需要填写与会人数');
+            return;
+        }
+
+        var userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        var strDevTypeIds = Ext.JSON.encode(obj.devTypeIds);
+        var strBeginTime = Ext.JSON.encodeDate(obj.beginDate);
+        var strEndTime = Ext.JSON.encodeDate(obj.endDate);
+        console.log(strDevTypeIds);
+        console.log(strBeginTime);
+
+        var urlGetRecommendMtRoom = 'http://10.2.49.252:8080/mtservice/restService/0.1/mtRoom/recommendList/'+userId+'/null/'+obj.mtTypeId+'/'+obj.devTypeIds+'/'+obj.attendNum+'/'+obj.beginDate+'/'+obj.endDate;
+        console.log(urlGetRecommendMtRoom);
+        Ext.Ajax.request({
+            url: urlGetRecommendMtRoom,
+            method: 'GET',
+            disableCaching: false,
+            success: function (response) {
+                recommendRooms = Ext.JSON.decode(response.responseText);
+                console.log(recommendRooms);
+            },
+            failure: function (response) {
+                // me.getRoomBookingView().showMessages('访问失败');
+            }
+        });
+
+        // this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roomsearchresult'}));
     },
 
     onBackButtonCommand: function (){
