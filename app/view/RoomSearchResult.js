@@ -1,3 +1,4 @@
+var str='aaaa';
 Ext.define('IBApp.view.RoomSearchResult', {
     extend: 'Ext.Panel',
     requires: [
@@ -37,7 +38,7 @@ Ext.define('IBApp.view.RoomSearchResult', {
                 },
                 items: [
                     {
-                        label: 'B0910 小型讨论室',
+                        label: ['<h1>B0910 小型讨论室'+str+'</h1>', '<p style="color:gray">B0910 小型讨论室</p>'].join(''),
                         value: 'B0910'
                     },
                     {
