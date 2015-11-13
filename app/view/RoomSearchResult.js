@@ -1,6 +1,7 @@
-var str='aaaa';
+var obj;
+
 Ext.define('IBApp.view.RoomSearchResult', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.form.Panel',
     requires: [
         'Ext.Toolbar',
         'Ext.Button',
@@ -10,6 +11,7 @@ Ext.define('IBApp.view.RoomSearchResult', {
         'Ext.field.Radio'
     ],
     xtype: 'roomsearchresultview',
+    id: 'form',
 
     config: {
         items: [
@@ -28,32 +30,8 @@ Ext.define('IBApp.view.RoomSearchResult', {
             },
             {
                 xtype: 'fieldset',
+                itemId: 'roomListFieldset',
                 title: '我们已成功为您找到以下会议室，快点抢占吧~',
-                
-                defaults: {
-                    xtype: 'radiofield',
-                    name: 'emptyRoom',
-                    labelWrap: true,
-                    labelWidth: '80%'
-                },
-                items: [
-                    {
-                        label: ['<h1>B0910 小型讨论室'+str+'</h1>', '<p style="color:gray">B0910 小型讨论室</p>'].join(''),
-                        value: 'B0910'
-                    },
-                    {
-                        label: 'B0912 普通会议室',
-                        value: 'B0912'
-                    },                    
-                    {
-                        label: 'B0918 培训室',
-                        value: 'B0918'
-                    },                    
-                    {
-                        label: 'B0926 视频会议室',
-                        value: 'B0926'
-                    },
-                ]
             },
             {
                 xtype: 'button',
@@ -77,16 +55,44 @@ Ext.define('IBApp.view.RoomSearchResult', {
     },
 
     onBackButtonTap: function(button, e, eOpts) {
-        // var radioBtn = Ext.create('Ext.field.Radio', {
-        //     name: 'emptyRoom',
-        //     label: 'B0926'
-        // });
-        // this.add([radioBtn]);
+
         this.fireEvent("backButtonCommand");
     },
 
     onRoomBookButtonTap: function() {
-        this.fireEvent("roomBookButtonCommand");
+        this.fireEvent("roomBookButtonCommand", this, obj, this.getValues().roomIds);
+    },
+
+    showRoomList: function(meetingObj, recommendRoomsArray) {
+        obj = meetingObj;
+
+        var roomListFieldset = this.down('#roomListFieldset');
+        var arrLen = recommendRoomsArray.length;
+
+        roomListFieldset.setTitle('成功为您找到<span style="color:blue;font-size:1.5em">'+arrLen+'</span>个会议室，快点抢占吧~');
+        roomListFieldset.removeAll();
+
+        for (var i=0; i < arrLen; i++) {
+            var room = Ext.create('Ext.field.Radio', {
+                name: 'roomIds',
+                labelWrap: true,
+                labelWidth: '80%',
+                label: [
+                    '<div class="list-item-title">'+recommendRoomsArray[i].roomName+'</div>',
+                    '<div class="list-item-narrative">'+recommendRoomsArray[i].building+'&nbsp;>&nbsp;'+recommendRoomsArray[i].floorName+'&nbsp;>&nbsp;'+recommendRoomsArray[i].roomNum+'&nbsp;&nbsp;&nbsp;&nbsp;容量:'+recommendRoomsArray[i].roomMaxSize+'</div>',
+                ].join(''),
+                value: recommendRoomsArray[i].roomId
+            });
+            if(i==0) {
+                room.check();
+            }
+
+            roomListFieldset.add(room);
+        }
+    },
+
+    showMessages: function(message) {
+        Ext.Msg.alert(message);
     }
 
 });

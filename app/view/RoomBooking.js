@@ -51,7 +51,7 @@ Ext.define("IBApp.view.RoomBooking", {
 		/* 会议开始时间 */
         var startDateTime = {
         	xtype: 'datetimepickerfield',
-        	name: 'beginDate',
+        	name: 'beginTime',
         	label: '开始时间',
         	value: new Date(),
         	dateTimeFormat: 'Y-m-d H:i',
@@ -65,7 +65,7 @@ Ext.define("IBApp.view.RoomBooking", {
         /* 会议结束时间 */
         var endDateTime = {
         	xtype: 'datetimepickerfield',
-        	name: 'endDate',
+        	name: 'endTime',
         	label: '结束时间',
         	value: new Date(),
         	dateTimeFormat: 'Y-m-d H:i',
@@ -113,7 +113,17 @@ Ext.define("IBApp.view.RoomBooking", {
     },
 
     onSubmitButtonTap: function() {
-        var formValuesObj = this.getValues(true, true);  
+        var formValuesObj = this.getValues(true, true);
+
+        if(formValuesObj.services != null) {
+            for (var i=0; i < formValuesObj.services.length; i++) {
+                var serv = this.down('#service'+i);
+                var obj = new Object();
+                obj.serviceName = serv.getLabel();
+                obj.serviceNum = serv.getValue();
+                formValuesObj.services[i] = obj;
+            }
+        }
         this.fireEvent('roomSearchSubmitCommand', this, formValuesObj);
     },
 
@@ -121,7 +131,7 @@ Ext.define("IBApp.view.RoomBooking", {
         // mtTypeSelector.getStore().getProxy().setExtraParam('userId', userId);
         /* 目前GET方法采用的地址拼接的方式 */
         var mtTypeSelector = this.down('#meetingTypeSelector');
-        mtTypeSelector.getStore().getProxy().setUrl('http://10.2.49.252:8080/mtservice/restService/0.1/mttype/mttypelist/' + userId);
+        mtTypeSelector.getStore().getProxy().setUrl('http://10.2.49.252:8080/mtservice/restService/0.1/mtType/mtTypeList/' + userId);
         mtTypeSelector.getStore().load();
     },
 
@@ -159,9 +169,9 @@ Ext.define("IBApp.view.RoomBooking", {
 
         for (var i=0; i < arrLen; i++) {
             var service = Ext.create('Ext.field.Number', {
-                name: 'serviceTypeIds',
+                name: 'services',
+                itemId: 'service'+i,
                 label: servicesArray[i].serviceName,
-                value: servicesArray[i].serviceId,
                 placeHolder: '个数',
             });
             serviceFieldset.add(service);
