@@ -41,17 +41,14 @@ Ext.define('IBApp.view.RoomBookSuccess', {
                     {
                         itemId: 'mtTime',
                         label: '时间',
-                        // value: '2015.10.19 14:00 ~ 2015.10.19 16:00',
                     },                    
                     {
                         itemId: 'mtLocation',
                         label: '地点',
-                        // value: '会议室B0910',
                     },
                     {
                         itemId: 'mtOrganizer',
                         label: '组织者',
-                        // value: '张三(软件所 信息二室)',
                     },
                     {
                         label: '与会人员',
@@ -111,9 +108,9 @@ Ext.define('IBApp.view.RoomBookSuccess', {
         this.fireEvent("modifyMeetingInfoButtonCommand");
     },
 
-    showMeetingInfo: function(mtInfoObj) {
+    showMeetingInfo: function(mtInfoObj, roomInfo) {
         this.down('#mtTime').setValue(mtInfoObj.mtBeginTime + '~' + mtInfoObj.mtEndTime);
-        this.down('#mtLocation').setValue(mtInfoObj.roomIds[0]);
+        this.down('#mtLocation').setValue(roomInfo);
         this.down('#mtOrganizer').setValue(mtInfoObj.organizerName);
         if(mtInfoObj.services == null) {
             this.down('#mtServices').setValue('无');

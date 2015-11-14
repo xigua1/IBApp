@@ -114,7 +114,7 @@ Ext.define("IBApp.controller.RoomBooking", {
         window.history.go(-1);
     },
 
-    onRoomBookButtonCommand: function (view, meetingObj, roomId){
+    onRoomBookButtonCommand: function (view, meetingObj, roomId, roomInfo){
         var me = this;
         var paramsObj = new Object();
 
@@ -149,7 +149,7 @@ Ext.define("IBApp.controller.RoomBooking", {
             success: function (response) {
                 var ret = response.responseText;
                 if( (ret != null) && (ret != 0) ) {
-                    me.getRoomBookSuccessView().showMeetingInfo(paramsObj);
+                    me.getRoomBookSuccessView().showMeetingInfo(paramsObj, roomInfo);
                     me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roombooksuccess'}));
                 }
                 else {
