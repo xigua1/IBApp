@@ -19,6 +19,7 @@ Ext.define("IBApp.controller.RoomBooking", {
             roomBookSuccessView: {
                 backButtonCommand: 'onBacktoMainMenuCommand',
             	modifyMeetingInfoButtonCommand: 'onModifyMeetingInfoButtonCommand',
+                myMeetingsButtonCommand: 'onMyMeetingsButtonCommand',
             }
         },
         routes: {
@@ -75,6 +76,11 @@ Ext.define("IBApp.controller.RoomBooking", {
             return;
         }
 
+        if (obj.beginTime >= obj.endTime) {
+            me.getRoomBookingView().showMessages('会议结束时间需大于开始时间');
+            return;
+        }
+
         var userId = Ext.getStore("UserInfo").getAt(0).get('userId');
         var strBeginTime = Ext.JSON.encodeDate(obj.beginTime);
         var strEndTime = Ext.JSON.encodeDate(obj.endTime);
@@ -107,7 +113,6 @@ Ext.define("IBApp.controller.RoomBooking", {
                 me.getRoomBookingView().showMessages('访问失败');
             }
         });
-
     },
 
     onBackButtonCommand: function (){
@@ -164,6 +169,12 @@ Ext.define("IBApp.controller.RoomBooking", {
     
     onModifyMeetingInfoButtonCommand: function () {
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'meetingrequest'}));
+    },
+
+    onMyMeetingsButtonCommand: function () {
+        var me = this;
+
+
     },
 
     onBacktoMainMenuCommand: function() {
