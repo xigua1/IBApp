@@ -20,7 +20,7 @@ Ext.define("IBApp.view.DevCtrRoomList", {
     requires: ['Ext.data.Store'],
     xtype: 'devctrroomlistview',
     config:{
-        scrollable:'vertical',
+        // scrollable:'vertical',
         layout: {
             type: 'vbox',   
         },
@@ -47,6 +47,7 @@ Ext.define("IBApp.view.DevCtrRoomList", {
         var roomList = Ext.create('Ext.dataview.List', {
             flex: 1,
             onItemDisclosure: true,
+            height: 250,
             itemHeight: 70,
             // style: 'border-top: 1px solid #f0f0f0',
             store: store,
@@ -57,9 +58,9 @@ Ext.define("IBApp.view.DevCtrRoomList", {
                 '<div class="list-item-narrative">XXX项目例会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;视频会议室</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有可控制的会议室</div>',
-            // listeners: {
-            //     // itemtap: { fn: this.onMeetingsListTap, scope: this },
-            // }
+            listeners: {
+                itemtap: { fn: this.onRoomListTap, scope: this },
+            }
         });
 
         this.add([
@@ -71,4 +72,9 @@ Ext.define("IBApp.view.DevCtrRoomList", {
     onBackButtonTap: function() {
     	this.fireEvent("backToMainMenuCommand");
     },
+
+    onRoomListTap: function(list, index, target, record, e, eOpts) {
+        this.fireEvent('roomListTapCommand', record);
+    },
+
 });

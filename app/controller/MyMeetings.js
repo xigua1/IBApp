@@ -7,6 +7,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             meetingRequestView:'meetingrequestview',
             deviceControlView:'devicecontrolview',
             searchView:'searchview',
+            devCtrRoomListView: 'devctrroomlistview',
         },
         control: {
             myMeetingsView: {
@@ -18,8 +19,11 @@ Ext.define("IBApp.controller.MyMeetings", {
                 meetingRequestToRoomBookSuccessCommand:'onMeetingRequestToRoomBookSuccessCommand',
                 deviceControlViewCommand:'onDeviceControlViewCommand',
             },
+            devCtrRoomListView: {
+                roomListTapCommand: 'onRoomListTapCommand',
+            },
             deviceControlView: {
-                deviceControlToMeetingRequestCommand:'onDeviceControlToMeetingRequestCommand',
+                backButtonCommand:'onDeviceControlBackButtonCommand',
             },
             searchView:{
                 SearchToMyMeetingsCommand:'onSearchToMyMeetingsCommand',
@@ -53,12 +57,16 @@ Ext.define("IBApp.controller.MyMeetings", {
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'mymeetings'}));
     },
 
-    onDeviceControlToMeetingRequestCommand: function () {
-        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'meetingrequest'}));
+    onDeviceControlBackButtonCommand: function () {
+        window.history.go(-1);
     },
 
     onMeetingRequestToRoomBookSuccessCommand: function() {
         Ext.Msg.alert('会议内容修改成功！');
+    },
+
+    onRoomListTapCommand: function() {
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
     },
 
     onDeviceControlViewCommand: function() {
