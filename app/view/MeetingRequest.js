@@ -204,19 +204,19 @@
         /*隐藏信息*/
         var meetingIdText = {
           xtype: 'hiddenfield',
-          name: 'roomName',
+          name: 'meetingId',
         };
         var eventText = {
           xtype: 'hiddenfield',
-          name: 'mtTypeName',
+          name: 'event',
         };
         var statusText = Ext.create('Ext.field.Hidden', {
-          name: 'mtFlag',
+          name: 'status',
           id: 'statusText'
         });
         var statusEnText = {
           xtype: 'hiddenfield',
-          name: 'mtTheme',
+          name: 'statusEn',
           id: 'statusEnText'
         };
 
@@ -380,8 +380,6 @@
       var str = this.down('#statusText').getValue();
       var strEn = this.down('#statusEnText').getValue();
 
-console.log('str:'+ str+'\n');
-console.log('strEn:'+ strEn+'\n');
       this.down('#meetingStatusLabel').setHtml([
           '<p>',
           str,

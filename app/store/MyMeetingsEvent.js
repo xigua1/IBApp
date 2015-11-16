@@ -17,7 +17,7 @@ Ext.define("IBApp.store.MyMeetingsEvent", {
         // ],
         proxy: {
             type: 'ajax',
-            url : 'http://192.168.20.105:8005/BackEndTest/PlaceType.php',
+            url : 'http://192.168.20.109:8005/BackEndTest/PlaceType.php',
             reader: {
                 type: 'json',
             }
