@@ -97,6 +97,11 @@ Ext.define('IBApp.view.RoomBookSuccess', {
                 event: 'tap',
                 delegate: '#modifyMeetingInfoButton'
             },
+            {
+                fn: 'onMyMeetingsButton',
+                event: 'tap',
+                delegate: '#myMeetingsButton'
+            },
         ]
     },
 
@@ -106,6 +111,10 @@ Ext.define('IBApp.view.RoomBookSuccess', {
     
     onModifyMeetingInfoButton: function(button, e, eOpts) {
         this.fireEvent("modifyMeetingInfoButtonCommand");
+    },
+
+    onMyMeetingsButton: function(button, e, eOpts) {
+        this.fireEvent("myMeetingsButtonCommand");
     },
 
     showMeetingInfo: function(mtInfoObj, roomInfo) {
