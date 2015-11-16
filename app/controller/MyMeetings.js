@@ -87,42 +87,50 @@ Ext.define("IBApp.controller.MyMeetings", {
     },
 
     onSearchCommand: function (view, keyword) {
-        // console.log('keyword: ' + keyword + '\n');
-        // var me = this;
-        // /* 从后台进行验证 */
-        // Ext.Ajax.request(
-        // {
-        //     url:'http://192.168.20.109:8005/BackEndTest/PlaceType.php',
-        //     // url: 'http://10.2.49.254:8080/pactera-jeesite/restService/userservice/0.1/login/doPostAuthenticationInfoRS/',
-        //     method: 'POST',
-        //     disableCaching: false,
-        //     withCredentials: true,
-        //     useDefaultXhrHeader: false,
-        //     params: {
-        //         keyWord: keyword,
-        //          // timeRange: timerange,
-        //     },
-        //     success: function (response) 
-        //     {
-        //         var resultResponse = Ext.JSON.decode(response.responseText);
-        //         console.log('userId:'+ resultResponse.userId +'\n');
-        //         /* set MyMeetingsEventStore */  
-        //         var curUser = Ext.create('IBApp.model.MyMeetingsEvent', {
-        //          'userId': resultResponse.userId,
-        //          'mtTypeId': resultResponse.mtTypeId,
-        //          'mtTypeName': resultResponse.mtTypeName,
-        //          'attendNum': resultResponse.attendNum,
-        //         });
-        //         console.log('userId:'+ resultResponse.PlaceType[1].start+'\n');
-        //         Ext.getStore("MyMeetingsEvent").add(curUser);
+        var me = this;
+        var paramsObj = new Object();
+        paramsObj.userId = '1';
+        paramsObj.beginDate = '2015-11-13 00:00:00';
+        paramsObj.endDate = '2015-11-30 00:00:00';
 
-        //     }, 
-        //     failure: function (response) 
-        //     {
-        //         me.sessionId = null;
-        //         //me.signInFailure('登录失败...请重试.');
-        //         console.log("连接失败");
-        //     }
-        // });  
+        var paramsJson = Ext.JSON.encode(paramsObj);
+        console.log(paramsJson);
+        /* 从后台进行验证 */
+        Ext.Ajax.request(
+        {
+            // url:'http://192.168.20.109:8005/BackEndTest/PlaceType.php',
+            url: 'http://10.2.49.252:8080/mtservice/restService/0.1/meeting/mtList',
+            method: 'POST',
+            disableCaching: false,
+            withCredentials: true,
+            useDefaultXhrHeader: false,
+            params: paramsJson,
+            success: function (response) 
+            {
+                var resultResponse = Ext.JSON.decode(response.responseText);
+                console.log(resultResponse);
+                /* set MyMeetingsEventStore */  
+                var curUser = Ext.create('IBApp.model.MyMeetingsEvent', {
+                 'userId': resultResponse.userId,
+                 'mtTypeName': resultResponse.mtTypeName,
+                 'mtTheme': resultResponse.mtTheme,
+                 'mtContent': resultResponse.mtContent,
+                 'mtBeginTime': resultResponse.mtBeginTime,
+                 'mtEndTime': resultResponse.mtEndTime,
+                 'mtFlag': resultResponse.mtFlag,
+                 'roomName': resultResponse.rooms.roomName,
+                });
+                console.log('roomName:'+ resultResponse.rooms.roomName +'\n');
+                console.log('roomName:'+ resultResponse.rooms.roomName +'\n');
+                Ext.getStore("MyMeetingsSearch").add(curUser);
+
+            }, 
+            failure: function (response) 
+            {
+                me.sessionId = null;
+                //me.signInFailure('登录失败...请重试.');
+                console.log("连接失败");
+            }
+        });  
     },
 });

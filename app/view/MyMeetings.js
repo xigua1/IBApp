@@ -39,6 +39,7 @@ Ext.define('IBApp.view.MyMeetings', {
             viewMode: 'month',
             weekStart: 0,
             value: new Date(),
+            id:'calendarid',
             eventStore: eventStore,
             plugins: [Ext.create('Ext.ux.TouchCalendarSimpleEvents')]
         });
@@ -49,8 +50,8 @@ Ext.define('IBApp.view.MyMeetings', {
         	height: 250,
             itemHeight: 70,
             style: 'border-top: 1px solid #f0f0f0',
-        	itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{status}</span></div>',
-            '<div class="list-item-narrative">{event}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{location}</div>'
+        	itemTpl: ['<div class="list-item-title">{mtTheme}<span class="meeting-status {statusEn}">{mtFlag}</span></div>',
+            '<div class="list-item-narrative">{mtBeginTime}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{roomId}</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有会议</div>',
         	store: new Ext.data.Store({
@@ -59,18 +60,23 @@ Ext.define('IBApp.view.MyMeetings', {
             }),
 
             listeners: {
+
                 itemtap: { fn: this.onMeetingsListTap, scope: this },
-                initialize: function(list) {
-                    var today = Ext.Date.clearTime(new Date(), true).getTime();
-                    calendar.eventStore.clearFilter();
-                    calendar.eventStore.filterBy(function(record){
-                        var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+                // initialize: function(list) {
+                //     // var day = (new Date()).getDate(),
+                //     //     month = (new Date()).getMonth(),
+                //     //     year = (new Date()).getFullYear();
+                //     var today = Ext.Date.clearTime(new Date(year,month,day,0,24), true).getTime();
+                //     calendar.eventStore.clearFilter();
+                //     calendar.eventStore.filterBy(function(record){
 
-                        return (startDate <= today) && (endDate >= today);
-                    }, this);
+                //         var startDate = Ext.Date.clearTime(record.get('mtBeginTime'), true).getTime(), 
+                //             endDate = Ext.Date.clearTime(record.get('mtEndTime'), true).getTime();
+                //         return (startDate <= today) && (endDate >= today);
+                //     }, this);
 
-                    list.getStore().setData(calendar.eventStore.getRange());
-                }
+                //     list.getStore().setData(calendar.eventStore.getRange());
+                // }
             }
         });
 
@@ -93,13 +99,14 @@ Ext.define('IBApp.view.MyMeetings', {
 		calendar.on('selectionchange', function(calendarview, newDate, prevDate){
 		    // var eventList = this.getDockedItems()[1];
 
-		    calendar.eventStore.clearFilter();
-		    calendar.eventStore.filterBy(function(record){
-		        var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-		        return (startDate <= newDate) && (endDate >= newDate);
-		    }, this);
+		    // calendar.eventStore.clearFilter();
+		    // calendar.eventStore.filterBy(function(record){
+		    //     var startDate = Ext.Date.clearTime(record.get('mtBeginTime'), true).getTime(), 
+      //           endDate = Ext.Date.clearTime(record.get('mtEndTime'), true).getTime();
+		    //     return (startDate <= newDate) && (endDate >= newDate);
+		    // }, this);
 
-		    eventList.getStore().setData(calendar.eventStore.getRange());
+		    // eventList.getStore().setData(calendar.eventStore.getRange());
 		});
 
 		calendar.on('eventtap', function(event){
@@ -171,6 +178,8 @@ Ext.define('IBApp.view.MyMeetings', {
 
 
     onMeetingsListTap: function (list, index, target, record, e, eOpts) {
+             
+     
         this.fireEvent('meetingsListCommand', record);
     },
 
@@ -182,6 +191,17 @@ Ext.define('IBApp.view.MyMeetings', {
 
     onSearchButtonTap: function() {
         this.fireEvent("searchviewCommand");
+
+// var calendarid = this.down('#calendarid');
+//         // calendarid.getStore().getProxy().setUrl('http://10.2.49.252:8080/mtservice/restService/0.1/mttype/mttypelist/' + userId);
+//         // calendarid.getStore().load();
+
+//            var records = calendarid.eventStore.getRange();
+//                         console.log('records:'+ records.length +'\n');
+//     for (var i = 0; i < records.length; i++) {
+//             var row=records [i].data;
+//             console.log('mtBeginTime:'+ row.mtBeginTime +'\n');
+//          }
     },
 
 });

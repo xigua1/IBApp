@@ -3,9 +3,9 @@
 //     year = (new Date()).getFullYear();
 
 
-Ext.define("IBApp.store.MyMeetingsEvent", {
+Ext.define("IBApp.store.MyMeetingsSearch", {
     extend: "Ext.data.Store",
-    xtype: 'mymeetingseventstore',
+    xtype: 'mymeetingssearchstore',
 
     config: {
         model: "IBApp.model.MyMeetingsEvent",
@@ -15,12 +15,12 @@ Ext.define("IBApp.store.MyMeetingsEvent", {
         // sorters: [
         //     { property: 'mtBeginTime', direction: 'ASC'},
         // ],
-        proxy: {
-            type: 'ajax',
-            url : 'http://192.168.20.105:8005/BackEndTest/PlaceType.php',
-            reader: {
-                type: 'json',
-            }
-        }
+        // proxy: {
+        //     type: 'ajax',
+        //     url : 'http://192.168.20.109:8005/BackEndTest/PlaceType.php',
+        //     reader: {
+        //         type: 'json',
+        //     }
+        // }
     }
 });

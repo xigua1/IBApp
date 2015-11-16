@@ -1,7 +1,7 @@
 var SearchListTemplate = new Ext.XTemplate(
 	'<tpl for=".">',
-	'<div class="list-item-title">{userId}<span class="meeting-status {statusEn}">{mtTypeId}</span></div>',
-	'<div class="list-item-narrative">{mtTypeName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{attendNum}</div>',
+	'<div class="list-item-title">{mtTheme}<span class="meeting-status {statusEn}">{mtFlag}</span></div>',
+	'<div class="list-item-narrative">{mtBeginTime}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{mtEndTime}</div>',
 	'</tpl>'
 );
 
@@ -11,7 +11,7 @@ Ext.define('IBApp.view.SearchList', {
 	extend: 'Ext.dataview.List',
     xtype: 'searchlist',
 	requires: [
-	'IBApp.store.MyMeetingsEvent',
+	'IBApp.store.MyMeetingsSearch',
 	'Ext.data.Model'
 	],
 
@@ -24,12 +24,12 @@ Ext.define('IBApp.view.SearchList', {
         scrollable: {
             disabled: true
         },
-		store: 'MyMeetingsEvent',
+		store: 'MyMeetingsSearch',
         emptyText: '<div class="notes-list-empty-text">没有会议</div>',
 		itemTpl: SearchListTemplate,
 		listeners: {
 		    itemtap: function (list, index, target, record, e, eOpts) {
-		    	Ext.Msg.alert("list:" + record.get('start'));
+		    	Ext.Msg.alert("list:" + record.get('userId'));
 		    },
 		},
 	}
