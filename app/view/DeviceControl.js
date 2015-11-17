@@ -8,7 +8,7 @@ Ext.define('IBApp.view.DeviceControl', {
     config:{
         layout: {
             type: 'vbox',
-        }
+        },
     },
 
     initialize: function () {
@@ -29,10 +29,9 @@ Ext.define('IBApp.view.DeviceControl', {
             items: [backButton]
         };
 
-        // page1: 情景模式页所需控件
         var sceneModeSelector = {
             xtype: 'selectfield',
-            name: 'sceneModer',
+            name: 'sceneMode',
             label: '情景模式',
             id:'sceneModeSelectorid',
             readOnly:false,
@@ -49,18 +48,46 @@ Ext.define('IBApp.view.DeviceControl', {
             // store: {xtype: 'scenemodestore'},
             valueField: 'id',
             displayField: 'type',
-            handler: this.onPlaceSelectTap,
-            scope: this
+            listeners: {
+                change: function() {
+                    if (this.getValue() == '2') {
+                        sceneModeControlPanel.setActiveItem(1);
+                    }
+                    else if (this.getValue() == '5') {
+                        sceneModeControlPanel.setActiveItem(2);
+                    }
+                    else if (this.getValue() == '3') {
+                        sceneModeControlPanel.setActiveItem(3);
+                    }
+                    else  {
+                        sceneModeControlPanel.setActiveItem(0);
+                    };
+                },
+            },
         };
 
-        var deviceStatusImage = Ext.create('Ext.Img', {
-          id: 'deviceStatusImage',
-          src: './resources/loading/Default.png',
-          style: 'width:100%;height:70%;margin:auto',
+        var localModeControllers = Ext.create('Ext.form.FieldSet', {
+            title: '本地会议模式',
+            items: [
+                {
+                    xtype: 'sliderfield',
+                    id: 'volumeSlider',
+                    label: '音量调节',
+                    value: 30,
+                    minValue: 0,
+                    maxValue: 100
+                },
+                {
+                    xtype: 'togglefield',
+                    id:'soundOffToggle',
+                    label: '静音',
+                    name: 'soundOff',
+                    value: 0,
+                },
+            ]
         });
 
         var videoModeControllers = Ext.create('Ext.form.FieldSet', {
-            itemId: 'videoModeControllersPanel',
             title: '视频会议模式',
             defaults: {
                 xtype: 'togglefield',
@@ -93,30 +120,7 @@ Ext.define('IBApp.view.DeviceControl', {
             ]
         });
 
-        var localModeControllers = Ext.create('Ext.form.FieldSet', {
-            itemId: 'localModeControllersPanel',
-            title: '本地会议模式',
-            items: [
-                {
-                    xtype: 'sliderfield',
-                    id: 'volumeSlider',
-                    label: '音量调节',
-                    value: 30,
-                    minValue: 0,
-                    maxValue: 100
-                },
-                {
-                    xtype: 'togglefield',
-                    id:'soundOffToggle',
-                    label: '静音',
-                    name: 'soundOff',
-                    value: 0,
-                },
-            ]
-        });
-
         var projectionModeControllers = Ext.create('Ext.form.FieldSet', {
-            itemId: 'projectionModeControllersPanel',
             title: '投影会议模式',
             defaults: {
                 xtype: 'togglefield',
@@ -176,6 +180,71 @@ Ext.define('IBApp.view.DeviceControl', {
         // 保洁模式、离开模式没有相应的图示和控件
         // 电话会议模式？？
 
+        var sceneModeControlPanel = Ext.create('Ext.Panel', {
+            itemId: 'sceneModeControlPage',
+            flex: 1,
+            layout: {
+                type: 'card',
+                animation: 'fade',
+            },
+            defaults: {
+                xtype: 'panel',
+            },
+            items: [
+                {  /*blank page*/  },
+                {
+                    id: 'localModeControllersPanel',
+                    items: [
+                        {
+                            xtype: 'img',
+                            itemId: 'localModeDevStatusImage',
+                            src: './resources/images/Default.png',
+                            style: 'width:100%;height:80%;margin:auto',
+                        },
+                        {
+                            xtype: 'button',
+                            itemId: 'moreBtn',
+                            text: 'more',
+                            handler: this.onMoreButtonTap,
+                            scope: this
+                        },
+                        localModeControllers
+                    ],
+                },
+                {
+                    id: 'videoModeControllersPanel',
+                    items: [
+                        {
+                            xtype: 'img',
+                            itemId: 'videoModeDevStatusImage',
+                            src: './resources/images/Default.png',
+                            style: 'width:100%;height:80%;margin:auto',
+                        }, 
+                        videoModeControllers
+                    ],
+                },
+                {
+                    id: 'projectionModeControllersPanel',
+                    items: [
+                        {
+                            xtype: 'img',
+                            itemId: 'projectionModeDevStatusImage',
+                            src: './resources/images/Default.png',
+                            style: 'width:100%;height:80%;margin:auto',
+                        },
+                        {
+                            xtype: 'button',
+                            itemId: 'moreBtn1',
+                            text: 'more',
+                            handler: this.onMoreButtonTap,
+                            scope: this
+                        }, 
+                        projectionModeControllers
+                    ],
+                }
+            ]
+        });
+
         var carouselControlPages = Ext.create('Ext.Carousel', {
             ui: 'dark',
             flex: 1,
@@ -188,16 +257,12 @@ Ext.define('IBApp.view.DeviceControl', {
                 {
                     // 情景模式页
                     xtype: 'panel',
+                    layout: {
+                        type: 'vbox',
+                    },
                     items: [
                         sceneModeSelector,
-                        {
-                            xtype: 'panel',
-                            itemId: 'sceneModePage',
-                            items: [
-                                deviceStatusImage,
-                                videoModeControllers,
-                            ]
-                        }
+                        sceneModeControlPanel,
                     ]
                 },
                 {
@@ -315,8 +380,8 @@ Ext.define('IBApp.view.DeviceControl', {
             ],
             listeners: {
                 activeitemchange: function(carousel, value, oldValue, eOpts) {
-                    console.log(value);
-                    console.log(oldValue);
+                    // console.log(value);
+                    // console.log(oldValue);
                 }
             }
         });
@@ -325,17 +390,31 @@ Ext.define('IBApp.view.DeviceControl', {
             topToolbar,
             carouselControlPages,
         ]);
-
-
     },
 
 
     onBackButtonTap: function() {
     	  this.fireEvent("backButtonCommand");
+          // var me = this;
+          // var pan = me.down('#sceneModeControlPage');
+          // pan.setActiveItem(2);
     },
 
-	  onStartallButtonTap: function() {
-    	  var me = this;
+    onMoreButtonTap: function(btn, e, eOpts) {
+        var me = this;
+        var img = me.down('#projectionModeDevStatusImage');
+        if (btn.getText() == 'more') {
+            img.hide();
+            btn.setText('aaa');
+        }
+        else {
+            img.show();
+            btn.setText('more');
+        }
+    },
+
+	onStartallButtonTap: function() {
+    	var me = this;
         var device1tmp= me.down('#device1id');
 		    var device2tmp= me.down('#device2id');
 		    var device3tmp= me.down('#device3id');
