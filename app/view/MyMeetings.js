@@ -62,21 +62,21 @@ Ext.define('IBApp.view.MyMeetings', {
             listeners: {
 
                 itemtap: { fn: this.onMeetingsListTap, scope: this },
-                // initialize: function(list) {
-                //     // var day = (new Date()).getDate(),
-                //     //     month = (new Date()).getMonth(),
-                //     //     year = (new Date()).getFullYear();
-                //     var today = Ext.Date.clearTime(new Date(year,month,day,0,24), true).getTime();
-                //     calendar.eventStore.clearFilter();
-                //     calendar.eventStore.filterBy(function(record){
+                initialize: function(list) {
+                    var today = Ext.Date.clearTime(new Date(), true).getTime();
+                    calendar.eventStore.clearFilter();
+                    calendar.eventStore.filterBy(function(record){
 
-                //         var startDate = Ext.Date.clearTime(record.get('mtBeginTime'), true).getTime(), 
-                //             endDate = Ext.Date.clearTime(record.get('mtEndTime'), true).getTime();
-                //         return (startDate <= today) && (endDate >= today);
-                //     }, this);
+                        var startDate = Ext.Date.clearTime(record.get('mtBeginTime'), true).getTime(), 
+                            endDate = Ext.Date.clearTime(record.get('mtEndTime'), true).getTime();
+                            console.log('mtBeginTime:'+ record.get('mtBeginTime') +'\n');
+                            console.log('today:'+ new Date() +'\n');
+                            console.log('mtEndTime:'+ record.get('mtEndTime') +'\n');
+                        return (startDate <= today) && (endDate >= today);
+                    }, this);
 
-                //     list.getStore().setData(calendar.eventStore.getRange());
-                // }
+                    list.getStore().setData(calendar.eventStore.getRange());
+                }
             }
         });
 
@@ -97,16 +97,16 @@ Ext.define('IBApp.view.MyMeetings', {
         ); 
 
 		calendar.on('selectionchange', function(calendarview, newDate, prevDate){
-		    // var eventList = this.getDockedItems()[1];
+		    var eventList = this.getDockedItems()[1];
 
-		    // calendar.eventStore.clearFilter();
-		    // calendar.eventStore.filterBy(function(record){
-		    //     var startDate = Ext.Date.clearTime(record.get('mtBeginTime'), true).getTime(), 
-      //           endDate = Ext.Date.clearTime(record.get('mtEndTime'), true).getTime();
-		    //     return (startDate <= newDate) && (endDate >= newDate);
-		    // }, this);
+		    calendar.eventStore.clearFilter();
+		    calendar.eventStore.filterBy(function(record){
+		        var startDate = Ext.Date.clearTime(record.get('mtBeginTime'), true).getTime(), 
+                endDate = Ext.Date.clearTime(record.get('mtEndTime'), true).getTime();
+		        return (startDate <= newDate) && (endDate >= newDate);
+		    }, this);
 
-		    // eventList.getStore().setData(calendar.eventStore.getRange());
+		    eventList.getStore().setData(calendar.eventStore.getRange());
 		});
 
 		calendar.on('eventtap', function(event){
@@ -192,16 +192,16 @@ Ext.define('IBApp.view.MyMeetings', {
     onSearchButtonTap: function() {
         this.fireEvent("searchviewCommand");
 
-// var calendarid = this.down('#calendarid');
+var calendarid = this.down('#calendarid');
 //         // calendarid.getStore().getProxy().setUrl('http://10.2.49.252:8080/mtservice/restService/0.1/mttype/mttypelist/' + userId);
 //         // calendarid.getStore().load();
 
-//            var records = calendarid.eventStore.getRange();
-//                         console.log('records:'+ records.length +'\n');
-//     for (var i = 0; i < records.length; i++) {
-//             var row=records [i].data;
-//             console.log('mtBeginTime:'+ row.mtBeginTime +'\n');
-//          }
+           var records = calendarid.eventStore.getRange();
+                        console.log('records:'+ records.length +'\n');
+    for (var i = 0; i < records.length; i++) {
+            var row=records [i].data;
+            console.log('mtBeginTime:'+ row.mtBeginTime +'\n');
+         }
     },
 
 });

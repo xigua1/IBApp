@@ -64,12 +64,12 @@ Ext.define('Ext.ux.TouchCalendarSimpleEvents', {
     /**
      * @cfg {String} startEventField Name of the Model field which contains the Event's Start date
      */
-    startEventField: 'start',
+    startEventField: 'mtBeginTime',
     
     /**
      * @cfg {Stirng} endEventField Name of the Model field which contains the Event's End date
      */
-    endEventField: 'end',
+    endEventField: 'mtEndTime',
 	
 	/**
 	 * @cfg {Boolean} multiEventDots True to display a dot for each event on a day. False to only show one dot regardless
