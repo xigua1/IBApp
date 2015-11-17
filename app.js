@@ -29,8 +29,8 @@ Ext.application({
 
     models: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode'],
 
-    stores: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode'],
-
+    stores: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode','MyMeetingsSearch'],
+    // stores: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode'],
     icon: {
         '57': 'resources/icons/Icon.png',
         '72': 'resources/icons/Icon~ipad.png',
