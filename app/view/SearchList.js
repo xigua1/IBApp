@@ -1,7 +1,7 @@
 var SearchListTemplate = new Ext.XTemplate(
 	'<tpl for=".">',
-	'<div class="list-item-title">{mtTheme}<span class="meeting-status {statusEn}">{mtFlag}</span></div>',
-	'<div class="list-item-narrative">{mtBeginTime}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{mtEndTime}</div>',
+	'<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{event}</span></div>',
+	'<div class="list-item-narrative">{start}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{end}</div>',
 	'</tpl>'
 );
 

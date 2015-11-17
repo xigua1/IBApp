@@ -108,21 +108,26 @@ Ext.define("IBApp.controller.MyMeetings", {
             success: function (response) 
             {
                 var resultResponse = Ext.JSON.decode(response.responseText);
+
                 console.log(resultResponse);
+
+                console.log(resultResponse[0].mtTheme);
                 /* set MyMeetingsEventStore */  
-                var curUser = Ext.create('IBApp.model.MyMeetingsEvent', {
-                 'userId': resultResponse.userId,
-                 'mtTypeName': resultResponse.mtTypeName,
-                 'mtTheme': resultResponse.mtTheme,
-                 'mtContent': resultResponse.mtContent,
-                 'mtBeginTime': resultResponse.mtBeginTime,
-                 'mtEndTime': resultResponse.mtEndTime,
-                 'mtFlag': resultResponse.mtFlag,
-                 'roomName': resultResponse.rooms.roomName,
-                });
-                console.log('roomName:'+ resultResponse.rooms.roomName +'\n');
-                console.log('roomName:'+ resultResponse.rooms.roomName +'\n');
-                Ext.getStore("MyMeetingsSearch").add(curUser);
+                for(var i = 0; i< resultResponse.length; i++)
+                {
+                    var curUser = Ext.create('IBApp.model.MyMeetingsEvent', {
+                     // 'userId': resultResponse.userId,
+                     'title': resultResponse[i].mtTheme,
+                     // 'mtContent': resultResponse.mtContent,
+                     'start': resultResponse[i].mtBeginTime,
+                     'end': resultResponse[i].mtEndTime,
+                     'event': resultResponse[i].mtFlag,
+                     // 'roomName': resultResponse.rooms.roomName,
+                    });
+                    console.log('title:'+ resultResponse[i].mtTheme +'\n');
+                    console.log('start:'+ resultResponse[i].mtBeginTime +'\n');
+                    Ext.getStore("MyMeetingsSearch").add(curUser);
+                }
 
             }, 
             failure: function (response) 

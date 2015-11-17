@@ -47,11 +47,12 @@ Ext.define('IBApp.view.MyMeetings', {
         var eventList = Ext.create('Ext.dataview.List', {
         	docked: 'bottom',
             onItemDisclosure: true,
+            id:'eventListid',
         	height: 250,
             itemHeight: 70,
             style: 'border-top: 1px solid #f0f0f0',
-        	itemTpl: ['<div class="list-item-title">{mtTheme}<span class="meeting-status {statusEn}">{mtFlag}</span></div>',
-            '<div class="list-item-narrative">{mtBeginTime}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{roomId}</div>'
+        	itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{location}</span></div>',
+            '<div class="list-item-narrative">{location}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{start}</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有会议</div>',
         	store: new Ext.data.Store({
@@ -66,16 +67,12 @@ Ext.define('IBApp.view.MyMeetings', {
                     var today = Ext.Date.clearTime(new Date(), true).getTime();
                     calendar.eventStore.clearFilter();
                     calendar.eventStore.filterBy(function(record){
-
                         var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), 
                             endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-                            // console.log('mtBeginTime:'+ record.get('mtBeginTime') +'\n');
-                            // console.log('today:'+ new Date() +'\n');
-                            // console.log('mtEndTime:'+ record.get('mtEndTime') +'\n');
+                            
                         return (startDate <= today) && (endDate >= today);
                     }, this);
-
-                    list.getStore().setData(calendar.eventStore.getRange());
+                    list.getStore().setData(calendar.eventStore.getRange());                    
                 }
             }
         });
@@ -97,13 +94,17 @@ Ext.define('IBApp.view.MyMeetings', {
         ); 
 
 		calendar.on('selectionchange', function(calendarview, newDate, prevDate){
-		    var eventList = this.getDockedItems()[1];
-
-		    calendar.eventStore.clearFilter();
+		    // var eventList = this.getDockedItems()[1];
+            console.log('qqqqq');
+            console.log(prevDate);
+            calendar.eventStore = Ext.getStore("MyMeetingsEvent");
+		    
+            calendar.eventStore.clearFilter();
 		    calendar.eventStore.filterBy(function(record){
+            console.log('11111111111');
 		        var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), 
                 endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-		        return (startDate <= newDate) && (endDate >= newDate);
+                return (startDate <= newDate) && (endDate >= newDate);
 		    }, this);
 
 		    eventList.getStore().setData(calendar.eventStore.getRange());
@@ -128,46 +129,6 @@ Ext.define('IBApp.view.MyMeetings', {
 		});
 
         eventList.on("itemtap",function(list,index,target,record,e,opt){  
-        // var txt="yourname is "+record.get("name");
-            // var panel=Ext.create("Ext.Panel",{
-                // fullscreen:true,
-                // html:txt,
-                // items:[{
-                // xtype:'toolbar',
-                // docked:'top',
-                // items:[{
-                //     xtype:'button',
-                //     ui:'back',
-                //     text:'返回',
-                //     handler:function(){ 
-                //         Ext.Viewport.setActiveItem(calendarPanel);
-                //         panel.destroy(); 
-                //     }
-                //   },
-
-                //   ]
-                // }]
-
-            // });
-            //添加到容器
-            // Ext.Viewport.add(panel);
-            //显示
-            // Ext.Viewport.setActiveItem(panel);
-
-        // var starttime = record.get("start"),
-        //     endtime = record.get("end");
-
-        // var nextpage = Ext.create('IBApp.view.RoomBookSuccess', function () {
-        //     this.fireEvent('pushContentCommand',me,starttime,endtime);
-
-        // });
-
-        // Ext.Viewport.setActiveItem(nextpage);
-            // this.fireEvent('pushContentCommand');
-        // this.fireEvent('pushContentCommand',this, starttime, endtime);
-    
-           
- 
         });
     },
 
@@ -186,22 +147,28 @@ Ext.define('IBApp.view.MyMeetings', {
 
     onBackButtonTap: function() {
         this.fireEvent("MyMeetingsToMainMenuCommand");
-        // this.fireEvent("pushContentCommand");
     },
 
     onSearchButtonTap: function() {
         this.fireEvent("searchviewCommand");
+    },
 
-// var calendarid = this.down('#calendarid');
-// //         // calendarid.getStore().getProxy().setUrl('http://10.2.49.252:8080/mtservice/restService/0.1/mttype/mttypelist/' + userId);
-// //         // calendarid.getStore().load();
+    updateEventStore:function(){
 
-//            var records = calendarid.eventStore.getRange();
-//                         console.log('records:'+ records.length +'\n');
-//     for (var i = 0; i < records.length; i++) {
-//             var row=records [i].data;
-//             console.log('mtBeginTime:'+ row.mtBeginTime +'\n');
-//          }
+        var calendarid = this.down('#calendarid');
+        var eventListid = this.down('#eventListid');
+        //更新Calendar的Store信息
+        calendarid.eventStore = Ext.getStore("MyMeetingsEvent");
+        //进入页面后自动显示今天页面
+        var today = Ext.Date.clearTime(new Date(), true).getTime();
+        calendarid.eventStore.clearFilter();
+        calendarid.eventStore.filterBy(function(record){
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), 
+            endDate = Ext.Date.clearTime(record.get('end'), true).getTime();        
+            return (startDate <= today) && (endDate >= today);
+        }, this);
+
+        eventListid.getStore().setData(calendarid.eventStore.getRange());
     },
 
 });
