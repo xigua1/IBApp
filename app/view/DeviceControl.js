@@ -203,8 +203,9 @@ Ext.define('IBApp.view.DeviceControl', {
                         },
                         {
                             xtype: 'button',
-                            itemId: 'moreBtn',
-                            text: 'more',
+                            id: 'localModeMoreBtn',
+                            text: '更多操作...',
+                            style: 'width:100px;border:none',
                             handler: this.onMoreButtonTap,
                             scope: this
                         },
@@ -219,7 +220,15 @@ Ext.define('IBApp.view.DeviceControl', {
                             itemId: 'videoModeDevStatusImage',
                             src: './resources/images/Default.png',
                             style: 'width:100%;height:80%;margin:auto',
-                        }, 
+                        },
+                        {
+                            xtype: 'button',
+                            id: 'videoModeMoreBtn',
+                            text: '更多操作...',
+                            style: 'width:100px;border:none',
+                            handler: this.onMoreButtonTap,
+                            scope: this
+                        },
                         videoModeControllers
                     ],
                 },
@@ -234,8 +243,9 @@ Ext.define('IBApp.view.DeviceControl', {
                         },
                         {
                             xtype: 'button',
-                            itemId: 'moreBtn1',
-                            text: 'more',
+                            id: 'projectionModeMoreBtn',
+                            text: '更多操作...',
+                            style: 'width:100px;border:none',
                             handler: this.onMoreButtonTap,
                             scope: this
                         }, 
@@ -294,9 +304,9 @@ Ext.define('IBApp.view.DeviceControl', {
                                 }
                             ],
                             listeners: {
-                                toggle: function(container, button, pressed){
-                                    alert("User toggled the '" + button.getText() + "' button: " + (pressed ? 'on' : 'off'));
-                                }
+                                // toggle: function(container, button, pressed){
+                                //     alert("User toggled the '" + button.getText() + "' button: " + (pressed ? 'on' : 'off'));
+                                // }
                             }
                         }
                     ]
@@ -402,14 +412,25 @@ Ext.define('IBApp.view.DeviceControl', {
 
     onMoreButtonTap: function(btn, e, eOpts) {
         var me = this;
-        var img = me.down('#projectionModeDevStatusImage');
-        if (btn.getText() == 'more') {
+        var img = null;
+
+        if (btn.getId() == 'localModeMoreBtn') {
+            img = me.down('#localModeDevStatusImage');
+        }
+        else if (btn.getId() == 'videoModeMoreBtn') {
+            img = me.down('#videoModeDevStatusImage');
+        }
+        else if (btn.getId() == 'projectionModeMoreBtn') {
+            img = me.down('#projectionModeDevStatusImage');
+        }
+       
+        if (btn.getText() == '更多操作...') {
             img.hide();
-            btn.setText('aaa');
+            btn.setText('收起');
         }
         else {
             img.show();
-            btn.setText('more');
+            btn.setText('更多操作...');
         }
     },
 
