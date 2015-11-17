@@ -141,6 +141,12 @@ Ext.define("IBApp.controller.RoomBooking", {
         paramsObj.hasBoos = 1;
         paramsObj.postDate = Ext.JSON.encodeDate(new Date());
         paramsObj.mtFlag = 2;
+        var at = {
+            'userId': meetingObj.userId,
+            'userName': paramsObj.organizerName,
+            'flag': 1,
+        };
+        paramsObj.attenders = [at];
         paramsObj.roomIds = [roomId];
         
         var paramsJson = Ext.JSON.encode(paramsObj);

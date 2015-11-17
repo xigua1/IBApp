@@ -51,6 +51,7 @@ Ext.define('IBApp.view.RoomBookSuccess', {
                         label: '组织者',
                     },
                     {
+                        itemId: 'mtAttenders',
                         label: '与会人员',
                         value: '无',
                     },
@@ -121,6 +122,8 @@ Ext.define('IBApp.view.RoomBookSuccess', {
         this.down('#mtTime').setValue(mtInfoObj.mtBeginTime + '~' + mtInfoObj.mtEndTime);
         this.down('#mtLocation').setValue(roomInfo);
         this.down('#mtOrganizer').setValue(mtInfoObj.organizerName);
+        this.down('#mtAttenders').setValue(mtInfoObj.attenders[0].userName);
+        
         if(mtInfoObj.services == null) {
             this.down('#mtServices').setValue('无');
         }
