@@ -8,6 +8,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             deviceControlView:'devicecontrolview',
             searchView:'searchview',
             devCtrRoomListView: 'devctrroomlistview',
+            chooseAttendersView: 'chooseattendersview',
         },
         control: {
             myMeetingsView: {
@@ -17,7 +18,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             meetingRequestView: {
                 meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
                 meetingRequestToRoomBookSuccessCommand:'onMeetingRequestToRoomBookSuccessCommand',
-                deviceControlViewCommand:'onDeviceControlViewCommand',
+                participatorModifyCommand: 'onParticipatorModifyCommand'
             },
             devCtrRoomListView: {
                 roomListTapCommand: 'onRoomListTapCommand',
@@ -28,15 +29,16 @@ Ext.define("IBApp.controller.MyMeetings", {
             searchView:{
                 SearchToMyMeetingsCommand:'onSearchToMyMeetingsCommand',
                 SearchCommand:'onSearchCommand',
-
+            },
+            chooseAttendersView: {
+                backToMeetingRequest: 'onBackToMeetingRequest',
             }
-            
-            
         },
         routes: {
             'meetingrequest': 'showMeetingRequestView',
             'devicecontrol': 'showDeviceControlView',
             'search':'showSearchView',
+            'chooseattenders': 'showChooseAttendersView',
         }
     },
 
@@ -48,13 +50,62 @@ Ext.define("IBApp.controller.MyMeetings", {
         Ext.Viewport.animateActiveItem(this.getDeviceControlView(), 'fade');
     },
 
-
     showSearchView: function() {
         Ext.Viewport.animateActiveItem(this.getSearchView(), 'fade');
     },
 
+    showChooseAttendersView: function() {
+        Ext.Viewport.animateActiveItem(this.getChooseAttendersView(), 'fade');
+    },
+
     onMeetingRequestToMyMeetingsCommand: function () {
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'mymeetings'}));
+    },
+
+    /* 修改与会人员页返回至会议详情页 */
+    onBackToMeetingRequest: function (mtAttenders) {
+        if (mtAttenders != null) {
+            this.getMeetingRequestView().setParticipator(mtAttenders);
+        };
+        window.history.go(-1);
+    },
+
+    onParticipatorModifyCommand: function () {
+        var me = this;
+        var userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        var inContacts = null, outContacts = null;
+
+        /* 获取内部常用联系人 */
+        var urlGetInContacts = 'http://10.2.49.252:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
+        Ext.Ajax.request({
+            url: urlGetInContacts,
+            method: 'GET',
+            disableCaching: false,
+            success: function (response) {
+                inContacts = Ext.JSON.decode(response.responseText);
+                me.getChooseAttendersView().showContacts(inContacts, 1);
+            },
+            failure: function (response) {
+                Ext.Msg.alert('获取内部常用联系人失败');
+            }
+        });
+        /* 获取外部常用联系人 */
+        var urlGetOutContacts = 'http://10.2.49.252:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
+        Ext.Ajax.request({
+            url: urlGetOutContacts,
+            method: 'GET',
+            disableCaching: false,
+            success: function (response) {
+                outContacts = Ext.JSON.decode(response.responseText);
+                me.getChooseAttendersView().showContacts(outContacts, 2);
+            },
+            failure: function (response) {
+                Ext.Msg.alert('获取外部常用联系人失败');
+            }
+        });
+
+        
+        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'chooseattenders'}));
     },
 
     onDeviceControlBackButtonCommand: function () {
@@ -66,10 +117,6 @@ Ext.define("IBApp.controller.MyMeetings", {
     },
 
     onRoomListTapCommand: function() {
-        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
-    },
-
-    onDeviceControlViewCommand: function() {
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
     },
 

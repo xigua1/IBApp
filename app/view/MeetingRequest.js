@@ -51,12 +51,6 @@
                    },
                    {
                        xtpye:'button',
-                       text:'控制设备',
-                       scope:this,
-                       handler: this.onControlDeviceTap,
-                   },   
-                   {
-                       xtpye:'button',
                        text:'取消会议',
                        scope:this,
                        handler:function(){
@@ -361,17 +355,15 @@
     },
 
     onParticipatorModifyBtn: function() {
+        this.fireEvent("participatorModifyCommand");
+    },
 
+    setParticipator: function(mtAttenders) {
+        this.down('#participatorNameTextid').setValue(mtAttenders);
     },
 
     onServiceModifyBtn: function() {
 
-    },
-
-    onControlDeviceTap: function() {
-      this.fireEvent("deviceControlViewCommand");
-      this.actions.hide(); 
-      
     },
 
     modifyMeetingDetails: function(record) {
