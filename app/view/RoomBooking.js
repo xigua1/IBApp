@@ -1,9 +1,10 @@
 Ext.define("IBApp.view.RoomBooking", {
-    extend: "Ext.form.Panel",
+    extend: "Ext.Panel",
     requires: ['Ext.form.FieldSet', 'Ext.ux.field.DateTimePicker', 'IBApp.store.MeetingType'],
     xtype: 'roombookingview',
     config:{
-        scrollable:'vertical'
+        scrollable: false,
+        layout: 'vbox',
     },
     initialize: function () {
 
@@ -17,11 +18,35 @@ Ext.define("IBApp.view.RoomBooking", {
         	scope: this
         };
 
+        var tagButton = Ext.create('Ext.SegmentedButton', {
+            centered: true,
+            items: [
+                {
+                    text: '快速推荐',
+                    pressed: true
+                },
+                {
+                    text: '查看空闲',
+                }
+            ],
+            listeners: {
+                toggle: function(container, button, pressed){
+                   // alert("User toggled the '" + button.getText() + "' button: " + (pressed ? 'on' : 'off'));
+                    if ((button.getText() == '快速推荐') && pressed) {
+                        panelPages.setActiveItem(0);
+                    }
+                    else if ((button.getText() == '查看空闲') && pressed) {
+                        panelPages.setActiveItem(1);
+                    }
+               }
+           }
+        });
+
         var topToolbar = {
         	xtype: 'toolbar',
         	docked: 'top',
-        	title: '预定会议室',
-        	items: [backButton]
+        	// title: '预定会议室',
+        	items: [backButton, tagButton]
         };
 
         /* 会议类型 */
@@ -76,36 +101,59 @@ Ext.define("IBApp.view.RoomBooking", {
         	}
         };
 
+        var panelPages = Ext.create('Ext.Panel', {
+            layout: {
+                type: 'card',
+                animation: 'fade',
+            },
+            flex: 1,
+            items: [
+                {
+                    xtype: 'formpanel',
+                    id: 'recommendBookingPanel',
+                    items: [
+                        {
+                            xtype: 'fieldset',
+                            items: [
+                                attendanceEditor,
+                                meetingTypeSelector,
+                                startDateTime,
+                                endDateTime,
+                            ]
+                        },
+                        {
+                            xtype: 'fieldset',
+                            title: '请选择所需设备',
+                            itemId: 'devicesFieldset',
+                        },
+                        {
+                            xtype: 'fieldset',
+                            title: '请选择所需服务',
+                            itemId: 'servicesFieldset',
+                        },
+                        {
+                            xtype: 'button',
+                            itemId: 'submitButton',
+                            ui: 'action',
+                            text: '搜索',
+                            handler: this.onSubmitButtonTap,
+                            scope: this
+                        }
+                    ]
+                },
+                {
+                    xtype: 'panel',
+                    html: '敬请期待',
+                }
+            ]
+        });
+
         this.add([
         	topToolbar,
-        	{
-        		xtype: 'fieldset',
-        		items: [
-        			attendanceEditor,
-        			meetingTypeSelector,
-        			startDateTime,
-        			endDateTime,
-        		]
-        	},
-        	{
-        		xtype: 'fieldset',
-        		title: '请选择所需设备',
-                itemId: 'devicesFieldset',
-        	},
-            {
-                xtype: 'fieldset',
-                title: '请选择所需服务',
-                itemId: 'servicesFieldset',
-            },
-        	{
-        		xtype: 'button',
-        		itemId: 'submitButton',
-        		ui: 'action',
-        		text: '搜索',
-        		handler: this.onSubmitButtonTap,
-                scope: this
-        	}
+        	panelPages,
         ]);
+
+        panelPages.setActiveItem(0);
     },
 
     onBackButtonTap: function() {
@@ -113,7 +161,8 @@ Ext.define("IBApp.view.RoomBooking", {
     },
 
     onSubmitButtonTap: function() {
-        var formValuesObj = this.getValues(true, true);
+        var panel = this.down('#recommendBookingPanel');
+        var formValuesObj = panel.getValues(true, true);
 
         if(formValuesObj.services != null) {
             for (var i=0; i < formValuesObj.services.length; i++) {

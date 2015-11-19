@@ -44,7 +44,7 @@ Ext.define('IBApp.controller.Login', {
 		/* 从后台进行验证 */
 		Ext.Ajax.request({
 			// url: 'http://192.168.31.232/BackEndTest/Authority.php',
-			url: 'http://10.2.49.254:8080/pactera-jeesite/restService/userservice/0.1/login/doPostAuthenticationInfoRS/',
+			url: 'http://10.2.49.251:8080/pactera-jeesite/restService/userservice/0.1/login/doPostAuthenticationInfoRS/',
 			method: 'POST',
 			disableCaching: false,
 			withCredentials: true,
