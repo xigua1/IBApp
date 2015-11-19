@@ -16,9 +16,17 @@ Ext.define("IBApp.model.MyMeetingsEvent", {
 			dateFormat: 'c'
 		}, 
 		{
+			name: 'startstr',
+			type: 'string'
+		}, 
+		{
 			name: 'end',
 			type: 'date',
 			dateFormat: 'c'
+		}, 
+		{
+			name: 'endstr',
+			type: 'string'
 		}, 
 		{
 			name: 'css',
@@ -28,8 +36,22 @@ Ext.define("IBApp.model.MyMeetingsEvent", {
 			name: 'location',
 			type: 'string'
 		}, 
-
-		
+		{
+			name: 'mtFlag',
+			type: 'string'
+		}, 
+		{
+			name: 'status',
+			type: 'string'
+		}, 
+		{
+			name: 'statusEn',
+			type: 'string'
+		}, 	
+		{
+			name: 'mtId',
+			type: 'string'
+		}, 	
 		]
 
 	}

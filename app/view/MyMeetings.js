@@ -51,8 +51,8 @@ Ext.define('IBApp.view.MyMeetings', {
         	height: 250,
             itemHeight: 70,
             style: 'border-top: 1px solid #f0f0f0',
-        	itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{location}</span></div>',
-            '<div class="list-item-narrative">{location}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{start}</div>'
+        	itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{status}</span></div>',
+            '<div class="list-item-narrative">{location}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startstr}&nbsp;~&nbsp;{endstr}</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有会议</div>',
         	store: new Ext.data.Store({
@@ -72,7 +72,8 @@ Ext.define('IBApp.view.MyMeetings', {
                             
                         return (startDate <= today) && (endDate >= today);
                     }, this);
-                    list.getStore().setData(calendar.eventStore.getRange());                    
+                    list.getStore().setData(calendar.eventStore.getRange());    
+
                 }
             }
         });
@@ -95,13 +96,10 @@ Ext.define('IBApp.view.MyMeetings', {
 
 		calendar.on('selectionchange', function(calendarview, newDate, prevDate){
 		    // var eventList = this.getDockedItems()[1];
-            console.log('qqqqq');
-            console.log(prevDate);
             calendar.eventStore = Ext.getStore("MyMeetingsEvent");
 		    
             calendar.eventStore.clearFilter();
 		    calendar.eventStore.filterBy(function(record){
-            console.log('11111111111');
 		        var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), 
                 endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
                 return (startDate <= newDate) && (endDate >= newDate);
@@ -109,6 +107,17 @@ Ext.define('IBApp.view.MyMeetings', {
 
 		    eventList.getStore().setData(calendar.eventStore.getRange());
 		});
+
+        calendar.on('periodchange', function(calendarview, minDate, maxDate,direction, eOpts){
+            console.log('periodchange');
+            console.log(maxDate);
+            console.log(minDate);
+            console.log(direction);
+
+            this.getParent().onUpdateMyCalendarTap(minDate,maxDate);
+
+
+        });
 
 		calendar.on('eventtap', function(event){
 		    console.log('eventtap');
@@ -153,6 +162,12 @@ Ext.define('IBApp.view.MyMeetings', {
         this.fireEvent("searchviewCommand");
     },
 
+    onUpdateMyCalendarTap: function(bdate,edate) {
+        this.fireEvent("updateMyCalendarCommand",bdate,edate);
+    },
+
+
+
     updateEventStore:function(){
 
         var calendarid = this.down('#calendarid');
@@ -169,6 +184,11 @@ Ext.define('IBApp.view.MyMeetings', {
         }, this);
 
         eventListid.getStore().setData(calendarid.eventStore.getRange());
+
+         console.log('eventListid.getStore():'+ calendarid.eventStore.getCount()  +'\n');
+         calendarid.refresh();
+
+
     },
 
 });
