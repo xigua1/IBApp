@@ -63,14 +63,14 @@ Ext.define("IBApp.controller.MyMeetings", {
     },
 
     /* 修改与会人员页返回至会议详情页 */
-    onBackToMeetingRequest: function (mtAttenders) {
-        if (mtAttenders != null) {
-            this.getMeetingRequestView().setParticipator(mtAttenders);
+    onBackToMeetingRequest: function (mtAttenders, store) {
+        if ( (mtAttenders != null) && (store != null) ) {
+            this.getMeetingRequestView().setParticipator(mtAttenders, store);
         };
         window.history.go(-1);
     },
 
-    onParticipatorModifyCommand: function () {
+    onParticipatorModifyCommand: function (store) {
         var me = this;
         var userId = Ext.getStore("UserInfo").getAt(0).get('userId');
         var inContacts = null, outContacts = null;
@@ -103,8 +103,11 @@ Ext.define("IBApp.controller.MyMeetings", {
                 Ext.Msg.alert('获取外部常用联系人失败');
             }
         });
-
         
+        var task = Ext.create('Ext.util.DelayedTask', function () {
+            me.getChooseAttendersView().showExistAttenders(store);
+        });
+        task.delay(500);
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'chooseattenders'}));
     },
 
