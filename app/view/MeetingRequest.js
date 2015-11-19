@@ -1,4 +1,11 @@
-﻿Ext.define('IBApp.view.MeetingRequest', {
+﻿var attenders = Ext.create('Ext.data.Store', {
+  model: 'IBApp.model.Attenders',
+  data: [],
+});
+
+var mtObj = null;
+
+Ext.define('IBApp.view.MeetingRequest', {
     extend: 'Ext.form.Panel',
     xtype: 'meetingrequestview',
   
@@ -228,20 +235,7 @@
               meetingNameText,
               startDateTime,
               endDateTime,
-              {
-                xtype: 'panel',
-                items: [
-                  placeTypeText,
-                  {xtype: 'button',
-                  id: 'placeModifyBtn',
-                  style: 'position: absolute; width:50px; left:75%; top:5px; border:none',
-                  hidden: true,
-                  text: '修改',
-                  scope: this,
-                  handler: this.onPlaceModifyBtn,
-                  }
-                ]
-              },
+              placeTypeText,
               organizerNameText,
               {
                 xtype: 'panel',
@@ -257,20 +251,7 @@
                   }
                 ]
               },
-              {
-                xtype: 'panel',
-                items: [
-                  serviceText,
-                  {xtype: 'button',
-                  id: 'serviceModifyBtn',
-                  style: 'position: absolute; width:50px; left:75%; top:5px; border:none',
-                  hidden: true,
-                  text: '修改',
-                  scope: this,
-                  handler: this.onServiceModifyBtn,
-                  }
-                ]
-              },
+              serviceText,
               meetingText,
               meetingIdText,
               eventText,
@@ -284,30 +265,25 @@
     },
 
     onBackButtonTap: function() {
-    	this.fireEvent("meetingRequestToMyMeetingsCommand");
-      this.onNoEditButtonTap();
- 
+      	this.fireEvent("meetingRequestToMyMeetingsCommand");
+        this.onNoEditButtonTap();
     },
 
     onEditButtonTap:function(){
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
-        var startDT = me.down('#startDateTimeid');
-        var endDT = me.down('#endDateTimeid');
-        var placeMB = me.down('#placeModifyBtn');
+        // var startDT = me.down('#startDateTimeid');
+        // var endDT = me.down('#endDateTimeid');
         var organizerNT = me.down('#organizerNameTextid');
         var participatorMB = me.down('#participatorModifyBtn');
-        var serviceMB = me.down('#serviceModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(false);
-        startDT.setReadOnly(false);
-        endDT.setReadOnly(false);
-        placeMB.setHidden(false);
+        // startDT.setReadOnly(false);  /*不允许修改会议时间*/
+        // endDT.setReadOnly(false);
         // organizerNT.setReadOnly(false);  /*不允许修改会议组织者*/
         participatorMB.setHidden(false);
-        serviceMB.setHidden(false);
         requestB.setHidden(false);
         meetingT.setReadOnly(false);
 
@@ -318,22 +294,18 @@
     onNoEditButtonTap:function(){
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
-        var startDT = me.down('#startDateTimeid');
-        var endDT = me.down('#endDateTimeid');
-        var placeMB = me.down('#placeModifyBtn');
+        // var startDT = me.down('#startDateTimeid');
+        // var endDT = me.down('#endDateTimeid');
         var organizerNT = me.down('#organizerNameTextid');
         var participatorMB = me.down('#participatorModifyBtn');
-        var serviceMB = me.down('#serviceModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(true);
-        startDT.setReadOnly(true);
-        endDT.setReadOnly(true);
-        placeMB.setHidden(true);
+        // startDT.setReadOnly(true);
+        // endDT.setReadOnly(true);
         // organizerNT.setReadOnly(true);
         participatorMB.setHidden(true);
-        serviceMB.setHidden(true);
         requestB.setHidden(true);
         meetingT.setReadOnly(true);
 
@@ -345,43 +317,39 @@
 
     onSubmitButtonTap: function() {
     
-      this.fireEvent("meetingRequestToRoomBookSuccessCommand");
-      this.onNoEditButtonTap();
-    },
-
-    onPlaceModifyBtn: function() {
-
-      // this.fireEvent("roomBookingCommand");
+        this.fireEvent("meetingRequestToRoomBookSuccessCommand");
+        this.onNoEditButtonTap();
     },
 
     onParticipatorModifyBtn: function() {
-        this.fireEvent("participatorModifyCommand");
+        this.fireEvent("participatorModifyCommand", attenders);
     },
 
-    setParticipator: function(mtAttenders) {
+    setParticipator: function(mtAttenders, store) {
+        attenders.removeAll();
+        var len = store.getCount();
+        for (var i = 0; i < len; i++) {
+            attenders.add(store.getAt(i));
+        };
         this.down('#participatorNameTextid').setValue(mtAttenders);
     },
 
-    onServiceModifyBtn: function() {
-
-    },
-
     modifyMeetingDetails: function(record) {
-      this.setRecord(record);
+        this.setRecord(record);
 
-      var str = this.down('#statusText').getValue();
-      var strEn = this.down('#statusEnText').getValue();
+        var str = this.down('#statusText').getValue();
+        var strEn = this.down('#statusEnText').getValue();
 
-      this.down('#meetingStatusLabel').setHtml([
-          '<p>',
-          str,
-          '</p>'
+        this.down('#meetingStatusLabel').setHtml([
+            '<p>',
+            str,
+            '</p>'
+          ].join(""));
+        this.down('#meetingStatusLabel').setCls([
+          'detail-meeting-status ',
+          strEn
         ].join(""));
-      this.down('#meetingStatusLabel').setCls([
-        'detail-meeting-status ',
-        strEn
-      ].join(""));
-    }
+      }
 });       
         
     
