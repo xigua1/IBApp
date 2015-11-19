@@ -88,13 +88,13 @@ Ext.define("IBApp.controller.MainMenu", {
         paramsObj.userId = '1';
         paramsObj.beginDate = Ext.JSON.encodeDate(bdate); 
         paramsObj.endDate = Ext.JSON.encodeDate(edate); 
-        
+
         var paramsJson = Ext.JSON.encode(paramsObj);
         /* 从后台进行验证 */
-        // var urltmp = 'http://10.2.49.252:8080/mtservice/restService/0.1/meeting/mtList/';
+        var urltmp = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtList/';
         console.log('paramsJson');
         console.log(paramsJson);
-        var urltmp = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList/';
+        // var urltmp = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList/';
         Ext.Ajax.request(
         {         
             url: urltmp,
@@ -113,7 +113,7 @@ Ext.define("IBApp.controller.MainMenu", {
                 for(var i = 0; i< resultResponse.length; i++)
                 {
                     var curUser = Ext.create('IBApp.model.MyMeetingsEvent', {
-                     
+                     /*根据Calendar控件需要，model的name有些与接收到的Json名称一致，有些不一致*/
                      'title': resultResponse[i].mtTheme,
                      'start': new Date(resultResponse[i].mtBeginTime),
                      'end': new Date(resultResponse[i].mtEndTime),
@@ -121,6 +121,8 @@ Ext.define("IBApp.controller.MainMenu", {
                      'location':resultResponse[i].rooms[0].roomNum,
                      'mtFlag':resultResponse[i].mtFlag,
                      'mtId':resultResponse[i].mtId,
+                     'organizerName':resultResponse[i].organizerName,
+                     'mtContent':resultResponse[i].mtContent,
                     });
 
 
@@ -169,7 +171,7 @@ Ext.define("IBApp.controller.MainMenu", {
             }, 
             failure: function (response) 
             { 
-                Ext.Msg.alert('Post 连接失败');
+                Ext.Msg.alert('获取会议列表失败！');
             }
         }); 
  

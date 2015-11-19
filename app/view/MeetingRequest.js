@@ -155,7 +155,7 @@ Ext.define('IBApp.view.MeetingRequest', {
         /*组织者*/
         var organizerNameText = {
         	xtype: 'textfield',
-        	name: 'organizer',
+        	name: 'organizerName',
         	label: '组织者',
           id:'organizerNameTextid',
           readOnly:true,
@@ -183,7 +183,7 @@ Ext.define('IBApp.view.MeetingRequest', {
         var meetingText = {
             xtype: 'textareafield',
             label: '会议摘要',
-            name: 'abstract',
+            name: 'mtContent',
             readOnly:true,
             id:'meetingTextid',
         };
