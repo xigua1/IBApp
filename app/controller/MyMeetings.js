@@ -76,7 +76,7 @@ Ext.define("IBApp.controller.MyMeetings", {
         var inContacts = null, outContacts = null;
 
         /* 获取内部常用联系人 */
-        var urlGetInContacts = 'http://10.2.49.252:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
+        var urlGetInContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
         Ext.Ajax.request({
             url: urlGetInContacts,
             method: 'GET',
@@ -90,7 +90,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             }
         });
         /* 获取外部常用联系人 */
-        var urlGetOutContacts = 'http://10.2.49.252:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
+        var urlGetOutContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
         Ext.Ajax.request({
             url: urlGetOutContacts,
             method: 'GET',
