@@ -424,6 +424,7 @@ Ext.define('IBApp.view.MeetingRequest', {
               
             }
           });
+          me.actions.hide();
       },
 
     onCancelMeetingTap:function() {
