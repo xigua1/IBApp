@@ -18,7 +18,6 @@ Ext.define("IBApp.controller.MyMeetings", {
             meetingRequestView: {
                 meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
                 meetingRequestModifyDetailsCommand:'onMeetingRequestModifyDetailsCommand',
-                participatorModifyCommand: 'onParticipatorModifyCommand'
                 participatorModifyCommand: 'onParticipatorModifyCommand',
             },
             devCtrRoomListView: {
