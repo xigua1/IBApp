@@ -17,14 +17,9 @@ Ext.define("IBApp.controller.MyMeetings", {
             },
             meetingRequestView: {
                 meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
-<<<<<<< HEAD
                 meetingRequestModifyDetailsCommand:'onMeetingRequestModifyDetailsCommand',
                 participatorModifyCommand: 'onParticipatorModifyCommand'
-=======
-                meetingRequestToRoomBookSuccessCommand:'onMeetingRequestToRoomBookSuccessCommand',
                 participatorModifyCommand: 'onParticipatorModifyCommand',
-
->>>>>>> d926bd5e2ab4379572e836ff6e172f35a99519da
             },
             devCtrRoomListView: {
                 roomListTapCommand: 'onRoomListTapCommand',
@@ -174,10 +169,6 @@ Ext.define("IBApp.controller.MyMeetings", {
                 Ext.Msg.alert('获取会议详情失败!');
             }
         });
-
-
-
-
 
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'meetingrequest'}));
     },
