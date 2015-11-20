@@ -157,6 +157,11 @@ Ext.define("IBApp.controller.MainMenu", {
                         curUser.set('status','删除');
                     }
 
+                    if(null == curUser.get('title'))
+                    {
+                        curUser.set('title', '待定');
+                    }
+
                     curUser.set('startstr', Ext.JSON.encodeDate(curUser.get('start')));
                     curUser.set('endstr', Ext.JSON.encodeDate(curUser.get('end')));
                     Ext.getStore("MyMeetingsEvent").add(curUser);                
