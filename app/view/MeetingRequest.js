@@ -5,6 +5,7 @@
 
 var mtObj = new Object();
 
+
 Ext.define('IBApp.view.MeetingRequest', {
     extend: 'Ext.form.Panel',
     xtype: 'meetingrequestview',
@@ -378,9 +379,17 @@ Ext.define('IBApp.view.MeetingRequest', {
               }
             ],
             fn: function(button) {
+              var mtRepleObj = new Object();
               if (button == '参加') {
-                Ext.Msg.alert('参会！');
+                mtRepleObj.replyResult = 1;
               };
+              if (button == '不参加') {
+                mtRepleObj.replyResult = 2;
+              };
+              if (button == '待定') {
+                mtRepleObj.replyResult = 3;
+              };
+
             }
           });
       },
@@ -404,6 +413,7 @@ Ext.define('IBApp.view.MeetingRequest', {
         }
 
         /*添加与会人员*/
+        attenders.removeAll();
         for(var i = 0; i< details.attenders.length; i++)
         {
             var curAttender = Ext.create('IBApp.model.Attenders', {
