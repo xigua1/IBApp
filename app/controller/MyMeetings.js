@@ -19,6 +19,8 @@ Ext.define("IBApp.controller.MyMeetings", {
                 meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
                 meetingRequestModifyDetailsCommand:'onMeetingRequestModifyDetailsCommand',
                 participatorModifyCommand: 'onParticipatorModifyCommand',
+                mtReplyCommand:'onMtReplyCommand',
+                mtCancelCommand:'onMtCancelCommand',
             },
             devCtrRoomListView: {
                 roomListTapCommand: 'onRoomListTapCommand',
@@ -76,7 +78,8 @@ Ext.define("IBApp.controller.MyMeetings", {
         var inContacts = null, outContacts = null;
 
         /* 获取内部常用联系人 */
-        var urlGetInContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
+        // var urlGetInContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
+        var urlGetInContacts = 'http://10.2.20.69:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
         Ext.Ajax.request({
             url: urlGetInContacts,
             method: 'GET',
@@ -90,7 +93,8 @@ Ext.define("IBApp.controller.MyMeetings", {
             }
         });
         /* 获取外部常用联系人 */
-        var urlGetOutContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
+        // var urlGetOutContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
+        var urlGetOutContacts = 'http://10.2.20.69:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
         Ext.Ajax.request({
             url: urlGetOutContacts,
             method: 'GET',
@@ -127,7 +131,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             success: function (response) {
                 var ret = response.responseText;
                 if(ret == '1') {
-                    Ext.Msg.alert('会议内容修改成功！');
+                    Ext.Msg.alert('会议修改成功！');
                 }
                 else if(ret == '2') {
                     Ext.Msg.alert('修改有冲突');
@@ -147,13 +151,14 @@ Ext.define("IBApp.controller.MyMeetings", {
     },
 
     onMeetingsListCommand: function(record) {
-        this.getMeetingRequestView().modifyMeetingDetails(record);
+        // this.getMeetingRequestView().modifyMeetingDetails(record);
         var mtId = record.get('mtId');
         console.log('mtId');
         console.log(mtId);
         var me = this;
         var details = null;
-        var urlmtdetails = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
+        // var urlmtdetails = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
+        var urlmtdetails = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
         Ext.Ajax.request({
             url: urlmtdetails,
             method: 'GET',
@@ -193,7 +198,7 @@ Ext.define("IBApp.controller.MyMeetings", {
         Ext.Ajax.request(
         {
             // url:'http://192.168.20.109:8005/BackEndTest/PlaceType.php',
-            url: 'http://10.2.49.252:8080/mtservice/restService/0.1/meeting/mtList',
+            url: 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList',
             method: 'POST',
             disableCaching: false,
             withCredentials: true,
@@ -232,4 +237,63 @@ Ext.define("IBApp.controller.MyMeetings", {
             }
         });  
     },
+
+    onMtReplyCommand:function(mtReplyObj) {
+        var paramsJson = Ext.JSON.encode(mtReplyObj);
+        console.log('paramsJson');
+        console.log(paramsJson);
+        var urlReplyMeeting = 'http://10.2.20.69:8080/mtservice/restService/0.1/reply/addReply';
+        Ext.Ajax.request({
+            url: urlReplyMeeting,
+            method: 'POST',
+            disableCaching: false,
+            params: paramsJson,
+            success: function (response) {
+                var ret = response.responseText;
+
+                  console.log('ret');
+                  console.log(ret);
+                if(ret != '0') {
+                    Ext.Msg.alert('回复成功！');
+                }
+                else
+                {
+                    Ext.Msg.alert('回复失败');       
+                }
+            },
+            failure: function (response) {
+                Ext.Msg.alert('回复网络连接失败');
+            }
+        });
+    },
+
+    onMtCancelCommand:function(mtCancelobj) {
+        var paramsJson = Ext.JSON.encode(mtCancelobj);
+        console.log('paramsJson');
+        console.log(paramsJson);
+        var urlCancelMeeting = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/quickUpdateMeeting';
+        Ext.Ajax.request({
+            url: urlCancelMeeting,
+            method: 'POST',
+            disableCaching: false,
+            params: paramsJson,
+            success: function (response) {
+                var ret = response.responseText;
+
+                  console.log('ret');
+                  console.log(ret);
+                if(ret == '1') {
+                    Ext.Msg.alert('会议取消成功！');
+                }
+                else
+                {
+                    Ext.Msg.alert('会议取消失败！');       
+                }
+            },
+            failure: function (response) {
+                Ext.Msg.alert('取消网络连接失败');
+            }
+        });
+    }
+
 });

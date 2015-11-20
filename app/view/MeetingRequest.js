@@ -59,9 +59,7 @@ Ext.define('IBApp.view.MeetingRequest', {
                        xtpye:'button',
                        text:'取消会议',
                        scope:this,
-                       handler:function(){
-                           this.actions.hide();     
-                       }
+                       handler:this.onCancelMeetingTap,     
                    },   
                        {
                        xtpye:'button',
@@ -345,10 +343,139 @@ Ext.define('IBApp.view.MeetingRequest', {
     },
 
     modifyMeetingDetails: function(record) {
-        this.setRecord(record);
+        // this.setRecord(record);
 
-        var str = this.down('#statusText').getValue();
-        var strEn = this.down('#statusEnText').getValue();
+        // var str = this.down('#statusText').getValue();
+        // var strEn = this.down('#statusEnText').getValue();
+
+        // this.down('#meetingStatusLabel').setHtml([
+        //     '<p>',
+        //     str,
+        //     '</p>'
+        //   ].join(""));
+        // this.down('#meetingStatusLabel').setCls([
+        //   'detail-meeting-status ',
+        //   strEn
+        // ].join(""));
+      }, 
+    onReplyTap: function() {
+          var me = this;
+          Ext.Msg.show({
+            title: '参会回复',
+            // message: result.text,
+            buttons: [
+              {
+                text: '参会',
+                ui: 'action'
+              }, 
+              {
+                text: '不参会',
+                ui: 'action'
+              },
+              {
+                text: '未定',
+                ui: 'action'
+              },
+              {
+                text: '取消',
+                itemId: 'cancel'
+              }
+              // {
+              //    text:'取消',
+              //    scope:this,
+              //    handler:function(){
+              //        this.actions.hide();     
+              //    }
+              // },   
+            ],
+            fn: function(button) {
+              var mtReplyObj = new Object();
+              if (button == '取消')
+              {
+                me.actions.hide();
+              }
+              if (button == '参会') {
+                mtReplyObj.replyResult = 1;
+                mtReplyObj.replyerId = Ext.getStore("UserInfo").getAt(0).get('userId');
+                mtReplyObj.replyerFlag = 1; //回复人标识 1.内部人员2.外部人员 
+                mtReplyObj.replyDate =Ext.JSON.encodeDate(new Date());//回复日期
+                mtReplyObj.meetingId = mtObj.mtId;//会议ID
+                mtReplyObj.replyMethod = 1; //回复方式1.手机APP 2.网页 3.短信 
+                me.fireEvent("mtReplyCommand", mtReplyObj);
+              };
+              if (button == '不参会') {
+                mtReplyObj.replyResult = 2;
+                mtReplyObj.replyerId = Ext.getStore("UserInfo").getAt(0).get('userId');
+                mtReplyObj.replyerFlag = 1; //回复人标识 1.内部人员2.外部人员 
+                mtReplyObj.replyDate =Ext.JSON.encodeDate(new Date());//回复日期
+                mtReplyObj.meetingId = mtObj.mtId;//会议ID
+                mtReplyObj.replyMethod = 1; //回复方式1.手机APP 2.网页 3.短信 
+                me.fireEvent("mtReplyCommand", mtReplyObj);
+              };
+              if (button == '未定') {
+                mtReplyObj.replyResult = 3;  
+                mtReplyObj.replyerId = Ext.getStore("UserInfo").getAt(0).get('userId');
+                mtReplyObj.replyerFlag = 1; //回复人标识 1.内部人员2.外部人员 
+                mtReplyObj.replyDate =Ext.JSON.encodeDate(new Date());//回复日期
+                mtReplyObj.meetingId = mtObj.mtId;//会议ID
+                mtReplyObj.replyMethod = 1; //回复方式1.手机APP 2.网页 3.短信 
+                me.fireEvent("mtReplyCommand", mtReplyObj);
+              };
+              
+            }
+          });
+      },
+
+    onCancelMeetingTap:function() {
+      var me = this;
+      console.log('cancel');
+      var mtCancelobj = new Object();
+      
+      mtCancelobj.changeFlag = 1;
+      mtCancelobj.mtId = mtObj.mtId;
+      this.fireEvent("mtCancelCommand", mtCancelobj);
+      me.actions.hide(); 
+    },
+
+    updateMeetingDetails: function(details) {
+        console.log('new details');
+        console.log(details);
+        var attendersstr = null;
+        var servicesstr = null;
+        var placestr = null;
+        var mtThemestr = null;
+        mtObj = details;
+
+        if(details.mtFlag == 1)
+        {
+            strEn = 'checking';
+            str = '正在审核';
+        }
+        if(details.mtFlag == 2)
+        {
+            strEn = 'waiting';
+            str = '未开始';
+        }
+        if(details.mtFlag == 3)
+        {
+            strEn = 'closed';
+            str = '已结束';
+        }
+        if(details.mtFlag == 4)
+        {
+            strEn = 'canceled';
+            str = '已取消';
+        }
+        if(details.mtFlag == 5)
+        {
+            strEn = 'draft';
+            str = '草稿';
+        }
+        if(details.mtFlag == 6)
+        {
+            strEn = 'deleted';
+            str = '删除';
+        }
 
         this.down('#meetingStatusLabel').setHtml([
             '<p>',
@@ -359,49 +486,7 @@ Ext.define('IBApp.view.MeetingRequest', {
           'detail-meeting-status ',
           strEn
         ].join(""));
-      }, 
-      onReplyTap: function() {
-          Ext.Msg.show({
-            title: '参会回复',
-            // message: result.text,
-            buttons: [
-              {
-                text: '参加',
-                ui: 'action'
-              }, 
-              {
-                text: '不参加',
-                ui: 'action'
-              },
-              {
-                text: '待定',
-                itemId: 'cancel'
-              }
-            ],
-            fn: function(button) {
-              var mtRepleObj = new Object();
-              if (button == '参加') {
-                mtRepleObj.replyResult = 1;
-              };
-              if (button == '不参加') {
-                mtRepleObj.replyResult = 2;
-              };
-              if (button == '待定') {
-                mtRepleObj.replyResult = 3;
-              };
 
-            }
-          });
-      },
-
-    updateMeetingDetails: function(details) {
-        console.log('new details');
-        console.log(details);
-        var attendersstr = null;
-        var servicesstr = null;
-        var placestr = null;
-        var mtThemestr = null;
-        mtObj = details;
 
         if(null == details.mtTheme)
         {
@@ -476,12 +561,10 @@ Ext.define('IBApp.view.MeetingRequest', {
         participatorN.setValue(attendersstr);
         serviceT.setValue(servicesstr);
         meetingT.setValue(details.mtContent);
-        
     },
-
-
-
-
 });       
         
     
+Ext.JSON.encodeDate = function(d) {
+    return Ext.Date.format(d, 'Y-m-d H:i:s');
+};
