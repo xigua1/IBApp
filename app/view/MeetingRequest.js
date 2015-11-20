@@ -3,7 +3,7 @@
   data: [],
 });
 
-var mtObj = null;
+var mtObj = new Object();
 
 Ext.define('IBApp.view.MeetingRequest', {
     extend: 'Ext.form.Panel',
@@ -381,6 +381,8 @@ Ext.define('IBApp.view.MeetingRequest', {
         var servicesstr = null;
         var placestr = null;
         var mtThemestr = null;
+        mtObj = details;
+
         if(null == details.mtTheme)
         {
           mtThemestr = '待定';

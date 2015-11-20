@@ -64,7 +64,6 @@ Ext.define("IBApp.controller.MainMenu", {
     
     onMyMeetingsCommand: function () {
 
-        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'mymeetings'}));
         var day = (new Date()).getDate(),
         month = (new Date()).getMonth(),
         year = (new Date()).getFullYear();
