@@ -1,3 +1,5 @@
+var mtDetails = new Object();
+
 Ext.define('IBApp.view.RoomBookSuccess', {
     extend: 'Ext.Panel',
     requires: [
@@ -116,7 +118,7 @@ Ext.define('IBApp.view.RoomBookSuccess', {
     },
     
     onModifyMeetingInfoButton: function(button, e, eOpts) {
-        this.fireEvent("modifyMeetingInfoButtonCommand");
+        this.fireEvent("modifyMeetingInfoButtonCommand", mtDetails);
     },
 
     onMyMeetingsButton: function(button, e, eOpts) {
@@ -124,6 +126,11 @@ Ext.define('IBApp.view.RoomBookSuccess', {
     },
 
     showMeetingInfo: function(mtInfoObj, roomInfo, mtId) {
+        mtDetails = mtInfoObj;
+        mtDetails.mtId = mtId;
+        // roomIds仍然需要，提交会议修改时用
+        mtDetails.rooms = [{ 'roomNum': (roomInfo.split(' > ')[3]).split(' ')[0] }];
+
         this.down('#mtIdText').setValue(mtId);
         this.down('#mtTime').setValue(mtInfoObj.mtBeginTime + '~' + mtInfoObj.mtEndTime);
         this.down('#mtLocation').setValue(roomInfo);
