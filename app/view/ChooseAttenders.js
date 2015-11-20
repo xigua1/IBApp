@@ -3,6 +3,8 @@ var attendersStore = Ext.create('Ext.data.Store', {
 	data: [],
 });
 
+var curCol = 1;
+
 Ext.define('IBApp.view.ChooseAttenders', {
     extend: 'Ext.form.Panel',
     requires: [
@@ -48,14 +50,33 @@ Ext.define('IBApp.view.ChooseAttenders', {
         });
 
         var searchResultFieldset = Ext.create('Ext.form.FieldSet', {
-        	title: '外部常用联系人',
+        	title: '搜索结果',
         	itemId: 'searchResultFieldset',
         	hidden: true
         });
 
         var chosenPersonPanel = Ext.create('Ext.Panel', {
         	id: 'chosenPersonPanel',
-        	// layout: 'hbox',
+        	layout: 'hbox',
+        	defaults: {
+        	    xtype: 'panel',
+        		flex: 1,
+        		layout: 'vbox',
+        	},
+        	items: [
+        		{
+        			itemId: 'chosenPersonCol1',
+        		},
+        		{
+        			itemId: 'chosenPersonCol2',
+        		},
+        		{
+        			itemId: 'chosenPersonCol3',
+        		},
+        		{
+        			itemId: 'chosenPersonCol4',
+        		},
+        	]
         });
 
         var button = Ext.create('Ext.Button', {
@@ -118,8 +139,11 @@ Ext.define('IBApp.view.ChooseAttenders', {
     	var me = this;
     	attendersStore.removeAll();
     	var len = store.getCount();
-    	var chosenPersonPanel = this.down('#chosenPersonPanel');
-    	chosenPersonPanel.removeAll();
+    	this.down('#chosenPersonCol1').removeAll();
+    	this.down('#chosenPersonCol2').removeAll();
+    	this.down('#chosenPersonCol3').removeAll();
+    	this.down('#chosenPersonCol4').removeAll();
+    	curCol = 1;
 
     	for (var i = 0; i < len; i++) {
 	    	var checkbox = me.down('#checkbox' + store.getAt(i).get('userId'));
@@ -127,6 +151,7 @@ Ext.define('IBApp.view.ChooseAttenders', {
 	    		checkbox.check();
 	    	}
 	    	else {
+	    		var chosenPersonCol = this.down('#chosenPersonCol'+curCol);
 		    	var person = Ext.create('Ext.SegmentedButton', {
 		    		id: 'btn' + store.getAt(i).get('userId'),
 		    		items: [
@@ -156,7 +181,9 @@ Ext.define('IBApp.view.ChooseAttenders', {
 				        }
 				    }
 		    	});
-		    	chosenPersonPanel.add(person);
+		    	chosenPersonCol.add(person);
+		    	curCol ++;
+		    	if (curCol > 4) {curCol = 1;};
 
 		    	var at = Ext.create('IBApp.model.Attenders', {
 		    		'userId': store.getAt(i).get('userId'),
@@ -170,7 +197,7 @@ Ext.define('IBApp.view.ChooseAttenders', {
 
     onContactChecked: function ( checkbox, e, eOpts) {
     	var me = this;
-    	var chosenPersonPanel = this.down('#chosenPersonPanel');
+    	var chosenPersonPanel = this.down('#chosenPersonCol'+curCol);
 
     	var person = Ext.create('Ext.SegmentedButton', {
     		id: 'btn' + checkbox.getValue(),
@@ -201,6 +228,9 @@ Ext.define('IBApp.view.ChooseAttenders', {
 		        }
 		    }
     	});
+    	chosenPersonPanel.add(person);
+    	curCol ++;
+    	if (curCol > 4) {curCol = 1;};
 
     	var flag = 1;
     	if (checkbox.getName() == 'outContactsIds') {
@@ -211,9 +241,7 @@ Ext.define('IBApp.view.ChooseAttenders', {
         	'userName': checkbox.getLabel().split('(')[0],
         	'flag': flag,
         });
-
         attendersStore.add(at);
-    	chosenPersonPanel.add(person);
     },
 
     onContactUnchecked: function (checkbox, e, eOpts) {

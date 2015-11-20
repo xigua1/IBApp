@@ -35,6 +35,11 @@ Ext.define('IBApp.view.RoomBookSuccess', {
                 },
                 items: [
                     {
+                        xtype: 'hiddenfield',
+                        name: 'mtId',
+                        id: 'mtIdText',
+                    },
+                    {
                         label: '名称',
                         value: '无',
                     },                    
@@ -118,7 +123,8 @@ Ext.define('IBApp.view.RoomBookSuccess', {
         this.fireEvent("myMeetingsButtonCommand");
     },
 
-    showMeetingInfo: function(mtInfoObj, roomInfo) {
+    showMeetingInfo: function(mtInfoObj, roomInfo, mtId) {
+        this.down('#mtIdText').setValue(mtId);
         this.down('#mtTime').setValue(mtInfoObj.mtBeginTime + '~' + mtInfoObj.mtEndTime);
         this.down('#mtLocation').setValue(roomInfo);
         this.down('#mtOrganizer').setValue(mtInfoObj.organizerName);
