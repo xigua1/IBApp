@@ -17,7 +17,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             },
             meetingRequestView: {
                 meetingRequestToMyMeetingsCommand:'onMeetingRequestToMyMeetingsCommand',
-                meetingRequestToRoomBookSuccessCommand:'onMeetingRequestToRoomBookSuccessCommand',
+                meetingRequestModifyDetailsCommand:'onMeetingRequestModifyDetailsCommand',
                 participatorModifyCommand: 'onParticipatorModifyCommand'
             },
             devCtrRoomListView: {
@@ -115,8 +115,31 @@ Ext.define("IBApp.controller.MyMeetings", {
         window.history.go(-1);
     },
 
-    onMeetingRequestToRoomBookSuccessCommand: function() {
-        Ext.Msg.alert('会议内容修改成功！');
+    onMeetingRequestModifyDetailsCommand: function(modifiedMtDetails) {
+        var paramsJson = Ext.JSON.encode(modifiedMtDetails);
+        console.log(paramsJson);
+        var urlUpdateMeeting = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/updateMeeting';
+        Ext.Ajax.request({
+            url: urlUpdateMeeting,
+            method: 'POST',
+            disableCaching: false,
+            params: paramsJson,
+            success: function (response) {
+                var ret = response.responseText;
+                if(ret == '1') {
+                    Ext.Msg.alert('会议内容修改成功！');
+                }
+                else if(ret == '2') {
+                    Ext.Msg.alert('修改有冲突');
+                }
+                else if(ret == '0') {
+                    Ext.Msg.alert('修改失败');
+                }
+            },
+            failure: function (response) {
+                Ext.Msg.alert('访问失败');
+            }
+        });
     },
 
     onRoomListTapCommand: function() {

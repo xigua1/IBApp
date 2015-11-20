@@ -314,8 +314,19 @@ Ext.define('IBApp.view.MeetingRequest', {
     },
 
     onSubmitButtonTap: function() {
-    
-        this.fireEvent("meetingRequestToRoomBookSuccessCommand");
+        mtObj.mtTheme = this.down('#meetingNameTextid').getValue();
+        mtObj.mtContent = this.down('#meetingTextid').getValue();
+
+        mtObj.attenders = [];
+        for (var i = 0; i < attenders.getCount(); i++) {
+            var at = new Object();
+            at.userId = attenders.getAt(i).get('userId');
+            at.userName = attenders.getAt(i).get('userName');
+            at.flag = attenders.getAt(i).get('flag');
+            mtObj.attenders.push(at);
+        };
+
+        this.fireEvent("meetingRequestModifyDetailsCommand", mtObj);
         this.onNoEditButtonTap();
     },
 
@@ -407,6 +418,8 @@ Ext.define('IBApp.view.MeetingRequest', {
               attendersstr = attendersstr.replace("null","");
             }
         };
+        console.log('aaa');
+        console.log(attenders);
        
         /*添加服务*/
         for(var i = 0; i< details.services.length; i++)
