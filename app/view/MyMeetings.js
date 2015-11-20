@@ -185,8 +185,8 @@ Ext.define('IBApp.view.MyMeetings', {
 
         eventListid.getStore().setData(calendarid.eventStore.getRange());
 
-         console.log('eventListid.getStore():'+ calendarid.eventStore.getCount()  +'\n');
-         calendarid.refresh();
+        console.log('eventListid.getStore():'+ calendarid.eventStore.getCount()  +'\n');
+        calendarid.refresh();
 
 
     },

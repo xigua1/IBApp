@@ -84,7 +84,7 @@ Ext.define("IBApp.controller.MainMenu", {
     updateMyMeetingsCommand: function (bdate,edate) {
         var me = this;
         var paramsObj = new Object();
-        paramsObj.userId = '1';
+        paramsObj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
         paramsObj.beginDate = Ext.JSON.encodeDate(bdate); 
         paramsObj.endDate = Ext.JSON.encodeDate(edate); 
 
@@ -93,6 +93,14 @@ Ext.define("IBApp.controller.MainMenu", {
         var urltmp = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtList/';
         console.log('paramsJson');
         console.log(paramsJson);
+
+
+        mainMenuView = me.getMainMenuView();
+        mainMenuView.setMasked({
+            xtype: 'loadmask',
+            message: '玩命加载中...'
+        });
+
         // var urltmp = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList/';
         Ext.Ajax.request(
         {         
@@ -170,6 +178,8 @@ Ext.define("IBApp.controller.MainMenu", {
                 //更新Calendar插件的store
                 me.getMyMeetingsView().updateEventStore();
                 //更新store后再进入Calendar页面
+                mainMenuView = me.getMainMenuView();
+                mainMenuView.setMasked(false);
                 me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'mymeetings'}));
                  
             }, 
