@@ -1,3 +1,5 @@
+var mtSignInObj = new Object();
+
 Ext.define('IBApp.view.MainMenu', {
 	extend: 'Ext.Panel',
 	requires: ['Ext.Img', 'IBApp.view.UserInfoList', 'IBApp.view.FuncIcon'],
@@ -95,12 +97,30 @@ Ext.define('IBApp.view.MainMenu', {
 	},
 
 	onScanningCodeTap: function() {
+		var me = this;
 		cordova.plugins.barcodeScanner.scan(
 	        function (result) {
+	        	
 				if (!result.cancelled) {
+					
+					var showtext =result.text;
+                    var strs= new Array();
+					// var mtSignInObj = new Object();
+				    strs=showtext.split("</br>"); //字符分割 
+		
+					mtSignInObj.meetingId = strs[0].replace("mtId:","");//会议ID
+					mtSignInObj.meetingId = mtSignInObj.meetingId.replace("</br>","");
+					showtext = null;
+					for (i=1;i<strs.length ;i++ ) 
+					{ 
+						showtext += strs[i]+"</br>"; //分割后的字符输出 
+					} 
+					showtext = showtext.replace("null","");
+				
 					Ext.Msg.show({
 						title: '会议信息：',
-						message: result.text,
+						// message: result.text,
+						message:showtext,
 						buttons: [
 							{
 								text: '签到',
@@ -112,8 +132,16 @@ Ext.define('IBApp.view.MainMenu', {
 							}
 						],
 						fn: function(button) {
+							
 							if (button == '签到') {
-								Ext.Msg.alert('会议签到成功');
+						        mtSignInObj.signorId = Ext.getStore("UserInfo").getAt(0).get('userId');
+						        mtSignInObj.signorFlag = 1; //回复人标识 1.内部人员2.外部人员 
+						        mtSignInObj.signInFlag = 1; //回复方式1.手机APP 2.网页 3.短信 
+						        mtSignInObj.signInDate =Ext.JSON.encodeDate(new Date());//回复日期
+						        
+						
+						        me.fireEvent("signInCommand", mtSignInObj);
+								// Ext.Msg.alert('会议签到成功');
 							};
 						}
 					});

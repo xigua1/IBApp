@@ -13,6 +13,7 @@ Ext.define("IBApp.controller.MainMenu", {
         		roomBookingCommand: 'onRoomBookingCommand',
         		MyMeetingsCommand:'onMyMeetingsCommand',
                 deviceControlCommand: 'onDeviceControlCommand',
+                signInCommand:'onSignInCommand',
         	},
         	roomBookingView: {
         		backToMainMenuCommand: 'onBacktoMainMenuCommand',
@@ -188,6 +189,37 @@ Ext.define("IBApp.controller.MainMenu", {
             }
         }); 
  
+    },
+
+    onSignInCommand:function(mtSignInObj) {
+        var paramsJson = Ext.JSON.encode(mtSignInObj);
+        console.log('paramsJson');
+        console.log(paramsJson);
+        // var urlReplyMeeting = 'http://10.2.20.69:8080/mtservice/restService/0.1/reply/addReply';
+        var urlReplyMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/signIn/addSignIn';
+        Ext.Ajax.request({
+            url: urlReplyMeeting,
+            method: 'POST',
+            disableCaching: false,
+            params: paramsJson,
+            success: function (response) {
+                var ret = response.responseText;
+
+                  console.log('SignInret');
+                  console.log(ret);
+                if(ret != '0') {
+                    Ext.Msg.alert('签到成功！');
+                    // Ext.Msg.alert(ret);
+                }
+                else
+                {
+                    Ext.Msg.alert('签到失败');       
+                }
+            },
+            failure: function (response) {
+                Ext.Msg.alert('签到网络连接失败');
+            }
+        });
     },
 
 });
