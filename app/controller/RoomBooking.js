@@ -41,8 +41,8 @@ Ext.define("IBApp.controller.RoomBooking", {
         var me = this;
         var devices = null, services = null;
 
-        // var urlDeviceType = 'http://10.2.49.250:8080/mtservice/restService/0.1/baDevType/devTypeListByMtType/' + mtTypeId;
-        var urlDeviceType = 'http://10.2.20.69:8080/mtservice/restService/0.1/baDevType/devTypeListByMtType/' + mtTypeId;
+        var urlDeviceType = 'http://10.2.49.250:8080/mtservice/restService/0.1/baDevType/devTypeListByMtType/' + mtTypeId;
+        // var urlDeviceType = 'http://10.2.20.69:8080/mtservice/restService/0.1/baDevType/devTypeListByMtType/' + mtTypeId;
         Ext.Ajax.request({
             url: urlDeviceType,
             method: 'GET',
@@ -56,8 +56,8 @@ Ext.define("IBApp.controller.RoomBooking", {
             }
         });
 
-        // var urlServiceType = 'http://10.2.49.250:8080/mtservice/restService/0.1/mtService/mtServiceList/' + mtTypeId;
-        var urlServiceType = 'http://10.2.20.69:8080/mtservice/restService/0.1/mtService/mtServiceList/' + mtTypeId;
+        var urlServiceType = 'http://10.2.49.250:8080/mtservice/restService/0.1/mtService/mtServiceList/' + mtTypeId;
+        // var urlServiceType = 'http://10.2.20.69:8080/mtservice/restService/0.1/mtService/mtServiceList/' + mtTypeId;
         Ext.Ajax.request({
             url: urlServiceType,
             method: 'GET',
@@ -95,8 +95,8 @@ Ext.define("IBApp.controller.RoomBooking", {
         obj.devTypeIds = Ext.JSON.encode(obj.devTypeIds);
         var paramsJson = Ext.JSON.encode(obj);
 
-        // var urlGetRecommendMtRoom = 'http://10.2.49.250:8080/mtservice/restService/0.1/mtRoom/recommendList/';
-        var urlGetRecommendMtRoom = 'http://10.2.20.69:8080/mtservice/restService/0.1/mtRoom/recommendList/';
+        var urlGetRecommendMtRoom = 'http://10.2.49.250:8080/mtservice/restService/0.1/mtRoom/recommendList/';
+        // var urlGetRecommendMtRoom = 'http://10.2.20.69:8080/mtservice/restService/0.1/mtRoom/recommendList/';
         Ext.Ajax.request({
             url: urlGetRecommendMtRoom,
             method: 'POST',
@@ -155,8 +155,8 @@ Ext.define("IBApp.controller.RoomBooking", {
         
         var paramsJson = Ext.JSON.encode(paramsObj);
         console.log(paramsJson);
-        // var urlAddMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/addMeeting';
-        var urlAddMeeting = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/addMeeting';
+        var urlAddMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/addMeeting';
+        // var urlAddMeeting = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/addMeeting';
         Ext.Ajax.request({
             url: urlAddMeeting,
             method: 'POST',
