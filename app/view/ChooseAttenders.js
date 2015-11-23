@@ -28,15 +28,27 @@ Ext.define('IBApp.view.ChooseAttenders', {
         };
 
         var searchBar = Ext.create('Ext.field.Search', {
+            itemId: 'userNameSearchBar',
             placeHolder: '姓名',
             centered: true,
             width: '80%',
+            // listeners: {
+            //     change: { fn: this.onSearchBarBlur, scope: this },
+            // }
         });
+
+        var searchButton = {
+            xtype: 'button',
+            ui: 'action',
+            text: '搜索',
+            handler: this.onSearchTap,
+            scope: this
+        };
 
         var topToolbar = {
         	xtype: 'toolbar',
         	docked: 'top',
-        	items: [backButton, searchBar]
+        	items: [backButton, searchBar, { xtype: 'spacer' },searchButton]
         };
 
         var inContactsFieldset = Ext.create('Ext.form.FieldSet', {
@@ -133,6 +145,31 @@ Ext.define('IBApp.view.ChooseAttenders', {
     		    contactsFieldset.add(contact);
     		}
     	};
+    },
+
+    showUserSearchList: function(userList) {
+        var searchResultFieldset = this.down('#searchResultFieldset');
+        searchResultFieldset.removeAll();
+
+        if (userList != null) {
+            var arrLen = userList.length;
+
+            for (var i=0; i < arrLen; i++) {
+                var contact = Ext.create('Ext.field.Checkbox', {
+                    name: 'inContactsIds',
+                    id: 'checkbox' + userList[i].userId,
+                    label: userList[i].userName + '(' + userList[i].officeName + ')',
+                    value: userList[i].userId,
+                    listeners: {
+                        check: { fn: this.onContactChecked, scope: this },
+                        uncheck: { fn: this.onContactUnchecked, scope: this },
+                    }
+                });
+
+                searchResultFieldset.add(contact);
+            }
+        };
+        searchResultFieldset.show();
     },
 
     showExistAttenders: function(store) {
@@ -263,5 +300,12 @@ Ext.define('IBApp.view.ChooseAttenders', {
     	};
     
 	  	this.fireEvent("backToMeetingRequest", mtAttenders, attendersStore);
+    },
+
+    onSearchTap: function() {
+        var userName = this.down('#userNameSearchBar').getValue();
+        if (userName != null) {
+            this.fireEvent("getUserByName", userName);
+        };
     }
 });

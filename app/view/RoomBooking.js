@@ -180,8 +180,8 @@ Ext.define("IBApp.view.RoomBooking", {
         // mtTypeSelector.getStore().getProxy().setExtraParam('userId', userId);
         /* 目前GET方法采用的地址拼接的方式 */
         var mtTypeSelector = this.down('#meetingTypeSelector');
-        // mtTypeSelector.getStore().getProxy().setUrl('http://10.2.49.250:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
-        mtTypeSelector.getStore().getProxy().setUrl('http://10.2.20.69:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
+        mtTypeSelector.getStore().getProxy().setUrl('http://10.2.49.250:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
+        // mtTypeSelector.getStore().getProxy().setUrl('http://10.2.20.69:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
         mtTypeSelector.getStore().load();
     },
 
