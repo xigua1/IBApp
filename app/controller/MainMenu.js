@@ -90,8 +90,8 @@ Ext.define("IBApp.controller.MainMenu", {
 
         var paramsJson = Ext.JSON.encode(paramsObj);
         /* 从后台进行验证 */
-        // var urltmp = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtList/';
-         var urltmp = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList/';
+        var urltmp = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtList/';
+         // var urltmp = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList/';
         console.log('meeting/mtList/---paramsJson');
         console.log(paramsJson)
 

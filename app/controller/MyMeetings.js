@@ -31,6 +31,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             searchView:{
                 SearchToMyMeetingsCommand:'onSearchToMyMeetingsCommand',
                 SearchCommand:'onSearchCommand',
+                searchMeetingsListCommand:'onMeetingsListCommand',
             },
             chooseAttendersView: {
                 backToMeetingRequest: 'onBackToMeetingRequest',
@@ -151,14 +152,15 @@ Ext.define("IBApp.controller.MyMeetings", {
     },
 
     onMeetingsListCommand: function(record) {
+        console.log('搜索list')
         // this.getMeetingRequestView().modifyMeetingDetails(record);
         var mtId = record.get('mtId');
         console.log('mtId');
         console.log(mtId);
         var me = this;
         var details = null;
-        // var urlmtdetails = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
-        var urlmtdetails = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
+        var urlmtdetails = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
+        // var urlmtdetails = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
         Ext.Ajax.request({
             url: urlmtdetails,
             method: 'GET',
@@ -188,54 +190,119 @@ Ext.define("IBApp.controller.MyMeetings", {
     onSearchCommand: function (view, keyword) {
         var me = this;
         var paramsObj = new Object();
-        paramsObj.userId = '1';
-        paramsObj.beginDate = '2015-11-13 00:00:00';
-        paramsObj.endDate = '2015-11-30 00:00:00';
+        /*搜索范围当月第一天到最后一天*/
+        var day = (new Date()).getDate(),
+        month = (new Date()).getMonth(),
+        year = (new Date()).getFullYear();
+        var bdate = new Date(year, month, 1,0,0);
+        var edate = new Date(year, month, Ext.Date.getDaysInMonth(bdate),24,0);
+        /*搜索范围输入*/
+        paramsObj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        paramsObj.beginDate = Ext.JSON.encodeDate(bdate); 
+        paramsObj.endDate = Ext.JSON.encodeDate(edate); 
+        paramsObj.condition = keyword;
 
         var paramsJson = Ext.JSON.encode(paramsObj);
-        console.log(paramsJson);
         /* 从后台进行验证 */
+        var urltmp = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtList/';
+         // var urltmp = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList/';
+
+        console.log('搜索------paramsJson');
+        console.log(paramsJson);
+
+        myMeetingsView = me.getMyMeetingsView();
+        myMeetingsView.setMasked({
+            xtype: 'loadmask',
+            message: '搜索中...'
+        });
+
         Ext.Ajax.request(
-        {
-            // url:'http://192.168.20.109:8005/BackEndTest/PlaceType.php',
-            url: 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList',
+        {         
+            url: urltmp,
             method: 'POST',
             disableCaching: false,
-            withCredentials: true,
-            useDefaultXhrHeader: false,
+            // withCredentials: true,
+            // useDefaultXhrHeader: false,
             params: paramsJson,
             success: function (response) 
             {
                 var resultResponse = Ext.JSON.decode(response.responseText);
 
                 console.log(resultResponse);
-
-                console.log(resultResponse[0].mtTheme);
-                /* set MyMeetingsEventStore */  
+                Ext.getStore("MyMeetingsSearch").removeAll();
+                /* set MyMeetingsEventStore  mtFlag:1-正在审核；2-未开始；3-已结束；4-已取消；5-草稿；6-删除；*/  
                 for(var i = 0; i< resultResponse.length; i++)
                 {
                     var curUser = Ext.create('IBApp.model.MyMeetingsEvent', {
-                     // 'userId': resultResponse.userId,
+                     /*根据Calendar控件需要，model的name有些与接收到的Json名称一致，有些不一致*/
                      'title': resultResponse[i].mtTheme,
-                     // 'mtContent': resultResponse.mtContent,
-                     'start': resultResponse[i].mtBeginTime,
-                     'end': resultResponse[i].mtEndTime,
-                     'event': resultResponse[i].mtFlag,
-                     // 'roomName': resultResponse.rooms.roomName,
+                     'start': new Date(resultResponse[i].mtBeginTime),
+                     'end': new Date(resultResponse[i].mtEndTime),
+                     'event': '8.03 - 8:05',
+                     'location':resultResponse[i].rooms[0].roomNum,
+                     'mtFlag':resultResponse[i].mtFlag,
+                     'mtId':resultResponse[i].mtId,
+                     'organizerName':resultResponse[i].organizerName,
+                     'mtContent':resultResponse[i].mtContent,
                     });
-                    console.log('title:'+ resultResponse[i].mtTheme +'\n');
-                    console.log('start:'+ resultResponse[i].mtBeginTime +'\n');
-                    Ext.getStore("MyMeetingsSearch").add(curUser);
-                }
 
+
+                    if(resultResponse[i].mtFlag == 1)
+                    {
+                        curUser.set('statusEn','checking');
+                        curUser.set('status','正在审核');
+                    }
+                    if(resultResponse[i].mtFlag == 2)
+                    {
+                        curUser.set('statusEn','waiting');
+                        curUser.set('status','未开始');
+                    }
+                    if(resultResponse[i].mtFlag == 3)
+                    {
+                        curUser.set('statusEn','closed');
+                        curUser.set('status','已结束');
+                    }
+                    if(resultResponse[i].mtFlag == 4)
+                    {
+                        curUser.set('statusEn','canceled');
+                        curUser.set('status','已取消');
+                    }
+                    if(resultResponse[i].mtFlag == 5)
+                    {
+                        curUser.set('statusEn','draft');
+                        curUser.set('status','草稿');
+                    }
+                    if(resultResponse[i].mtFlag == 6)
+                    {
+                        curUser.set('statusEn','deleted');
+                        curUser.set('status','删除');
+                    }
+
+                    if(null == curUser.get('title'))
+                    {
+                        curUser.set('title', '待定');
+                    }
+
+                    curUser.set('startstr', Ext.JSON.encodeDate(curUser.get('start')));
+                    curUser.set('endstr', Ext.JSON.encodeDate(curUser.get('end')));
+                    Ext.getStore("MyMeetingsSearch").add(curUser);                
+                };
+               
+                
+                // //更新Calendar插件的store
+                // me.getMyMeetingsView().updateEventStore();
+                //更新store后再进入Calendar页面
+                myMeetingsView = me.getMyMeetingsView();
+                myMeetingsView.setMasked(false);
+                me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'search'}));
+                 
             }, 
             failure: function (response) 
-            {
-                me.sessionId = null;
-                //me.signInFailure('登录失败...请重试.');
-                console.log("连接失败");
+            { 
+                Ext.Msg.alert('搜索会议失败！');
             }
-        });  
+        }); 
+ 
     },
 
     onMtReplyCommand:function(mtReplyObj) {

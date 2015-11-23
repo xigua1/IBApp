@@ -5,7 +5,7 @@ Ext.define('IBApp.view.Search', {
     requires:[
     	'Ext.form.FieldSet',
         'Ext.dataview.List',
-        'IBApp.view.SearchList',
+        'IBApp.store.MyMeetingsSearch',
     ],
   
    config:{
@@ -40,7 +40,23 @@ Ext.define('IBApp.view.Search', {
             placeHolder: '会议室名称/主办单位/会议主题',
            
         };
-     
+        var Slist =Ext.create('Ext.dataview.List', {
+            // docked: 'bottom',
+            onItemDisclosure: true,
+            id:'Slistid',
+            height: 250,
+            itemHeight: 70,
+            style: 'border-top: 1px solid #f0f0f0',
+            itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{status}</span></div>',
+            '<div class="list-item-narrative">{location}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startstr}&nbsp;~&nbsp;{endstr}</div>'
+            ].join(""),
+            emptyText: '<div class="notes-list-empty-text">没有会议</div>',
+            store: 'MyMeetingsSearch',
+            listeners: {
+                itemtap: { fn: this.onListTap, scope: this },
+            },
+        });
+
         this.add([
         	{
                 xtype: 'toolbar',
@@ -52,12 +68,11 @@ Ext.define('IBApp.view.Search', {
                     searchButton,
                 ]
         	}, 
-            {
-                xtype: 'searchlist',
-                itemId: 'searchlistid',
-            },
-        	
+            Slist
         ]);
+
+        Slist.on("itemtap",function(list,index,target,record,e,opt){  
+        });
     },
 
     onBackButtonTap: function() {
@@ -71,6 +86,12 @@ Ext.define('IBApp.view.Search', {
 	    var keyword = keywordid.getValue();
     	me.fireEvent('SearchCommand', me, keyword);
         
+    },
+
+    onListTap: function (list, index, target, record, e, eOpts) {
+        // var me = this;
+        console.log('searchlist!!!!!!');
+        this.fireEvent('searchMeetingsListCommand', record);
     },
 });       
         
