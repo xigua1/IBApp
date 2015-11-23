@@ -1,22 +1,28 @@
 Ext.define('MeetingRoom', {
     extend: 'Ext.data.Model',
     config: {
-        fields: ['roomId']
+        fields: [
+            { name: 'roomId', type: 'string' },
+            { name: 'roomName', type: 'string' },
+            { name: 'roomNum', type: 'string' },
+            { name: 'floorName', type: 'string' },
+            { name: 'building', type: 'string' },
+        ]
     }
 });
 
 var store = Ext.create('Ext.data.Store', {
    model: 'MeetingRoom',
    data: [
-       { roomId: 'B0902' },
-       { roomId: 'B0910'  },
-       { roomId: 'B1002' },
-       { roomId: 'B1018'  },
+       // { roomId: 'B0902' },
+       // { roomId: 'B0910'  },
+       // { roomId: 'B1002' },
+       // { roomId: 'B1018'  },
    ]
 });
 
 Ext.define("IBApp.view.DevCtrRoomList", {
-    extend: "Ext.Panel",
+    extend: "Ext.form.Panel",
     requires: ['Ext.data.Store'],
     xtype: 'devctrroomlistview',
     config:{
@@ -47,15 +53,12 @@ Ext.define("IBApp.view.DevCtrRoomList", {
         var roomList = Ext.create('Ext.dataview.List', {
             flex: 1,
             onItemDisclosure: true,
-            height: 250,
             itemHeight: 70,
             // style: 'border-top: 1px solid #f0f0f0',
             store: store,
-            // itemTpl: '{roomId}',
             itemTpl: [
-                '<div class="list-item-title">{roomId}</div>',
-                // '<div class="list-item-narrative">{event}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{location}</div>'
-                '<div class="list-item-narrative">XXX项目例会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;视频会议室</div>'
+                '<div class="list-item-title">{roomName}</div>',
+                '<div class="list-item-narrative">{building}&nbsp;>&nbsp;{floorName}&nbsp;>&nbsp;{roomNum}</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有可控制的会议室</div>',
             listeners: {
@@ -77,4 +80,17 @@ Ext.define("IBApp.view.DevCtrRoomList", {
         this.fireEvent('roomListTapCommand', record);
     },
 
+    showRoomList: function(roomList) {
+        store.removeAll();
+        for (var i = 0; i < roomList.length; i++) {
+            var room = Ext.create('MeetingRoom', {
+                'roomId': roomList[i].roomId,
+                'roomName': roomList[i].roomName,
+                'roomNum': roomList[i].roomNum,
+                'floorName': roomList[i].floorName,
+                'building': roomList[i].building,
+            });
+            store.add(room);
+        };
+    }
 });

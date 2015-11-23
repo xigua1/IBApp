@@ -58,9 +58,26 @@ Ext.define("IBApp.controller.MainMenu", {
     },
 
     onDeviceControlCommand: function () {
-        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devctrroomlist'}));
-      
+        var me = this;
+        var obj = new Object();
+        obj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        var paramsJson = Ext.JSON.encode(obj);
 
+        var urlGetMtRooms = 'http://10.2.49.250:8080/mtservice/restService/0.1/mtRoom/roomList';
+        Ext.Ajax.request({
+            url: urlGetMtRooms,
+            method: 'POST',
+            disableCaching: false,
+            params: paramsJson,
+            success: function (response) {
+                var roomList = Ext.JSON.decode(response.responseText);
+                me.getDevCtrRoomListView().showRoomList(roomList);
+                me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devctrroomlist'}));
+            },
+            failure: function (response) {
+                Ext.Msg.alert('获取会议列表失败');
+            }
+        });
     },
     
     onMyMeetingsCommand: function () {
