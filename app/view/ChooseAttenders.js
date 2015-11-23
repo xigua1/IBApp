@@ -176,6 +176,8 @@ Ext.define('IBApp.view.ChooseAttenders', {
     	var me = this;
     	attendersStore.removeAll();
     	var len = store.getCount();
+        this.down('#searchResultFieldset').removeAll();
+        this.down('#searchResultFieldset').hide();
     	this.down('#chosenPersonCol1').removeAll();
     	this.down('#chosenPersonCol2').removeAll();
     	this.down('#chosenPersonCol3').removeAll();
@@ -234,51 +236,54 @@ Ext.define('IBApp.view.ChooseAttenders', {
 
     onContactChecked: function ( checkbox, e, eOpts) {
     	var me = this;
-    	var chosenPersonPanel = this.down('#chosenPersonCol'+curCol);
+        var SegmentedButton = me.down('#btn' + checkbox.getValue());
+        
+        if (SegmentedButton == null) {
+    	    var chosenPersonPanel = this.down('#chosenPersonCol'+curCol);
+            var person = Ext.create('Ext.SegmentedButton', {
+                id: 'btn' + checkbox.getValue(),
+                items: [
+                    {
+                        text: 'X',
+                        width: 30
+                    },
+                    {
+                        text: checkbox.getLabel(),
+                        disabled: true
+                    },
+                ],
+                listeners: {
+                    toggle: function(container, button, pressed){
+                        if ((button.getText() == 'X') && pressed) {
+                            var userId = this.getId().replace('btn', '');
 
-    	var person = Ext.create('Ext.SegmentedButton', {
-    		id: 'btn' + checkbox.getValue(),
-    		items: [
-    			{
-    				text: 'X',
-    				width: 30
-    			},
-    			{
-    				text: checkbox.getLabel(),
-    				disabled: true
-    			},
-    		],
-    		listeners: {
-		        toggle: function(container, button, pressed){
-		            if ((button.getText() == 'X') && pressed) {
-		            	var userId = this.getId().replace('btn', '');
+                            var checkbox = me.down('#checkbox' + userId);
+                            if (checkbox != null) {
+                                checkbox.uncheck();
+                            }
+                            else {
+                                attendersStore.removeAt(attendersStore.findExact('userId', userId));
+                                this.destroy();
+                            }
+                        };
+                    }
+                }
+            });
+            chosenPersonPanel.add(person);
+            curCol ++;
+            if (curCol > 4) {curCol = 1;};
 
-		            	var checkbox = me.down('#checkbox' + userId);
-		            	if (checkbox != null) {
-		            		checkbox.uncheck();
-		            	}
-		            	else {
-		            		attendersStore.removeAt(attendersStore.findExact('userId', userId));
-		            		this.destroy();
-		            	}
-		            };
-		        }
-		    }
-    	});
-    	chosenPersonPanel.add(person);
-    	curCol ++;
-    	if (curCol > 4) {curCol = 1;};
-
-    	var flag = 1;
-    	if (checkbox.getName() == 'outContactsIds') {
-    		flag = 2;
-    	};
-        var at = Ext.create('IBApp.model.Attenders', {
-        	'userId': checkbox.getValue(),
-        	'userName': checkbox.getLabel().split('(')[0],
-        	'flag': flag,
-        });
-        attendersStore.add(at);
+            var flag = 1;
+            if (checkbox.getName() == 'outContactsIds') {
+                flag = 2;
+            };
+            var at = Ext.create('IBApp.model.Attenders', {
+                'userId': checkbox.getValue(),
+                'userName': checkbox.getLabel().split('(')[0],
+                'flag': flag,
+            });
+            attendersStore.add(at);    
+        };
     },
 
     onContactUnchecked: function (checkbox, e, eOpts) {
