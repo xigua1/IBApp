@@ -522,7 +522,7 @@ Ext.define('IBApp.view.MeetingRequest', {
         {
             if(null != details.services[i])
             {
-              servicesstr += details.services[i].serviceName + ';';
+              servicesstr += details.services[i].serviceName +':' + details.services[i].serviceNum + ';';
               servicesstr = servicesstr.replace("null","");
             }
         };

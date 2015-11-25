@@ -23,6 +23,7 @@ Ext.define("IBApp.controller.MainMenu", {
             myMeetingsView: {
                 MyMeetingsToMainMenuCommand: 'onBacktoMainMenuCommand',
                 updateMyCalendarCommand:'updateMyMeetingsCommand',
+                MyMeetingsRefreshCommand:'onMyMeetingsCommand',
             },
             devCtrRoomListView: {
                 backToMainMenuCommand: 'onBacktoMainMenuCommand',
@@ -101,6 +102,7 @@ Ext.define("IBApp.controller.MainMenu", {
     },
 
     updateMyMeetingsCommand: function (bdate,edate) {
+        console.log('updateMyMeetingsCommand');
         var me = this;
         var paramsObj = new Object();
         paramsObj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');

@@ -2,10 +2,11 @@ Ext.define('IBApp.view.MyMeetings', {
 	extend: 'Ext.Panel',
 	xtype:'mymeetingsview',	
 	requires:[
-			'Ext.dataview.List',
-    		'Ext.ux.TouchCalendar',
-    		'Ext.ux.TouchCalendarView',
-    		'Ext.ux.TouchCalendarSimpleEvents'
+		'Ext.dataview.List',
+    	'Ext.ux.TouchCalendar',
+    	'Ext.ux.TouchCalendarView',
+    	'Ext.ux.TouchCalendarSimpleEvents',
+        'Ext.plugin.PullRefresh',
     ],
 
     config: {
@@ -54,6 +55,34 @@ Ext.define('IBApp.view.MyMeetings', {
         	itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{status}</span></div>',
             '<div class="list-item-narrative">{location}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startstr}&nbsp;~&nbsp;{endstr}</div>'
             ].join(""),
+            plugins: [ 
+            { 
+                // var me = this;
+                xclass: 'Ext.plugin.PullRefreshFn',
+                pullRefreshText: '下拉获取更多。。。' ,
+                refreshFn: function() {  
+                    var me = this;
+                    // Ext.getStore('ENTER YOUR STORE HERE').load('',1) 
+                    console.log('1111111111');
+                    /*更新范围当月第一天到最后一天*/
+                    var day = (new Date()).getDate(),
+                    month = (new Date()).getMonth(),
+                    year = (new Date()).getFullYear();
+                    var bdate = new Date(year, month, 1,0,0);
+                    var edate = new Date(year, month, Ext.Date.getDaysInMonth(bdate),24,0);
+                    console.log(bdate);
+                    console.log(edate);
+                    
+                    console.log(this.getParent());
+
+                    this.getParent().getParent().onUpdateMyCalendarTap(bdate,edate);
+
+                    // me.fireEvent('MyMeetingsRefreshCommand');
+                    // me.fireEvent("updateMyCalendarCommand",bdate,edate);
+                    // me.onUpdateMyCalendarTap(bdate,edate);
+                } 
+            } 
+            ], 
             emptyText: '<div class="notes-list-empty-text">没有会议</div>',
         	store: new Ext.data.Store({
                 model: 'IBApp.model.MyMeetingsEvent',
