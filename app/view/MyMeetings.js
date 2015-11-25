@@ -61,9 +61,6 @@ Ext.define('IBApp.view.MyMeetings', {
                 xclass: 'Ext.plugin.PullRefreshFn',
                 pullRefreshText: '下拉获取更多。。。' ,
                 refreshFn: function() {  
-                    var me = this;
-                    // Ext.getStore('ENTER YOUR STORE HERE').load('',1) 
-                    console.log('1111111111');
                     /*更新范围当月第一天到最后一天*/
                     var day = (new Date()).getDate(),
                     month = (new Date()).getMonth(),
@@ -72,14 +69,7 @@ Ext.define('IBApp.view.MyMeetings', {
                     var edate = new Date(year, month, Ext.Date.getDaysInMonth(bdate),24,0);
                     console.log(bdate);
                     console.log(edate);
-                    
-                    console.log(this.getParent());
-
                     this.getParent().getParent().onUpdateMyCalendarTap(bdate,edate);
-
-                    // me.fireEvent('MyMeetingsRefreshCommand');
-                    // me.fireEvent("updateMyCalendarCommand",bdate,edate);
-                    // me.onUpdateMyCalendarTap(bdate,edate);
                 } 
             } 
             ], 
