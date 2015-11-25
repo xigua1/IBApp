@@ -1,6 +1,6 @@
 Ext.define('IBApp.controller.Login', {
 	extend: 'Ext.app.Controller',
-	requires: ['IBApp.store.UserInfo'],
+	requires: ['IBApp.store.UserInfo','IBApp.store.UrlAddr'],
 	config: {
 		refs: {
 			loginView: 'loginview',
@@ -27,7 +27,6 @@ Ext.define('IBApp.controller.Login', {
 
 	onSignInCommand: function(view, userid, password) {
 		console.log('userid: ' + userid + '\n' + 'Password: ' + password);
-
 		var me = this,
 		    loginView = me.getLoginView();
 
@@ -35,16 +34,17 @@ Ext.define('IBApp.controller.Login', {
 			loginView.showSignInFailedMessage('请输入用户名和密码.');
 			return;
 		}
-
 		loginView.setMasked({
 			xtype: 'loadmask',
 			message: '登录中...'
 		});
-
+		//从store里提取地址
+		var URLLogin = Ext.getStore("UrlAddr").getAt(0).get('urlLogin');
+        var urltmp = URLLogin + '/login/doPostAuthenticationInfoRS/';
 		/* 从后台进行验证 */
 		Ext.Ajax.request({
 			// url: 'http://192.168.31.232/BackEndTest/Authority.php',
-			url: 'http://10.2.49.251:8080/pactera-jeesite/restService/userservice/0.1/login/doPostAuthenticationInfoRS/',
+			url: urltmp,
 			method: 'POST',
 			disableCaching: false,
 			withCredentials: true,
@@ -84,7 +84,7 @@ Ext.define('IBApp.controller.Login', {
 		});
 
 		// just for test, will be deleted after debug
-		// me.signInSuccess();
+		// me.signInSuccess('APP_ADMIN');
 	},
 
 	signInSuccess: function (userRoles) {

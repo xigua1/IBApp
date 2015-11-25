@@ -1,16 +1,21 @@
 Ext.define('IBApp.view.Search', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.Panel',
     xtype: 'searchview',
   
     requires:[
     	'Ext.form.FieldSet',
         'Ext.dataview.List',
         'IBApp.store.MyMeetingsSearch',
+        'Ext.plugin.PullRefresh',
+      
     ],
   
    config:{
-        scrollable:'vertical',
-        fullscreen: true,
+        // scrollable:'vertical',
+        // fullscreen: true,
+        layout: {
+            type: 'vbox',   
+        },
     },
     initialize: function () {
 
@@ -40,22 +45,50 @@ Ext.define('IBApp.view.Search', {
             placeHolder: '会议室名称/主办单位/会议主题',
            
         };
-        var Slist =Ext.create('Ext.dataview.List', {
-            // docked: 'bottom',
+        // var Slist =Ext.create('Ext.dataview.List', {
+        //     // docked: 'bottom',
+        //     onItemDisclosure: true,
+        //     id:'Slistid',
+        //     height: 250,
+        //     itemHeight: 70,
+        //     style: 'border-top: 1px solid #f0f0f0',
+        //     itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{status}</span></div>',
+        //     '<div class="list-item-narrative">{location}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startstr}&nbsp;~&nbsp;{endstr}</div>'
+        //     ].join(""),
+        //     emptyText: '<div class="notes-list-empty-text">没有会议</div>',
+        //     store: 'MyMeetingsSearch',
+        //     listeners: {
+        //         itemtap: { fn: this.onListTap, scope: this },
+        //     },
+        // });
+        var Slist = Ext.create('Ext.dataview.List', {
+            flex: 1,
             onItemDisclosure: true,
-            id:'Slistid',
-            height: 250,
             itemHeight: 70,
-            style: 'border-top: 1px solid #f0f0f0',
+            plugins: [ 
+            { 
+                  xclass: 'Ext.plugin.PullRefreshFn',
+                  pullRefreshText: 'Pull down for more new Tweets!' ,
+                  refreshFn: function() {  
+                         // Ext.getStore('ENTER YOUR STORE HERE').load('',1) 
+                         console.log('1111111111');
+                    } 
+            } 
+            ], 
+            store: 'MyMeetingsSearch',
             itemTpl: ['<div class="list-item-title">{title}<span class="meeting-status {statusEn}">{status}</span></div>',
             '<div class="list-item-narrative">{location}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startstr}&nbsp;~&nbsp;{endstr}</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有会议</div>',
-            store: 'MyMeetingsSearch',
             listeners: {
                 itemtap: { fn: this.onListTap, scope: this },
             },
+
         });
+
+
+
+
 
         this.add([
         	{
@@ -93,6 +126,8 @@ Ext.define('IBApp.view.Search', {
         console.log('searchlist!!!!!!');
         this.fireEvent('searchMeetingsListCommand', record);
     },
-});       
-        
+});    
+
+
+   
     

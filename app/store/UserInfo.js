@@ -4,6 +4,10 @@ Ext.define("IBApp.store.UserInfo", {
     config: {
         model: "IBApp.model.UserInfo",
         data: [
+        // {
+        // 	userId:'1',
+        //     userRoles:'APP_ADMIN',
+        // }
         ]
     }
 });

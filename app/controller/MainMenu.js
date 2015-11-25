@@ -1,5 +1,7 @@
+
 Ext.define("IBApp.controller.MainMenu", {
     extend: "Ext.app.Controller",
+    requires: ['IBApp.store.UrlAddr'],
     config: {
         refs: {
             // We're going to lookup our views by xtype.
@@ -33,7 +35,6 @@ Ext.define("IBApp.controller.MainMenu", {
             'devctrroomlist': 'showDevCtrRoomListView'
         }
     },
-
     showMainMenuView: function() {
         Ext.Viewport.animateActiveItem(this.getMainMenuView(), 'fade');
     },
@@ -91,15 +92,15 @@ Ext.define("IBApp.controller.MainMenu", {
 
         var paramsJson = Ext.JSON.encode(paramsObj);
         /* 从后台进行验证 */
-        var urltmp = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtList/';
-         // var urltmp = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList/';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urltmp = URLServer + '/meeting/mtList/';
         console.log('meeting/mtList/---paramsJson');
         console.log(paramsJson)
 
         mainMenuView = me.getMainMenuView();
         mainMenuView.setMasked({
             xtype: 'loadmask',
-            message: '玩命加载中...'
+            message: '加载中...'
         });
 
         Ext.Ajax.request(
@@ -186,6 +187,7 @@ Ext.define("IBApp.controller.MainMenu", {
             failure: function (response) 
             { 
                 Ext.Msg.alert('获取会议列表失败！');
+                mainMenuView.setMasked(false);
             }
         }); 
  
@@ -195,8 +197,8 @@ Ext.define("IBApp.controller.MainMenu", {
         var paramsJson = Ext.JSON.encode(mtSignInObj);
         console.log('paramsJson');
         console.log(paramsJson);
-        // var urlReplyMeeting = 'http://10.2.20.69:8080/mtservice/restService/0.1/reply/addReply';
-        var urlReplyMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/signIn/addSignIn';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlReplyMeeting = URLServer + '/signIn/addSignIn/';
         Ext.Ajax.request({
             url: urlReplyMeeting,
             method: 'POST',

@@ -27,9 +27,9 @@ Ext.application({
 
     controllers: ['Login', 'MainMenu', 'RoomBooking','MyMeetings'],
 
-    models: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode', 'Attenders'],
+    models: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode', 'Attenders','UrlAddr'],
 
-    stores: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode','MyMeetingsSearch'],
+    stores: ['UserInfo', 'MeetingType','PlaceType', 'MyMeetingsEvent','SceneMode','MyMeetingsSearch','UrlAddr'],
     icon: {
         '57': 'resources/icons/Icon.png',
         '72': 'resources/icons/Icon~ipad.png',

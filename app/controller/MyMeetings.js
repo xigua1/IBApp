@@ -1,5 +1,6 @@
 Ext.define("IBApp.controller.MyMeetings", {
     extend: "Ext.app.Controller",
+    requires: ['IBApp.store.UrlAddr'],
     config: {
         refs: {
             // We're going to lookup our views by xtype.
@@ -80,8 +81,10 @@ Ext.define("IBApp.controller.MyMeetings", {
         var inContacts = null, outContacts = null;
 
         /* 获取内部常用联系人 */
-        var urlGetInContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
+        // var urlGetInContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
         // var urlGetInContacts = 'http://10.2.20.69:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlGetInContacts = URLServer + '/topContact/inContactsList/' +  userId + '/6';
         Ext.Ajax.request({
             url: urlGetInContacts,
             method: 'GET',
@@ -95,8 +98,10 @@ Ext.define("IBApp.controller.MyMeetings", {
             }
         });
         /* 获取外部常用联系人 */
-        var urlGetOutContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
+        // var urlGetOutContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
         // var urlGetOutContacts = 'http://10.2.20.69:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlGetOutContacts = URLServer + '/topContact/outContactsList/' +  userId + '/6';
         Ext.Ajax.request({
             url: urlGetOutContacts,
             method: 'GET',
@@ -123,7 +128,9 @@ Ext.define("IBApp.controller.MyMeetings", {
         obj.userName = userName;
         var paramsJson = Ext.JSON.encode(obj);
 
-        var urlGetUserByName = 'http://10.2.49.250:8080/mtservice/restService/0.1/user/userList';
+        // var urlGetUserByName = 'http://10.2.49.250:8080/mtservice/restService/0.1/user/userList';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlGetUserByName = URLServer + '/user/userList/';
         Ext.Ajax.request({
             url: urlGetUserByName,
             method: 'POST',
@@ -146,7 +153,9 @@ Ext.define("IBApp.controller.MyMeetings", {
     onMeetingRequestModifyDetailsCommand: function(modifiedMtDetails) {
         var paramsJson = Ext.JSON.encode(modifiedMtDetails);
         console.log(paramsJson);
-        var urlUpdateMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/updateMeeting';
+        // var urlUpdateMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/updateMeeting';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlUpdateMeeting = URLServer + '/meeting/updateMeeting/';
         Ext.Ajax.request({
             url: urlUpdateMeeting,
             method: 'POST',
@@ -182,8 +191,10 @@ Ext.define("IBApp.controller.MyMeetings", {
         console.log(mtId);
         var me = this;
         var details = null;
-        var urlmtdetails = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
+        // var urlmtdetails = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
         // var urlmtdetails = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlmtdetails = URLServer + '/meeting/mtInfo/' + mtId;
         Ext.Ajax.request({
             url: urlmtdetails,
             method: 'GET',
@@ -203,6 +214,8 @@ Ext.define("IBApp.controller.MyMeetings", {
     },
 
     onSearchviewCommand: function() {
+        //先删除上次的搜索记录
+        Ext.getStore("MyMeetingsSearch").removeAll();
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'search'}));
     },
 
@@ -227,8 +240,10 @@ Ext.define("IBApp.controller.MyMeetings", {
 
         var paramsJson = Ext.JSON.encode(paramsObj);
         /* 从后台进行验证 */
-        var urltmp = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtList/';
+        // var urltmp = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtList/';
          // var urltmp = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtList/';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urltmp = URLServer + '/meeting/mtList/';
 
         console.log('搜索------paramsJson');
         console.log(paramsJson);
@@ -332,7 +347,9 @@ Ext.define("IBApp.controller.MyMeetings", {
         var paramsJson = Ext.JSON.encode(mtReplyObj);
         console.log('paramsJson');
         console.log(paramsJson);
-        var urlReplyMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/reply/addReply';
+        // var urlReplyMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/reply/addReply';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlReplyMeeting = URLServer + '/reply/addReply/';
         Ext.Ajax.request({
             url: urlReplyMeeting,
             method: 'POST',
@@ -361,7 +378,9 @@ Ext.define("IBApp.controller.MyMeetings", {
         var paramsJson = Ext.JSON.encode(mtCancelobj);
         console.log('paramsJson');
         console.log(paramsJson);
-        var urlCancelMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/quickUpdateMeeting';
+        // var urlCancelMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/quickUpdateMeeting';
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlCancelMeeting = URLServer + '/meeting/quickUpdateMeeting/';
         Ext.Ajax.request({
             url: urlCancelMeeting,
             method: 'POST',

@@ -1,6 +1,6 @@
 Ext.define("IBApp.view.RoomBooking", {
     extend: "Ext.Panel",
-    requires: ['Ext.form.FieldSet', 'Ext.ux.field.DateTimePicker', 'IBApp.store.MeetingType'],
+    requires: ['Ext.form.FieldSet', 'Ext.ux.field.DateTimePicker', 'IBApp.store.MeetingType','IBApp.store.UrlAddr'],
     xtype: 'roombookingview',
     config:{
         scrollable: false,
@@ -180,8 +180,11 @@ Ext.define("IBApp.view.RoomBooking", {
         // mtTypeSelector.getStore().getProxy().setExtraParam('userId', userId);
         /* 目前GET方法采用的地址拼接的方式 */
         var mtTypeSelector = this.down('#meetingTypeSelector');
-        mtTypeSelector.getStore().getProxy().setUrl('http://10.2.49.250:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urltmp = URLServer + '/mtType/mtTypeListByUser/' ;
+        // mtTypeSelector.getStore().getProxy().setUrl('http://10.2.49.250:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
         // mtTypeSelector.getStore().getProxy().setUrl('http://10.2.20.69:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
+        mtTypeSelector.getStore().getProxy().setUrl(urltmp + userId);
         mtTypeSelector.getStore().load();
     },
 
