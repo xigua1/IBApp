@@ -1,6 +1,6 @@
 Ext.define("IBApp.view.RoomBooking", {
     extend: "Ext.Panel",
-    requires: ['Ext.form.FieldSet', 'Ext.ux.field.DateTimePicker', 'IBApp.store.MeetingType','IBApp.store.UrlAddr'],
+    requires: ['Ext.form.FieldSet', 'Ext.ux.field.DateTimePicker', 'IBApp.store.MeetingType','IBApp.store.UrlAddr', 'IBApp.view.EmptyRoomTable'],
     xtype: 'roombookingview',
     config:{
         scrollable: false,
