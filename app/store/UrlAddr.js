@@ -6,7 +6,7 @@ Ext.define("IBApp.store.UrlAddr", {
         fields: [
             { name: 'urlLogin', type: 'string' },
             { name: 'urlServer', type: 'string' },
-        ]
+        ],
         data: [
         {
             urlLogin: 'http://10.2.49.251:8080/pactera-jeesite/restService/userservice/0.2',
