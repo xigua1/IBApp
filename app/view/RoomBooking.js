@@ -101,6 +101,10 @@ Ext.define("IBApp.view.RoomBooking", {
         	}
         };
 
+        var roomTable = new Ext.create('IBApp.view.EmptyRoomTable', {
+            value: new Date(),
+        });
+
         var panelPages = Ext.create('Ext.Panel', {
             layout: {
                 type: 'card',
@@ -143,7 +147,10 @@ Ext.define("IBApp.view.RoomBooking", {
                 },
                 {
                     xtype: 'panel',
-                    html: '敬请期待',
+                    layout: 'fit',
+                    items: [
+                        roomTable,
+                    ]
                 }
             ]
         });

@@ -17,7 +17,8 @@
   background-color: transparent;
 }
 /* line 43, ../scss/skin1.scss */
-.touch-calendar-view table.day tr.half-hour td.time-block {
+.touch-calendar-view table.day tr.half-hour td.time-block,
+.touch-calendar-view table.day tr.half-hour td.time-block-room {
   border-top: 1px solid #efefef;
 }
 /* line 49, ../scss/skin1.scss */
@@ -28,13 +29,15 @@
   text-align: right;
 }
 /* line 56, ../scss/skin1.scss */
-.touch-calendar-view table.day tr td.time-block {
+.touch-calendar-view table.day tr td.time-block,
+.touch-calendar-view table.day tr td.time-block-room {
   background-color: #fafafa;
   height: 20px;
   border-top: 1px solid #e0e0e0;
 }
 /* line 62, ../scss/skin1.scss */
-.touch-calendar-view table.day tr td.time-block.selected {
+.touch-calendar-view table.day tr td.time-block.selected,
+.touch-calendar-view table.day tr td.time-block-room.selected {
   background-color: #E0E0E0;
 }
 /* line 68, ../scss/skin1.scss */
