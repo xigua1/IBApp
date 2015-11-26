@@ -269,17 +269,12 @@ Ext.define('IBApp.view.MeetingRequest', {
     onEditButtonTap:function(){
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
-        // var startDT = me.down('#startDateTimeid');
-        // var endDT = me.down('#endDateTimeid');
         var organizerNT = me.down('#organizerNameTextid');
         var participatorMB = me.down('#participatorModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(false);
-        // startDT.setReadOnly(false);  /*不允许修改会议时间*/
-        // endDT.setReadOnly(false);
-        // organizerNT.setReadOnly(false);  /*不允许修改会议组织者*/
         participatorMB.setHidden(false);
         requestB.setHidden(false);
         meetingT.setReadOnly(false);
@@ -291,24 +286,15 @@ Ext.define('IBApp.view.MeetingRequest', {
     onNoEditButtonTap:function(){
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
-        // var startDT = me.down('#startDateTimeid');
-        // var endDT = me.down('#endDateTimeid');
         var organizerNT = me.down('#organizerNameTextid');
         var participatorMB = me.down('#participatorModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(true);
-        // startDT.setReadOnly(true);
-        // endDT.setReadOnly(true);
-        // organizerNT.setReadOnly(true);
         participatorMB.setHidden(true);
         requestB.setHidden(true);
         meetingT.setReadOnly(true);
-
-        //this.actions.hide(); 
-        /**/
-        // this.fireEvent("meetingRequestToRoomBookSuccessCommand");
 
     },
 
@@ -342,27 +328,10 @@ Ext.define('IBApp.view.MeetingRequest', {
         this.down('#participatorNameTextid').setValue(mtAttenders);
     },
 
-    modifyMeetingDetails: function(record) {
-        // this.setRecord(record);
-
-        // var str = this.down('#statusText').getValue();
-        // var strEn = this.down('#statusEnText').getValue();
-
-        // this.down('#meetingStatusLabel').setHtml([
-        //     '<p>',
-        //     str,
-        //     '</p>'
-        //   ].join(""));
-        // this.down('#meetingStatusLabel').setCls([
-        //   'detail-meeting-status ',
-        //   strEn
-        // ].join(""));
-      }, 
     onReplyTap: function() {
           var me = this;
           Ext.Msg.show({
             title: '参会回复',
-            // message: result.text,
             buttons: [
               {
                 text: '参会',
@@ -379,14 +348,7 @@ Ext.define('IBApp.view.MeetingRequest', {
               {
                 text: '取消',
                 itemId: 'cancel'
-              }
-              // {
-              //    text:'取消',
-              //    scope:this,
-              //    handler:function(){
-              //        this.actions.hide();     
-              //    }
-              // },   
+              } 
             ],
             fn: function(button) {
               var mtReplyObj = new Object();
@@ -429,7 +391,6 @@ Ext.define('IBApp.view.MeetingRequest', {
 
     onCancelMeetingTap:function() {
       var me = this;
-      console.log('cancel');
       var mtCancelobj = new Object();
       
       mtCancelobj.changeFlag = 1;
@@ -445,6 +406,7 @@ Ext.define('IBApp.view.MeetingRequest', {
         var servicesstr = null;
         var placestr = null;
         var mtThemestr = null;
+
         mtObj = details;
 
         if(details.mtFlag == 1)
@@ -477,7 +439,7 @@ Ext.define('IBApp.view.MeetingRequest', {
             strEn = 'deleted';
             str = '删除';
         }
-
+        //添加会议状态样式
         this.down('#meetingStatusLabel').setHtml([
             '<p>',
             str,
@@ -499,45 +461,49 @@ Ext.define('IBApp.view.MeetingRequest', {
         }
 
         /*添加与会人员*/
-        attenders.removeAll();
-        for(var i = 0; i< details.attenders.length; i++)
+        if(0 != details.attenders.length)
         {
-            var curAttender = Ext.create('IBApp.model.Attenders', {
-             'userId': details.attenders[i].userId,
-             'userName': details.attenders[i].userName,
-             'flag': details.attenders[i].flag,
-            });
-            attenders.add(curAttender);
-            if(null != curAttender.get('userName'))
-            {
-              attendersstr += curAttender.get('userName') + ';';
-              attendersstr = attendersstr.replace("null","");
-            }
-        };
-        console.log('aaa');
-        console.log(attenders);
-       
+          attenders.removeAll();
+          for(var i = 0; i< details.attenders.length; i++)
+          {
+              var curAttender = Ext.create('IBApp.model.Attenders', {
+               'userId': details.attenders[i].userId,
+               'userName': details.attenders[i].userName,
+               'flag': details.attenders[i].flag,
+              });
+              attenders.add(curAttender);
+              if(null != curAttender.get('userName'))
+              {
+                attendersstr += curAttender.get('userName') + ';';
+                attendersstr = attendersstr.replace("null","");
+              }
+          };
+        }       
         /*添加服务*/
-        for(var i = 0; i< details.services.length; i++)
+        if(0 != details.services.length)
         {
-            if(null != details.services[i])
-            {
-              servicesstr += details.services[i].serviceName +':' + details.services[i].serviceNum + ';';
-              servicesstr = servicesstr.replace("null","");
-            }
-        };
-        
+          for(var i = 0; i< details.services.length; i++)
+          {
+              if(null != details.services[i])
+              {
+                servicesstr += details.services[i].serviceName +':' + details.services[i].serviceNum + ';';
+                servicesstr = servicesstr.replace("null","");
+              }
+          };
+        }
         /*添加地点*/
-        for(var i = 0; i< details.rooms.length; i++)
+        if(0 != details.rooms.length)
         {
-            if(null != details.rooms[i])
-            {
-              placestr += details.rooms[i].roomNum + ';';
-              placestr = placestr.replace("null","");
-            }
-        };
-       
-
+          for(var i = 0; i< details.rooms.length; i++)
+          {
+              if(null != details.rooms[i])
+              {
+                placestr += details.rooms[i].roomNum + ';';
+                placestr = placestr.replace("null","");
+              }
+          };
+        }
+        /*向各控件里添加值*/
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
         var startDT = me.down('#startDateTimeid');
@@ -547,10 +513,6 @@ Ext.define('IBApp.view.MeetingRequest', {
         var organizerNT = me.down('#organizerNameTextid');
         var participatorN = me.down('#participatorNameTextid');
         var serviceT = me.down('#serviceTextid');
-
-
-        var participatorMB = me.down('#participatorModifyBtn');
-        var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setValue(mtThemestr);

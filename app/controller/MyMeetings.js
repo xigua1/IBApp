@@ -185,14 +185,11 @@ Ext.define("IBApp.controller.MyMeetings", {
 
     onMeetingsListCommand: function(record) {
         console.log('搜索list')
-        // this.getMeetingRequestView().modifyMeetingDetails(record);
         var mtId = record.get('mtId');
         console.log('mtId');
         console.log(mtId);
         var me = this;
         var details = null;
-        // var urlmtdetails = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
-        // var urlmtdetails = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/mtInfo/' + mtId;
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlmtdetails = URLServer + '/meeting/mtInfo/' + mtId;
         Ext.Ajax.request({
@@ -326,10 +323,6 @@ Ext.define("IBApp.controller.MyMeetings", {
                     Ext.getStore("MyMeetingsSearch").add(curUser);                
                 };
                
-                
-                // //更新Calendar插件的store
-                // me.getMyMeetingsView().updateEventStore();
-                //更新store后再进入Calendar页面
                 myMeetingsView = me.getMyMeetingsView();
                 myMeetingsView.setMasked(false);
                 me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'search'}));
