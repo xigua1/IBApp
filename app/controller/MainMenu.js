@@ -61,11 +61,17 @@ Ext.define("IBApp.controller.MainMenu", {
 
     onDeviceControlCommand: function () {
         var me = this;
-        var obj = new Object();
-        obj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
-        var paramsJson = Ext.JSON.encode(obj);
+        var day = (new Date()).getDate(),
+            month = (new Date()).getMonth(),
+            year = (new Date()).getFullYear();
+        var inputObj = new Object();
 
-        var urlGetMtRooms = 'http://10.2.49.250:8080/mtservice/restService/0.1/mtRoom/roomList';
+        inputObj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        inputObj.beginTime = Ext.JSON.encodeDate(new Date(year, month, day,0,0,0));
+        inputObj.endTime = Ext.JSON.encodeDate(new Date(year, month, day,23,59,59));
+        var paramsJson = Ext.JSON.encode(inputObj);
+
+        var urlGetMtRooms = Ext.getStore("UrlAddr").getAt(0).get('urlServer') + '/mtRoom/getMyRoom';
         Ext.Ajax.request({
             url: urlGetMtRooms,
             method: 'POST',

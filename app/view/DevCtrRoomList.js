@@ -2,11 +2,10 @@ Ext.define('MeetingRoom', {
     extend: 'Ext.data.Model',
     config: {
         fields: [
+            { name: 'meetingId', type: 'string' },
             { name: 'roomId', type: 'string' },
             { name: 'roomName', type: 'string' },
-            { name: 'roomNum', type: 'string' },
-            { name: 'floorName', type: 'string' },
-            { name: 'building', type: 'string' },
+            { name: 'theme', type: 'string' },
         ]
     }
 });
@@ -14,10 +13,6 @@ Ext.define('MeetingRoom', {
 var store = Ext.create('Ext.data.Store', {
    model: 'MeetingRoom',
    data: [
-       // { roomId: 'B0902' },
-       // { roomId: 'B0910'  },
-       // { roomId: 'B1002' },
-       // { roomId: 'B1018'  },
    ]
 });
 
@@ -26,7 +21,6 @@ Ext.define("IBApp.view.DevCtrRoomList", {
     requires: ['Ext.data.Store'],
     xtype: 'devctrroomlistview',
     config:{
-        // scrollable:'vertical',
         layout: {
             type: 'vbox',   
         },
@@ -58,7 +52,7 @@ Ext.define("IBApp.view.DevCtrRoomList", {
             store: store,
             itemTpl: [
                 '<div class="list-item-title">{roomName}</div>',
-                '<div class="list-item-narrative">{building}&nbsp;>&nbsp;{floorName}&nbsp;>&nbsp;{roomNum}</div>'
+                '<div class="list-item-narrative">{theme}</div>'
             ].join(""),
             emptyText: '<div class="notes-list-empty-text">没有可控制的会议室</div>',
             listeners: {
@@ -84,12 +78,12 @@ Ext.define("IBApp.view.DevCtrRoomList", {
         store.removeAll();
         for (var i = 0; i < roomList.length; i++) {
             var room = Ext.create('MeetingRoom', {
+                'meetingId': roomList[i].meetingId,
                 'roomId': roomList[i].roomId,
                 'roomName': roomList[i].roomName,
-                'roomNum': roomList[i].roomNum,
-                'floorName': roomList[i].floorName,
-                'building': roomList[i].building,
+                'theme': roomList[i].theme,
             });
+            if (room.get('theme') == null) {room.set('theme', '待定');};
             store.add(room);
         };
     }
