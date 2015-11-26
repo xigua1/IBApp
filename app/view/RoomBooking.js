@@ -241,6 +241,7 @@ Ext.define("IBApp.view.RoomBooking", {
                 var obj = new Object();
                 obj.serviceName = serv.getLabel();
                 obj.serviceNum = serv.getValue();
+                if (obj.serviceNum == null) {obj.serviceNum = 0;};
                 formValuesObj.services[i] = obj;
             }
         }
