@@ -440,7 +440,7 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 		this.setTpl(new Ext.XTemplate((viewModeFns.tpl || this.getBaseTpl()).join(''), this.commonTemplateFunctions));
 		
 		this.setScrollable({
-			direction: viewMode.toUpperCase() === 'DAY' ? 'vertical' : false,
+			direction: viewMode.toUpperCase() === 'DAY' ? 'horizontal' : false,
 			directionLock: true
 		});
         return viewMode;
@@ -620,6 +620,8 @@ Ext.define('IBApp.view.EmptyRoomTable', {
         this.setData(this.collectData(records));
 
         this.syncHeight();
+
+        this.syncWidth();
 	},
 
     /**
@@ -634,6 +636,16 @@ Ext.define('IBApp.view.EmptyRoomTable', {
             }
    		}
    	},
+
+    syncWidth: function(){
+       if (this.getViewMode().toUpperCase() === 'DAY') {
+        var tableEl = this.element.select('table.day', this.element.dom).first();
+
+           if(tableEl){
+               tableEl.setWidth(this.periodRowDayCount * 60 + 45);
+           }
+      }
+    },
 
 	/**
 	 * Selects the specified cell
@@ -885,7 +897,7 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 						return new Date(date.getFullYear(), date.getMonth(), date.getDate() + delta);
 					},
 
-					periodRowDayCount: 10
+					periodRowDayCount: 15
 				}
 	}
 });

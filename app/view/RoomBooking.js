@@ -101,8 +101,57 @@ Ext.define("IBApp.view.RoomBooking", {
         	}
         };
 
+        /* 选择办公楼 */
+        var buildingSelector = {
+            xtype: 'selectfield',
+            name: 'building',
+            id:'buildingSelectorid',
+            width: 120,
+            options: [
+                {type: '请选择办公楼...',  id: '1'},
+                {type: 'A楼', id: '2'},
+                {type: 'B设计楼', id: '3'},
+                {type: 'C实验楼', id: '4'},
+                {type: 'D楼', id: '5'},
+            ],
+            valueField: 'id',
+            displayField: 'type',
+            listeners: {
+                change: function() {
+                },
+            },
+        };
+
+        /* 选择楼层 */
+        var floorSelector = {
+            xtype: 'selectfield',
+            name: 'floor',
+            id: 'floorSelectorid',
+            width: 120,
+            options: [
+                {type: '请选择楼层...',  id: '1'},
+                {type: '1层', id: '2'},
+                {type: '2层', id: '3'},
+                {type: '3层', id: '4'},
+                {type: '4层', id: '5'},
+            ],
+            valueField: 'id',
+            displayField: 'type',
+            listeners: {
+                change: function() {
+                },
+            },
+        };
+
+        var emptyRoomDate = Ext.create('Ext.field.DatePicker', {
+            width: 120,
+            value: new Date(),
+            dateFormat: 'Y-m-d',
+        });
+
         var roomTable = new Ext.create('IBApp.view.EmptyRoomTable', {
             value: new Date(),
+            height: 1200,
         });
 
         var panelPages = Ext.create('Ext.Panel', {
@@ -147,8 +196,23 @@ Ext.define("IBApp.view.RoomBooking", {
                 },
                 {
                     xtype: 'panel',
-                    layout: 'fit',
+                    layout: 'vbox',
+                    scrollable: true,
                     items: [
+                        {
+                            xtype: 'panel',
+                            margin: '10 0 10 10',
+                            layout: 'hbox',
+                            items: [
+                                buildingSelector,
+                                floorSelector,
+                                emptyRoomDate,
+                                {
+                                    xtype: 'button',
+                                    text: '确定',
+                                }
+                            ]
+                        },
                         roomTable,
                     ]
                 }
