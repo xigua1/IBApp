@@ -197,7 +197,8 @@ Ext.define("IBApp.view.RoomBooking", {
                 {
                     xtype: 'panel',
                     layout: 'vbox',
-                    scrollable: true,
+                    scrollable: 'vertical',
+                    directionLock: true,
                     items: [
                         {
                             xtype: 'panel',
