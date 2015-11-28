@@ -7,6 +7,7 @@ Ext.define("IBApp.controller.MyMeetings", {
             myMeetingsView: 'mymeetingsview',
             meetingRequestView:'meetingrequestview',
             deviceControlView:'devicecontrolview',
+            deviceControlSimpleView:'devicecontrolsimpleview',
             searchView:'searchview',
             devCtrRoomListView: 'devctrroomlistview',
             chooseAttendersView: 'chooseattendersview',
@@ -29,6 +30,10 @@ Ext.define("IBApp.controller.MyMeetings", {
             deviceControlView: {
                 backButtonCommand:'onDeviceControlBackButtonCommand',
             },
+            deviceControlSimpleView: {
+                backButtonCommand:'onDeviceControlBackButtonCommand',
+                ctrlDevCommand: 'onCtrlDevCommand',
+            },
             searchView:{
                 SearchToMyMeetingsCommand:'onSearchToMyMeetingsCommand',
                 SearchCommand:'onSearchCommand',
@@ -42,6 +47,7 @@ Ext.define("IBApp.controller.MyMeetings", {
         routes: {
             'meetingrequest': 'showMeetingRequestView',
             'devicecontrol': 'showDeviceControlView',
+            'devicecontrolsimple': 'showDeviceControlSimpleView',
             'search':'showSearchView',
             'chooseattenders': 'showChooseAttendersView',
         }
@@ -53,6 +59,10 @@ Ext.define("IBApp.controller.MyMeetings", {
 
     showDeviceControlView: function() {
         Ext.Viewport.animateActiveItem(this.getDeviceControlView(), 'fade');
+    },
+
+    showDeviceControlSimpleView: function() {
+        Ext.Viewport.animateActiveItem(this.getDeviceControlSimpleView(), 'fade');
     },
 
     showSearchView: function() {
@@ -150,9 +160,35 @@ Ext.define("IBApp.controller.MyMeetings", {
         window.history.go(-1);
     },
 
+    onCtrlDevCommand: function(parentId, instanceType, instanceId, instanceValue) {
+        var me = this;
+        var obj = new Object();
+        obj.parentId = parentId;
+        obj.instanceType = instanceType;
+        obj.instanceId = instanceId;
+        obj.instanceValue = instanceValue;
+        var paramsJson = Ext.JSON.encode(obj);
+        console.log(paramsJson);
+
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlCtrlDev = URLServer + '/roomDev/operateDev';
+        Ext.Ajax.request({
+            url: urlCtrlDev,
+            method: 'POST',
+            disableCaching: false,
+            params: paramsJson,
+            success: function (response) {
+                ret = response.responseText;
+                if (ret == -1) {Ext.Msg.alert('失败');};
+            },
+            failure: function (response) {
+                Ext.Msg.alert('设备控制失败');
+            }
+        });
+    },
+
     onMeetingRequestModifyDetailsCommand: function(modifiedMtDetails) {
         var paramsJson = Ext.JSON.encode(modifiedMtDetails);
-        console.log(paramsJson);
         // var urlUpdateMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/updateMeeting';
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlUpdateMeeting = URLServer + '/meeting/updateMeeting/';
@@ -179,8 +215,31 @@ Ext.define("IBApp.controller.MyMeetings", {
         });
     },
 
-    onRoomListTapCommand: function() {
-        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
+    onRoomListTapCommand: function(record) {
+        var me = this;
+        var inputObj = new Object();
+
+        inputObj.userId = '2'/*Ext.getStore("UserInfo").getAt(0).get('userId')*/;
+        inputObj.roomId = '1'/*record.get('roomId')*/;
+        inputObj.beginTime = 'Nov 26, 2015 9:53:29 AM'/*Ext.JSON.encodeDate(new Date())*/;
+        inputObj.endTime = 'Nov 26, 2015 9:53:29 AM'/*Ext.JSON.encodeDate(new Date())*/;
+        var paramsJson = Ext.JSON.encode(inputObj);
+
+        var urlGetRoomDev = Ext.getStore("UrlAddr").getAt(0).get('urlServer') + '/roomDev/getRoomDev';
+        Ext.Ajax.request({
+            url: urlGetRoomDev,
+            method: 'POST',
+            disableCaching: false,
+            params: paramsJson,
+            success: function (response) {
+                var devInfoArray = Ext.JSON.decode(response.responseText);
+                me.getDeviceControlSimpleView().showDevices(devInfoArray);
+                me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrolsimple'}));
+            },
+            failure: function (response) {
+                Ext.Msg.alert('获取会议室设备信息失败');
+            }
+        });
     },
 
     onMeetingsListCommand: function(record) {

@@ -67,8 +67,8 @@ Ext.define("IBApp.controller.MainMenu", {
         var inputObj = new Object();
 
         inputObj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
-        inputObj.beginTime = Ext.JSON.encodeDate(new Date(year, month, day,0,0,0));
-        inputObj.endTime = Ext.JSON.encodeDate(new Date(year, month, day,23,59,59));
+        inputObj.beginTime = '2015-11-26 00:00:00'/*Ext.JSON.encodeDate(new Date(year, month, day,0,0,0))*/;
+        inputObj.endTime = '2015-11-26 23:59:59'/*Ext.JSON.encodeDate(new Date(year, month, day,23,59,59))*/;
         var paramsJson = Ext.JSON.encode(inputObj);
 
         var urlGetMtRooms = Ext.getStore("UrlAddr").getAt(0).get('urlServer') + '/mtRoom/getMyRoom';

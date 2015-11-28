@@ -22,7 +22,7 @@ Ext.application({
         'Login', 'MainMenu', 'RoomBooking', 
         'RoomSearchResult', 'RoomBookSuccess','MyMeetings',
         'MeetingRequest', 'DevCtrRoomList', 'DeviceControl',
-        'Search', 'ChooseAttenders',
+        'Search', 'ChooseAttenders','DeviceControlSimple',
     ],
 
     controllers: ['Login', 'MainMenu', 'RoomBooking','MyMeetings'],
@@ -64,6 +64,7 @@ Ext.application({
             {xtype: 'meetingrequestview'},
             {xtype: 'devctrroomlistview'},
             {xtype: 'devicecontrolview'},
+            {xtype: 'devicecontrolsimpleview'},
             {xtype: 'searchview'},
             {xtype: 'chooseattendersview'},
            
