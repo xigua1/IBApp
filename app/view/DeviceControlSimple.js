@@ -242,6 +242,25 @@ Ext.define('IBApp.view.DeviceControlSimple', {
     				};
     			};
     		}
+    		else if (groupNames[i].indexOf('投影仪') != -1) {
+    			for (var j = 0; j < dataArray.length; j++) {
+    				var toggle = Ext.create('Ext.field.Toggle', {
+    					label: dataArray[j].get('devName'),
+    					itemId: dataArray[j].get('controlId').replace('I', ''),
+    					value: parseInt(dataArray[j].get('instanceValue')),
+    					listeners: {
+    					    change: function(field, newValue, oldValue) {
+				                var index = devStore.findExact('controlId', field.getItemId()+'O');
+				                console.log(index);
+				                if (index != -1) {
+				                	me.controlDev(devStore.getAt(index).get('parentId'), devStore.getAt(index).get('instanceType'), devStore.getAt(index).get('instanceId'), newValue.toString());
+				                };
+				            }
+    					}
+    				});
+    				fieldset.add(toggle);
+    			};
+    		}
     		else if (groupNames[i] == '投影幕') {
 				var segmentedButton  = Ext.create('Ext.SegmentedButton', {
 					allowMultiple: false,
