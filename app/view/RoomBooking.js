@@ -1,3 +1,40 @@
+/* 获取楼宇信息 */
+var storeBuilding = Ext.create("Ext.data.Store", {
+    proxy: {
+        type: "ajax",
+        url: 'http://10.2.49.250:8080/mtservice/restService/0.1/baFloor/buildingList',
+        enablePagingParams: false,
+        reader: {
+            type: 'json',
+        }
+    },
+    fields: [
+        { name: 'buildingId', type: 'string' },
+        { name: 'buildingName', type: 'string' },
+    ],
+    autoLoad: true,
+    data: [
+    ]
+});
+
+/* 获取楼层信息 */
+var storeFloor = Ext.create("Ext.data.Store", {
+    proxy: {
+        type: "ajax",
+        url: 'http://10.2.49.250:8080/mtservice/restService/0.1/baFloor/floorList/',
+        enablePagingParams: false,
+        reader: {
+            type: 'json',
+        }
+    },
+    fields: [
+        { name: 'floorId', type: 'string' },
+        { name: 'floorName', type: 'string' },
+    ],
+    data: [
+    ]
+});
+
 Ext.define("IBApp.view.RoomBooking", {
     extend: "Ext.Panel",
     requires: ['Ext.form.FieldSet', 'Ext.ux.field.DateTimePicker', 'IBApp.store.MeetingType','IBApp.store.UrlAddr', 'IBApp.view.EmptyRoomTable'],
@@ -105,20 +142,13 @@ Ext.define("IBApp.view.RoomBooking", {
         var buildingSelector = {
             xtype: 'selectfield',
             name: 'building',
+            store: storeBuilding,
             id:'buildingSelectorid',
-            width: 120,
-            options: [
-                {type: '请选择办公楼...',  id: '1'},
-                {type: 'A楼', id: '2'},
-                {type: 'B设计楼', id: '3'},
-                {type: 'C实验楼', id: '4'},
-                {type: 'D楼', id: '5'},
-            ],
-            valueField: 'id',
-            displayField: 'type',
+            width: 50,
+            valueField: 'buildingId',
+            displayField: 'buildingName',
             listeners: {
-                change: function() {
-                },
+                change: { fn: this.onBuildingChange, scope: this },
             },
         };
 
@@ -126,30 +156,26 @@ Ext.define("IBApp.view.RoomBooking", {
         var floorSelector = {
             xtype: 'selectfield',
             name: 'floor',
+            store: storeFloor,
             id: 'floorSelectorid',
-            width: 120,
-            options: [
-                {type: '请选择楼层...',  id: '1'},
-                {type: '1层', id: '2'},
-                {type: '2层', id: '3'},
-                {type: '3层', id: '4'},
-                {type: '4层', id: '5'},
-            ],
-            valueField: 'id',
-            displayField: 'type',
+            width: 50,
+            valueField: 'floorId',
+            displayField: 'floorName',
             listeners: {
                 change: function() {
                 },
             },
         };
 
-        var emptyRoomDate = Ext.create('Ext.field.DatePicker', {
-            width: 120,
+        var checkRoomDate = Ext.create('Ext.field.DatePicker', {
+            id: 'checkRoomDatePicker',
+            width: 100,
             value: new Date(),
             dateFormat: 'Y-m-d',
         });
 
         var roomTable = new Ext.create('IBApp.view.EmptyRoomTable', {
+            id: 'roomInfoTable',
             value: new Date(),
             height: 1200,
         });
@@ -207,10 +233,12 @@ Ext.define("IBApp.view.RoomBooking", {
                             items: [
                                 buildingSelector,
                                 floorSelector,
-                                emptyRoomDate,
+                                checkRoomDate,
                                 {
                                     xtype: 'button',
                                     text: '确定',
+                                    handler: this.onCheckRoomBtnTap,
+                                    scope: this
                                 }
                             ]
                         },
@@ -306,5 +334,46 @@ Ext.define("IBApp.view.RoomBooking", {
 
     showMessages: function(message) {
         Ext.Msg.alert(message);
-    }
+    },
+
+    onBuildingChange: function(selector, newValue, oldValue, eOpts) {
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urltmp = URLServer + '/baFloor/floorList/';
+        storeFloor.getProxy().setUrl(urltmp + newValue);
+        storeFloor.load();
+    },
+
+    onCheckRoomBtnTap: function() {
+        var userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        var floorId = this.down('#floorSelectorid').getValue();
+        var date = this.down('#checkRoomDatePicker').getValue();
+        var day = date.getDate(),
+            month = date.getMonth(),
+            year = date.getFullYear();
+        var beginTime = new Date(year, month, day,7,0,0);
+        var endTime = new Date(year, month, day,22,0,0);
+        
+        this.fireEvent('checkRoomBtnTapCommand', userId, floorId, beginTime, endTime);
+    },
+
+    showRoomsInfo: function (roomsUseInfoArray) {
+        var roomIds = [],
+            tempRoomId = '';
+        var cellInfo = [];
+
+        for (var i = 0; i < roomsUseInfoArray.length; i++) {
+            var tempObj = new Object();
+            tempObj.roomId = roomsUseInfoArray[i].roomDTO.roomId + ':' + roomsUseInfoArray[i].roomDTO.roomNum;
+            tempObj.roomDate = roomsUseInfoArray[i].roomDate;
+            tempObj.roomFlag = roomsUseInfoArray[i].roomFlag;
+
+            cellInfo.push(tempObj);
+
+            if (roomIds.indexOf(tempObj.roomId) == -1) {
+                roomIds.push(tempObj.roomId);
+            };   
+        };
+
+        this.down('#roomInfoTable').updateTable(cellInfo, roomIds);
+    },
 });

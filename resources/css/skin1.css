@@ -40,6 +40,20 @@
 .touch-calendar-view table.day tr td.time-block-room.selected {
   background-color: #E0E0E0;
 }
+
+.touch-calendar-view table.day tr td.time-block-room.empty {
+  background-color: green;
+}
+.touch-calendar-view table.day tr td.time-block-room.occupied {
+  background-color: red;
+}
+.touch-calendar-view table.day tr td.time-block-room.empty.selected {
+  background: none;
+  background-color: blue;
+  border: 1px solid #999;
+  text-shadow: none;
+  color: #3F4E5E;
+}
 /* line 68, ../scss/skin1.scss */
 .touch-calendar-view table.day tr td .label {
   width: 45px;

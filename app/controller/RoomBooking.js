@@ -12,7 +12,8 @@ Ext.define("IBApp.controller.RoomBooking", {
         control: {
         	roomBookingView: {
                 mtTypeChangeCommand: 'onMtTypeChangeCommand',
-        		roomSearchSubmitCommand: 'onRoomSearchSubmitCommand'
+        		roomSearchSubmitCommand: 'onRoomSearchSubmitCommand',
+                checkRoomBtnTapCommand: 'onCheckRoomBtnTapCommand'
         	},
             roomSearchResultView: {
                 backButtonCommand: 'onBackButtonCommand',
@@ -42,8 +43,6 @@ Ext.define("IBApp.controller.RoomBooking", {
         var me = this;
         var devices = null, services = null;
 
-        // var urlDeviceType = 'http://10.2.49.250:8080/mtservice/restService/0.1/baDevType/devTypeListByMtType/' + mtTypeId;
-        // var urlDeviceType = 'http://10.2.20.69:8080/mtservice/restService/0.1/baDevType/devTypeListByMtType/' + mtTypeId;
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlDeviceType = URLServer + '/baDevType/devTypeListByMtType/'  + mtTypeId;
         Ext.Ajax.request({
@@ -59,8 +58,6 @@ Ext.define("IBApp.controller.RoomBooking", {
             }
         });
 
-        // var urlServiceType = 'http://10.2.49.250:8080/mtservice/restService/0.1/mtService/mtServiceList/' + mtTypeId;
-        // var urlServiceType = 'http://10.2.20.69:8080/mtservice/restService/0.1/mtService/mtServiceList/' + mtTypeId;
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlServiceType = URLServer + '/mtService/mtServiceList/'  + mtTypeId;
         Ext.Ajax.request({
@@ -100,8 +97,6 @@ Ext.define("IBApp.controller.RoomBooking", {
         obj.devTypeIds = Ext.JSON.encode(obj.devTypeIds);
         var paramsJson = Ext.JSON.encode(obj);
 
-        // var urlGetRecommendMtRoom = 'http://10.2.49.250:8080/mtservice/restService/0.1/mtRoom/recommendList/';
-        // var urlGetRecommendMtRoom = 'http://10.2.20.69:8080/mtservice/restService/0.1/mtRoom/recommendList/';
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlGetRecommendMtRoom = URLServer + '/mtRoom/recommendList/' ;
         Ext.Ajax.request({
@@ -119,6 +114,40 @@ Ext.define("IBApp.controller.RoomBooking", {
                 else {
                     me.getRoomBookingView().showMessages('没有符合条件的会议室');
                 }
+            },
+            failure: function (response) {
+                me.getRoomBookingView().showMessages('访问失败');
+            }
+        });
+    },
+
+    onCheckRoomBtnTapCommand: function (userId, floorId, beginTime, endTime) {
+        var me = this;
+        if ( (userId == null) || (floorId == null) || (beginTime == null) || (endTime == null) ) {
+            me.getRoomBookingView().showMessages('需要填写楼层信息');
+            return;
+        }
+
+        var obj = new Object();
+        obj.userId = userId;
+        obj.floorId = floorId;
+        obj.beginTime = Ext.JSON.encodeDate(beginTime);
+        obj.endTime = Ext.JSON.encodeDate(endTime);
+        obj.flag = 1; // 日视图
+        obj.timeSpan = 30;  // 时间间隔30分钟
+        var paramsJson = Ext.JSON.encode(obj);
+
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlGetRoomUseInfo = URLServer + '/mtRoom/roomUseInfoList' ;
+        Ext.Ajax.request({
+            url: urlGetRoomUseInfo,
+            method: 'POST',
+            disableCaching: false,
+            params: paramsJson,
+            success: function (response) {
+                var roomsUseInfo = Ext.JSON.decode(response.responseText);
+                console.log(roomsUseInfo);
+                me.getRoomBookingView().showRoomsInfo(roomsUseInfo);
             },
             failure: function (response) {
                 me.getRoomBookingView().showMessages('访问失败');
@@ -161,9 +190,6 @@ Ext.define("IBApp.controller.RoomBooking", {
         paramsObj.roomIds = [roomId];
         
         var paramsJson = Ext.JSON.encode(paramsObj);
-        console.log(paramsJson);
-        // var urlAddMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/addMeeting';
-        // var urlAddMeeting = 'http://10.2.20.69:8080/mtservice/restService/0.1/meeting/addMeeting';
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlAddMeeting = URLServer + '/meeting/addMeeting/' ;
         Ext.Ajax.request({
