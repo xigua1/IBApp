@@ -1,3 +1,5 @@
+var roomIds = [];
+
 Ext.define('IBApp.view.EmptyRoomTable', {
 	
 	extend: 'Ext.Container',
@@ -29,6 +31,9 @@ Ext.define('IBApp.view.EmptyRoomTable', {
          * @cfg {String} unselectableCls CSS class added to any date cells that are unselectable
          */
         unselectableCls: 'unselectable',
+
+        emptyCls: 'empty',
+        occupiedCls: 'occupied',
 
         /**
          * @cfg {String} prevMonthCls CSS class added to any date cells that are part of the previous month
@@ -133,7 +138,7 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 
         cls: 'touch-calendar-view',
 
-        itemSelector: 'td.time-block-room'
+        itemSelector: 'td.time-block-room',
 
     },
 
@@ -281,17 +286,26 @@ Ext.define('IBApp.view.EmptyRoomTable', {
    		},
 
       getRoomsArray: function() {
-          var roomsArray = [],
-              i;
-
-          for (var i = 0; i < this.me.periodRowDayCount; i++) {
-            var room = {
-              'roomId': 'B090' + i,
-            };
-            roomsArray.push(room);
+        var roomsArray = [];
+        for (var i = 0; i < this.me.periodRowDayCount; i++) {
+          var room = {
+            'roomId': roomIds[i],
           };
+          roomsArray.push(room);
+        };
 
-          return roomsArray;
+        return roomsArray;
+      },
+
+      getRoomNumArray: function() {
+        var roomNumArray = [];
+        for (var i = 0; i < this.me.periodRowDayCount; i++) {
+          var room = {
+            'roomNum': roomIds[i].split(':')[1],
+          };
+          roomNumArray.push(room);
+        };
+        return roomNumArray;
       },
 
    		/**
@@ -342,8 +356,8 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 		this.minDate = this.minDate ? Ext.Date.clearTime(this.minDate, true) : null;
 		this.maxDate = this.maxDate ? Ext.Date.clearTime(this.maxDate, true) : null;
 
-        this.refresh();
-    },
+    this.refresh();
+  },
     
 	/**
 	 * Override of onRender method. Attaches event handlers to the element to handler
@@ -446,15 +460,15 @@ Ext.define('IBApp.view.EmptyRoomTable', {
         return viewMode;
 	},
 
-    collectData: function(records){
-        var data = [];
+  collectData: function(records){
+      var data = [];
 
-        Ext.each(records, function(record, index){
-            data.push(record.data);
-        }, this);
+      Ext.each(records, function(record, index){
+          data.push(record.data);
+      }, this);
 
-        return data;
-    },
+      return data;
+  },
 	
 	/**
 	 * Builds a collection of dates that need to be rendered in the current configuration
@@ -462,9 +476,14 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 	 * @private
 	 * @return {void}
 	 */
-	populateStore: function(){
-		
-		this.currentDate = this.currentDate || this.value || new Date();
+	populateStore: function(date){
+
+    if (date == null) {
+      this.currentDate = this.currentDate || this.value || new Date();
+    }
+    else {
+      this.currentDate = date;
+    }
 		
 		var unselectable = true, // variable used to indicate whether a day is allowed to be selected
   			baseDate = this.currentDate, // date to use as base
@@ -570,32 +589,32 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 		}
 	},
 
-    /**
-     * Handler for taps on the Calendar's timeslot elements.
-     * Processes the tapped element and selects it visually then fires the selectionchange event
-     * @method
-     * @private
-     * @param {Ext.EventObject} e The taps event object
-     * @return {void}
-     */
-    onTimeSlotTap: function(e){
-	    if(!e.getTarget('.' + this.getUnselectableCls())){ // don't do selection if the cell has 'unselectable' class
-		    var target = Ext.fly(e.getTarget());
+  /**
+   * Handler for taps on the Calendar's timeslot elements.
+   * Processes the tapped element and selects it visually then fires the selectionchange event
+   * @method
+   * @private
+   * @param {Ext.EventObject} e The taps event object
+   * @return {void}
+   */
+  onTimeSlotTap: function(e){
+    if(!e.getTarget('.' + this.getUnselectableCls())){ // don't do selection if the cell has 'unselectable' class
+	    var target = Ext.fly(e.getTarget());
 
-	        this.selectCell(target);
+        this.selectCell(target);
 
-	        var newDate = this.getCellDate(target);
+        var newDate = this.getCellDate(target);
 
-	        var previousValue = this.getValue() || this.currentDate;
+        var previousValue = this.getValue() || this.currentDate;
 
-		    // don't fire the event if the values are the same
-		    if(newDate.getTime() !== previousValue.getTime()){
-	            this.setValue(newDate);
+	    // don't fire the event if the values are the same
+	    if(newDate.getTime() !== previousValue.getTime()){
+            this.setValue(newDate);
 
-	            this.fireEvent('selectionchange', this, newDate, previousValue);
-		    }
+            this.fireEvent('selectionchange', this, newDate, previousValue);
 	    }
-    },
+    }
+  },
 
 	/**
 	 * Handler for the component's resize event.
@@ -612,40 +631,41 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 	 * Override for the Ext.DataView's refresh method. Repopulates the store, calls parent then sync the height of the table
 	 * @method
 	 */
-	refresh: function(){
-		this.populateStore();
+	refresh: function(date){
+		this.populateStore(date);
 
-        var records = this.getStore().getRange();
+    var records = this.getStore().getRange();
 
-        this.setData(this.collectData(records));
+    this.setData(this.collectData(records));
 
-        this.syncHeight();
+    this.syncHeight();
 
-        this.syncWidth();
+    this.syncWidth();
+
 	},
 
-    /**
-   	 * Syncs the table's Ext.Element to the height of the Ext.DataView's component. (Only if it isn't in DAY mode)
-   	 */
-   	syncHeight: function(){
-        if (this.getViewMode().toUpperCase() !== 'DAY') {
-   			var tableEl = this.element.select('table', this.element.dom).first();
+  /**
+ 	 * Syncs the table's Ext.Element to the height of the Ext.DataView's component. (Only if it isn't in DAY mode)
+ 	 */
+ 	syncHeight: function(){
+      if (this.getViewMode().toUpperCase() !== 'DAY') {
+ 			var tableEl = this.element.select('table', this.element.dom).first();
 
-            if(tableEl){
-                tableEl.setHeight(this.element.getHeight());
-            }
-   		}
-   	},
+          if(tableEl){
+              tableEl.setHeight(this.element.getHeight());
+          }
+ 		}
+ 	},
 
-    syncWidth: function(){
-       if (this.getViewMode().toUpperCase() === 'DAY') {
-        var tableEl = this.element.select('table.day', this.element.dom).first();
+  syncWidth: function(){
+     if (this.getViewMode().toUpperCase() === 'DAY') {
+      var tableEl = this.element.select('table.day', this.element.dom).first();
 
-           if(tableEl){
-               tableEl.setWidth(this.periodRowDayCount * 60 + 45);
-           }
-      }
-    },
+         if(tableEl){
+             tableEl.setWidth(this.periodRowDayCount * 60 + 45);
+         }
+    }
+  },
 
 	/**
 	 * Selects the specified cell
@@ -751,6 +771,10 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 	getDateCell: function(date){
 		return this.element.select('td[datetime="' + this.getDateAttribute(date) + '"]', this.element.dom).first();
 	},
+
+  getDateRoomCell: function(date, roomId){
+    return this.element.select('td[datetime="' + this.getDateAttribute(date) + '"][roomId="' + roomId + '"]', this.element.dom).first();
+  },
 	
 	/**
 	 * Returns a string format of the specified date
@@ -808,6 +832,42 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 
 		return value;
 	},
+
+  updateTable: function (cellInfoArray, roomIdsArray) {
+    // console.log('cellInfoArray');
+    // console.log(cellInfoArray);
+
+    /* roomIdsArray作为列，重绘表格 */
+    roomIds = roomIdsArray;
+    this.periodRowDayCount = roomIdsArray.length;
+    this.refresh(new Date(cellInfoArray[0].roomDate));
+
+    // /* 填充cell空闲占用状态 */
+    var emptyCls = this.getEmptyCls();
+    var emptyEl = this.element.select('.' + emptyCls, this.element.dom);
+    if(emptyEl){
+        emptyEl.removeCls(emptyCls);
+    }
+
+    var occupiedCls = this.getOccupiedCls();
+    var occupiedEl = this.element.select('.' + occupiedCls, this.element.dom);
+    if(occupiedEl){
+        occupiedEl.removeCls(occupiedCls);
+    }
+
+    for (var i = 0; i < cellInfoArray.length; i++) {
+      var cell = this.getDateRoomCell(new Date(cellInfoArray[i].roomDate), cellInfoArray[i].roomId);
+      if (cell != null) {
+        if (cellInfoArray[i].roomFlag ==1) {
+          cell.addCls(emptyCls);
+        }
+        else if (cellInfoArray[i].roomFlag == 2) {
+          cell.addCls(occupiedCls);
+        };
+      }
+    };
+
+  },
 	
 	statics: {			
 			DAY: {
@@ -828,8 +888,8 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 										'<table class="time-slot-table">',
                       '<tr>',
                         '<td class="label"></td>',
-                        '<tpl for="this.getRoomsArray()">',
-                          '<td>{roomId}</td>',
+                        '<tpl for="this.getRoomNumArray()">',
+                          '<td>{roomNum}</td>',
                         '</tpl>',
                       '</tr>',
 											'<tpl for=".">',
@@ -871,6 +931,7 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 					 * @param {Date} date
 					 */
 					getTotalDays: function(date){
+            /* 会议从7:00到22:00 16h * 60m */
 						return 1440 / this.getDayTimeSlotSize();
 					},
 					
@@ -882,6 +943,10 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 					 * @return {Date}
 					 */
 					getStartDate: function(date){
+            // var day = date.getDate(),
+            //     month = date.getMonth(),
+            //     year = date.getFullYear();
+            // return new Date(year, month, day,7,0,0);
 						return Ext.Date.clearTime(date, true);
 					},
 					
@@ -897,7 +962,7 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 						return new Date(date.getFullYear(), date.getMonth(), date.getDate() + delta);
 					},
 
-					periodRowDayCount: 15
+					periodRowDayCount: 0
 				}
 	}
 });
