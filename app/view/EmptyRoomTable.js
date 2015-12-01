@@ -598,22 +598,97 @@ Ext.define('IBApp.view.EmptyRoomTable', {
    * @return {void}
    */
   onTimeSlotTap: function(e){
-    if(!e.getTarget('.' + this.getUnselectableCls())){ // don't do selection if the cell has 'unselectable' class
-	    var target = Ext.fly(e.getTarget());
+    if( (!e.getTarget('.' + this.getUnselectableCls())) && (e.getTarget('.' + this.getEmptyCls())) ){ // don't do selection if the cell has 'unselectable' class
+      var target = Ext.fly(e.getTarget());
 
-        this.selectCell(target);
+      this.selectCell(target);
 
-        var newDate = this.getCellDate(target);
+      var selectedCells = this.element.select('td.' + this.getSelectedItemCls(), this.element.dom);
+      
+      if (selectedCells.elements.length != 0) {
+        if ( !this.isSameRoom(selectedCells) ) {
+          Ext.Msg.alert('需要选择同一个会议室');
+          // 将该cell的选中取消
+          this.selectCell(target);
+          return;
+        }
+        
+        if ( this.hasOccupied(selectedCells) ) {
+          Ext.Msg.alert('需要选择连续空闲时间');
+          // 将该cell的选中取消
+          this.selectCell(target);
+          return;
+        }
 
-        var previousValue = this.getValue() || this.currentDate;
+        var roomId = this.getCellRoom(selectedCells.first());
+        var beginEndTime = this.getBeginEndTime(selectedCells);
+        var min = beginEndTime.beginTime;
+        var max = beginEndTime.endTime;
+        for (var time = min; time <= max;) {
+          var cell = this.getDateRoomCell(time, roomId);
+          if (cell != null) {
+            cell.addCls(this.getSelectedItemCls())
+          }
 
-	    // don't fire the event if the values are the same
-	    if(newDate.getTime() !== previousValue.getTime()){
-            this.setValue(newDate);
-
-            this.fireEvent('selectionchange', this, newDate, previousValue);
-	    }
+          time = new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours(), time.getMinutes() + 30);
+        };
+      }
     }
+  },
+
+  isSameRoom: function(selectedCells) {
+    var isSame = true;
+    var roomId = this.getCellRoom(selectedCells.first());
+    
+    selectedCells.each(function(cell){
+      if (this.getCellRoom(cell) != roomId) {
+        isSame = false;
+        return false;
+      };
+    }, this);
+
+    return isSame;
+  },
+
+  getBeginEndTime: function(selectedCells) {
+    var beginTime = this.getCellDate(selectedCells.first());
+    var endTime = this.getCellDate(selectedCells.first());
+
+    selectedCells.each(function(cell){
+      var datetime = this.getCellDate(cell);
+      if (datetime < beginTime) {
+        beginTime = datetime;
+      }
+
+      if (datetime > endTime) {
+        endTime = datetime;
+      }
+    }, this);
+
+    return {
+      beginTime: beginTime,
+      endTime: endTime
+    };
+  },
+
+  hasOccupied: function(selectedCells) {
+    var occupied = false;
+    var roomId = this.getCellRoom(selectedCells.first());
+    var beginEndTime = this.getBeginEndTime(selectedCells);
+    var min = beginEndTime.beginTime;
+    var max = beginEndTime.endTime;
+
+    for (var time = min; time <= max;) {
+      var cell = this.getDateRoomCell(time, roomId);
+      if (cell.hasCls(this.getOccupiedCls())) {
+        occupied = true;
+        break;
+      }
+
+      time = new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours(), time.getMinutes() + 30);
+    };
+
+    return occupied;
   },
 
 	/**
@@ -673,17 +748,14 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 	 * @param {Ext.Element} cell
 	 */
 	selectCell: function(cell){
-        var selCls = this.getSelectedItemCls();
+    var selCls = this.getSelectedItemCls();
 
-        var selectedEl = this.element.select('.' + selCls, this.element.dom);
-
-        if(selectedEl){
-            selectedEl.removeCls(selCls);
-        }
-
-        cell.addCls(selCls);
-
-		cell.up('tr').addCls(selCls);
+    if (cell.hasCls(selCls)) {
+      cell.removeCls(selCls);
+    }
+    else {
+      cell.addCls(selCls);
+    }
 	},
 	
 	/**
@@ -761,6 +833,12 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 		var date = dateCell.dom.getAttribute('datetime');
 		return this.stringToDate(date);
 	},
+
+  /* 获取cell对应的roomId */
+  getCellRoom: function(dateCell) {
+    var roomId = dateCell.dom.getAttribute('roomId');
+    return roomId;
+  },
 	
 	/**
 	 * Returns the cell representing the specified date
@@ -772,6 +850,7 @@ Ext.define('IBApp.view.EmptyRoomTable', {
 		return this.element.select('td[datetime="' + this.getDateAttribute(date) + '"]', this.element.dom).first();
 	},
 
+  /* 根据横坐标时间 纵坐标会议室 选择cell */
   getDateRoomCell: function(date, roomId){
     return this.element.select('td[datetime="' + this.getDateAttribute(date) + '"][roomId="' + roomId + '"]', this.element.dom).first();
   },
@@ -866,7 +945,26 @@ Ext.define('IBApp.view.EmptyRoomTable', {
         };
       }
     };
+  },
 
+  getSelectionInfo: function() {
+    var ret = null;
+    var selectedCells = this.element.select('td.' + this.getSelectedItemCls(), this.element.dom);
+    
+    if (selectedCells.elements.length != 0) {
+      var roomId = this.getCellRoom(selectedCells.first());
+      var beginEndTime = this.getBeginEndTime(selectedCells);
+      var min = beginEndTime.beginTime;
+      var max = beginEndTime.endTime;
+
+      ret = {
+        roomId: roomId,
+        begin: min,
+        end: max,
+      };
+
+      return ret;
+    };
   },
 	
 	statics: {			

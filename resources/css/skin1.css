@@ -42,17 +42,13 @@
 }
 
 .touch-calendar-view table.day tr td.time-block-room.empty {
-  background-color: green;
+  background-color: #BCEE68;
 }
 .touch-calendar-view table.day tr td.time-block-room.occupied {
-  background-color: red;
+  background-color: #EE2C2C;
 }
 .touch-calendar-view table.day tr td.time-block-room.empty.selected {
-  background: none;
-  background-color: blue;
-  border: 1px solid #999;
-  text-shadow: none;
-  color: #3F4E5E;
+  background: url(../images/check.png) 20px center no-repeat;
 }
 /* line 68, ../scss/skin1.scss */
 .touch-calendar-view table.day tr td .label {

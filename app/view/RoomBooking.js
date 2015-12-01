@@ -177,7 +177,7 @@ Ext.define("IBApp.view.RoomBooking", {
         var roomTable = new Ext.create('IBApp.view.EmptyRoomTable', {
             id: 'roomInfoTable',
             value: new Date(),
-            height: 1200,
+            height: 1000,
         });
 
         var panelPages = Ext.create('Ext.Panel', {
@@ -243,6 +243,12 @@ Ext.define("IBApp.view.RoomBooking", {
                             ]
                         },
                         roomTable,
+                        {
+                            xtype: 'button',
+                            text: '确定',
+                            handler: this.onEmptyRoomSubmitTap,
+                            scope: this
+                        }
                     ]
                 }
             ]
@@ -283,8 +289,6 @@ Ext.define("IBApp.view.RoomBooking", {
         var mtTypeSelector = this.down('#meetingTypeSelector');
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urltmp = URLServer + '/mtType/mtTypeListByUser/' ;
-        // mtTypeSelector.getStore().getProxy().setUrl('http://10.2.49.250:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
-        // mtTypeSelector.getStore().getProxy().setUrl('http://10.2.20.69:8080/mtservice/restService/0.1/mtType/mtTypeListByUser/' + userId);
         mtTypeSelector.getStore().getProxy().setUrl(urltmp + userId);
         mtTypeSelector.getStore().load();
     },
@@ -350,8 +354,8 @@ Ext.define("IBApp.view.RoomBooking", {
         var day = date.getDate(),
             month = date.getMonth(),
             year = date.getFullYear();
-        var beginTime = new Date(year, month, day,7,0,0);
-        var endTime = new Date(year, month, day,22,0,0);
+        var beginTime = new Date(year, month, day,0,0,0);
+        var endTime = new Date(year, month, day,23,59,59);
         
         this.fireEvent('checkRoomBtnTapCommand', userId, floorId, beginTime, endTime);
     },
@@ -375,5 +379,19 @@ Ext.define("IBApp.view.RoomBooking", {
         };
 
         this.down('#roomInfoTable').updateTable(cellInfo, roomIds);
+    },
+
+    onEmptyRoomSubmitTap: function () {
+        var obj = this.down('#roomInfoTable').getSelectionInfo();
+        if (obj == null) {
+            Ext.Msg.alert('请选择会议室');
+        }
+        else {
+            console.log(obj);
+            var roomId = obj.roomId.split(':')[0];
+            var beginTime = obj.begin;
+            var endTime = new Date(obj.end.getFullYear(), obj.end.getMonth(), obj.end.getDate(), obj.end.getHours(), obj.end.getMinutes() + 30);
+            this.fireEvent('emptyRoomSubmitCommand', roomId, beginTime, endTime);
+        }
     },
 });
