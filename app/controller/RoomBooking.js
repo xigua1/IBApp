@@ -6,6 +6,7 @@ Ext.define("IBApp.controller.RoomBooking", {
             // We're going to lookup our views by xtype.
             meetingRequestView:'meetingrequestview',
             roomBookingView: 'roombookingview',
+            roomBookingViaCertainRoomView: 'roombookingviacertainroomview',
             roomSearchResultView: 'roomsearchresultview',
             roomBookSuccessView: 'roombooksuccessview',
         },
@@ -13,8 +14,14 @@ Ext.define("IBApp.controller.RoomBooking", {
         	roomBookingView: {
                 mtTypeChangeCommand: 'onMtTypeChangeCommand',
         		roomSearchSubmitCommand: 'onRoomSearchSubmitCommand',
-                checkRoomBtnTapCommand: 'onCheckRoomBtnTapCommand'
+                checkRoomBtnTapCommand: 'onCheckRoomBtnTapCommand',
+                emptyRoomSubmitCommand: 'onEmptyRoomSubmitCommand',
         	},
+            roomBookingViaCertainRoomView: {
+                backButtonTapCommand: 'onBackButtonCommand',
+                mtTypeChangeCommand: 'onMtTypeChangeServices',
+                meetingAddCommand: 'onRoomBookButtonCommand',
+            },
             roomSearchResultView: {
                 backButtonCommand: 'onBackButtonCommand',
                 roomBookButtonCommand: 'onRoomBookButtonCommand'
@@ -28,6 +35,7 @@ Ext.define("IBApp.controller.RoomBooking", {
         routes: {
             'roomsearchresult': 'showRoomSearchResultView',
             'roombooksuccess': 'showRoomBookSuccessView',
+            'roombookingviacertainroom': 'showRoomBookingViaCertainRoomView',
         }
     },
 
@@ -37,6 +45,10 @@ Ext.define("IBApp.controller.RoomBooking", {
 
     showRoomBookSuccessView: function() {
         Ext.Viewport.animateActiveItem(this.getRoomBookSuccessView(), 'fade');
+    },
+
+    showRoomBookingViaCertainRoomView: function() {
+        Ext.Viewport.animateActiveItem(this.getRoomBookingViaCertainRoomView(), 'fade');
     },
 
     onMtTypeChangeCommand: function(view, mtTypeId) {
@@ -146,11 +158,57 @@ Ext.define("IBApp.controller.RoomBooking", {
             params: paramsJson,
             success: function (response) {
                 var roomsUseInfo = Ext.JSON.decode(response.responseText);
-                console.log(roomsUseInfo);
+                // console.log(roomsUseInfo);
                 me.getRoomBookingView().showRoomsInfo(roomsUseInfo);
             },
             failure: function (response) {
                 me.getRoomBookingView().showMessages('访问失败');
+            }
+        });
+    },
+
+    onEmptyRoomSubmitCommand: function(roomId, beginTime, endTime) {
+        var me = this;
+        var view = this.getRoomBookingViaCertainRoomView();
+
+        /* 通过roomId获取可选的会议类型 */
+        view.updateMeetingType(roomId.split(':')[0]);
+
+        /* 通过roomId获取设备类型 */
+        var devices = null;
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlDeviceType = URLServer + '/baDevType/devTypeListByRoom/'  + roomId.split(':')[0];
+        Ext.Ajax.request({
+            url: urlDeviceType,
+            method: 'GET',
+            disableCaching: false,
+            success: function (response) {
+                devices = Ext.JSON.decode(response.responseText);
+                view.showInfo(roomId, Ext.JSON.encodeDate(beginTime), Ext.JSON.encodeDate(endTime), devices);
+                me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roombookingviacertainroom'}));
+            },
+            failure: function (response) {
+                view.showMessages('获取设备列表失败');
+            }
+        });
+    },
+
+    onMtTypeChangeServices: function(view, mtTypeId) {
+        var me = this;
+        var services = null;
+
+        var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        var urlServiceType = URLServer + '/mtService/mtServiceList/'  + mtTypeId;
+        Ext.Ajax.request({
+            url: urlServiceType,
+            method: 'GET',
+            disableCaching: false,
+            success: function (response) {
+                services = Ext.JSON.decode(response.responseText);
+                me.getRoomBookingViaCertainRoomView().showServices(services);
+            },
+            failure: function (response) {
+               me.getRoomBookingViaCertainRoomView().showMessages('获取服务列表失败');
             }
         });
     },
@@ -190,6 +248,7 @@ Ext.define("IBApp.controller.RoomBooking", {
         paramsObj.roomIds = [roomId];
         
         var paramsJson = Ext.JSON.encode(paramsObj);
+        console.log(paramsJson);
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlAddMeeting = URLServer + '/meeting/addMeeting/' ;
         Ext.Ajax.request({
