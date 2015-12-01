@@ -42,35 +42,57 @@ Ext.define('IBApp.view.MeetingRequest', {
             ui:'action',
             id:'edit',
             handler:function(){
-                   var items = [
-                   {
-                       text:'回复',
-                       ui:'decline',
-                       scope:this,
-                       handler:this.onReplyTap,
-                   },
-                   {
-                       text:'编辑',
-                       scope:this,
-                       handler: this.onEditButtonTap,
-
-                   },
-                   {
-                       xtpye:'button',
-                       text:'取消会议',
-                       scope:this,
-                       handler:this.onCancelMeetingTap,     
-                   },   
-                       {
-                       xtpye:'button',
-                       text:'Cancel',
-                       scope:this,
-                       handler:function(){
-                           this.actions.hide();     
-                       }
-                   }, 
-                ];
-               
+                var Role = Ext.getStore("UserInfo").getAt(0).get('userRoles');              
+                console.log(Role);
+                if (Role.indexOf('APP_ADMIN') != -1)
+                {
+                  var items = [
+                  {
+                      text:'回复',
+                      ui:'decline',
+                      scope:this,
+                      handler:this.onReplyTap,
+                  },
+                  {
+                      text:'编辑',
+                      scope:this,
+                      handler: this.onEditButtonTap,
+                  },
+                  {
+                      xtpye:'button',
+                      text:'取消会议',
+                      scope:this,
+                      handler:this.onCancelMeetingTap,     
+                  },   
+                  {
+                      xtpye:'button',
+                      text:'Cancel',
+                      scope:this,
+                      handler:function(){
+                          this.actions.hide();     
+                      }
+                  }, 
+                  ];
+                }
+                else
+                {
+                  var items = [
+                  {
+                      text:'回复',
+                      ui:'decline',
+                      scope:this,
+                      handler:this.onReplyTap,
+                  },
+                  {
+                      xtpye:'button',
+                      text:'Cancel',
+                      scope:this,
+                      handler:function(){
+                          this.actions.hide();     
+                      }
+                  }, 
+                  ];
+                }
                 if(!this.actions){
                     this.actions = Ext.create('Ext.ActionSheet',{
                        items:items  
