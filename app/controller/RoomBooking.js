@@ -149,6 +149,11 @@ Ext.define("IBApp.controller.RoomBooking", {
         obj.timeSpan = 30;  // 时间间隔30分钟
         var paramsJson = Ext.JSON.encode(obj);
 
+        me.getRoomBookingView().setMasked({
+            xtype: 'loadmask',
+            message: '正在加载中...'
+        });
+
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlGetRoomUseInfo = URLServer + '/mtRoom/roomUseInfoList' ;
         Ext.Ajax.request({
@@ -157,6 +162,7 @@ Ext.define("IBApp.controller.RoomBooking", {
             disableCaching: false,
             params: paramsJson,
             success: function (response) {
+                me.getRoomBookingView().setMasked(false);
                 var roomsUseInfo = Ext.JSON.decode(response.responseText);
                 // console.log(roomsUseInfo);
                 me.getRoomBookingView().showRoomsInfo(roomsUseInfo);
