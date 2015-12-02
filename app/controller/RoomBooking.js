@@ -252,7 +252,7 @@ Ext.define("IBApp.controller.RoomBooking", {
         };
         paramsObj.attenders = [at];
         paramsObj.roomIds = [roomId];
-        
+        paramsObj.operateFlag = 1;//操作标识 1-手机APP；2-网页 
         var paramsJson = Ext.JSON.encode(paramsObj);
         console.log(paramsJson);
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');

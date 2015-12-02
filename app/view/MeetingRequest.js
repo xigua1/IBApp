@@ -332,7 +332,7 @@ Ext.define('IBApp.view.MeetingRequest', {
             at.flag = attenders.getAt(i).get('flag');
             mtObj.attenders.push(at);
         };
-
+        mtObj.operateFlag = 1; //操作标识 1-手机APP；2-网页
         this.fireEvent("meetingRequestModifyDetailsCommand", mtObj);
         this.onNoEditButtonTap();
     },

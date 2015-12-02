@@ -67,8 +67,8 @@ Ext.define("IBApp.controller.MainMenu", {
         var inputObj = new Object();
 
         inputObj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
-        inputObj.beginTime = '2015-11-26 00:00:00'/*Ext.JSON.encodeDate(new Date(year, month, day,0,0,0))*/;
-        inputObj.endTime = '2015-11-26 23:59:59'/*Ext.JSON.encodeDate(new Date(year, month, day,23,59,59))*/;
+        inputObj.beginTime = Ext.JSON.encodeDate(new Date(year, month, day,0,0,0));
+        inputObj.endTime = Ext.JSON.encodeDate(new Date(year, month, day,23,59,59));
         var paramsJson = Ext.JSON.encode(inputObj);
 
         var urlGetMtRooms = Ext.getStore("UrlAddr").getAt(0).get('urlServer') + '/mtRoom/getMyRoom';
@@ -83,7 +83,7 @@ Ext.define("IBApp.controller.MainMenu", {
                 me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devctrroomlist'}));
             },
             failure: function (response) {
-                Ext.Msg.alert('获取会议列表失败');
+                Ext.Msg.alert('获取设备列表失败');
             }
         });
     },
@@ -114,7 +114,7 @@ Ext.define("IBApp.controller.MainMenu", {
         paramsObj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
         paramsObj.beginDate = Ext.JSON.encodeDate(bdate); 
         paramsObj.endDate = Ext.JSON.encodeDate(edate); 
-
+        paramsObj.operateFlag = 1;//操作标识 1-手机APP；2-网页 
         var paramsJson = Ext.JSON.encode(paramsObj);
         /* 从后台进行验证 */
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');

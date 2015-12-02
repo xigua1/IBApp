@@ -219,10 +219,10 @@ Ext.define("IBApp.controller.MyMeetings", {
         var me = this;
         var inputObj = new Object();
 
-        inputObj.userId = '2'/*Ext.getStore("UserInfo").getAt(0).get('userId')*/;
-        inputObj.roomId = '1'/*record.get('roomId')*/;
-        inputObj.beginTime = 'Nov 26, 2015 9:53:29 AM'/*Ext.JSON.encodeDate(new Date())*/;
-        inputObj.endTime = 'Nov 26, 2015 9:53:29 AM'/*Ext.JSON.encodeDate(new Date())*/;
+        inputObj.userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        inputObj.roomId = record.get('roomId');
+        inputObj.beginTime = Ext.JSON.encodeDate(new Date());
+        inputObj.endTime = Ext.JSON.encodeDate(new Date());
         var paramsJson = Ext.JSON.encode(inputObj);
 
         var urlGetRoomDev = Ext.getStore("UrlAddr").getAt(0).get('urlServer') + '/roomDev/getRoomDev';
@@ -237,7 +237,7 @@ Ext.define("IBApp.controller.MyMeetings", {
                 me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrolsimple'}));
             },
             failure: function (response) {
-                Ext.Msg.alert('获取会议室设备信息失败');
+                Ext.Msg.alert('获取设备信息失败');
             }
         });
     },
