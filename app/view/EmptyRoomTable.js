@@ -919,7 +919,8 @@ Ext.define('IBApp.view.EmptyRoomTable', {
     /* roomIdsArray作为列，重绘表格 */
     roomIds = roomIdsArray;
     this.periodRowDayCount = roomIdsArray.length;
-    this.refresh(new Date(cellInfoArray[0].roomDate));
+    var date = this.periodRowDayCount == 0 ? null : (new Date(cellInfoArray[0].roomDate));
+    this.refresh(date);
 
     // /* 填充cell空闲占用状态 */
     var emptyCls = this.getEmptyCls();
