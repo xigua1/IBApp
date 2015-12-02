@@ -162,7 +162,7 @@ Ext.define('IBApp.view.DeviceControlSimple', {
                     }
                     else
                     {
-                        fieldset.setTitle( groupNames[i] +":" + '设备未连接，请现场控制' );
+                        fieldset.setTitle( groupNames[i] +":" + '请现场控制' );
                     }
     			};
     		}
@@ -302,7 +302,7 @@ Ext.define('IBApp.view.DeviceControlSimple', {
                     }
                     else
                     {
-                        fieldset.setTitle( groupNames[i] +":" + '设备未连接，请现场控制' );
+                        fieldset.setTitle( groupNames[i] +":" + '请现场控制' );
                     }
     			};
     		}
