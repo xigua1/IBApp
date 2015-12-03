@@ -39,6 +39,13 @@ module.exports = [
         "clobbers": [
             "cordova.plugins.barcodeScanner"
         ]
+    },
+    {
+        "file": "plugins/cn.jpush.phonegap.JPushPlugin/www/JPushPlugin.js",
+        "id": "cn.jpush.phonegap.JPushPlugin.JPushPlugin",
+        "clobbers": [
+            "jPushPlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -46,7 +53,8 @@ module.exports.metadata =
 {
     "cordova-plugin-whitelist": "1.1.0",
     "cordova-plugin-camera": "1.2.1-dev",
-    "phonegap-plugin-barcodescanner": "4.1.0"
+    "phonegap-plugin-barcodescanner": "4.1.0",
+    "cn.jpush.phonegap.JPushPlugin": "2.0.2"
 }
 // BOTTOM OF METADATA
 });

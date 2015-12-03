@@ -27,4 +27,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <feature name="JPushPlugin">
+        <param name="android-package" value="cn.jpush.phonegap.JPushPlugin" />
+    </feature>
 </widget>
