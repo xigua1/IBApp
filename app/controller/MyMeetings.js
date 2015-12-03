@@ -224,7 +224,8 @@ Ext.define("IBApp.controller.MyMeetings", {
         inputObj.beginTime = Ext.JSON.encodeDate(new Date());
         inputObj.endTime = Ext.JSON.encodeDate(new Date());
         var paramsJson = Ext.JSON.encode(inputObj);
-
+        console.log('onRoomListTapCommand');
+        console.log(paramsJson);
         var urlGetRoomDev = Ext.getStore("UrlAddr").getAt(0).get('urlServer') + '/roomDev/getRoomDev';
         Ext.Ajax.request({
             url: urlGetRoomDev,

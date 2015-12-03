@@ -133,15 +133,12 @@ Ext.define('IBApp.view.DeviceControlSimple', {
     		}
     		else if ( (groupNames[i].indexOf('三路灯光') != -1) || (groupNames[i].indexOf('四路灯光') != -1) ) {
     			console.log('三四路灯光');
-                for (var j = 0; j < dataArray.length; j++) {
-                    if('0' == dataArray[j].get('devId'))
-                    {
-                        var connect = dataArray[j].get('instanceValue');
-                        console.log('连接状态：1未连接 2已连接 3故障');
-                        console.log(connect);
-                    }
-                    if('2' == connect)
-                    {
+                var connect = dataArray[0].get('instanceValue');
+                console.log('连接状态：1未连接 2已连接 3故障');
+                console.log(connect);
+                if('2' == connect) 
+                {
+                    for (var j = 1; j < dataArray.length; j++) {      
         				var toggle = Ext.create('Ext.field.Toggle', {
         					label: dataArray[j].get('devName'),
         					itemId: dataArray[j].get('controlId').replace('I', ''),
@@ -158,25 +155,22 @@ Ext.define('IBApp.view.DeviceControlSimple', {
     				            }
         					}
         				});
-    				    fieldset.add(toggle);
-                    }
-                    else
-                    {
-                        fieldset.setTitle( groupNames[i] +":" + '请现场控制' );
-                    }
-    			};
+    				    fieldset.add(toggle);     
+        			};
+                }
+                else
+                {
+                    fieldset.setTitle( groupNames[i] +":" + '请现场控制' );
+                }
     		}
     		else if (groupNames[i].indexOf('温控器') != -1) {
                 console.log('温控器');
-    			for (var j = 0; j < dataArray.length; j++) {
-                    if('0' == dataArray[j].get('devId'))
-                    {
-                        var connect = dataArray[j].get('instanceValue');
-                        console.log('温控器连接状态：1未连接 2已连接 3故障');
-                        console.log(connect);
-                    }
-                    if('2' == connect)
-                    {
+                var connect = dataArray[0].get('instanceValue');
+                console.log('温控器连接状态：1未连接 2已连接 3故障');
+                console.log(connect);
+                if('2' == connect)
+                { 
+        			for (var j = 1; j < dataArray.length; j++) {                       
         				if (dataArray[j].get('devName') == '温控器开关') {
                             console.log('温控器开关');
     	    				var ctrl = Ext.create('Ext.field.Toggle', {
@@ -194,7 +188,7 @@ Ext.define('IBApp.view.DeviceControlSimple', {
     					            }
     	    					}
     	    				});
-    	    			fieldset.add(ctrl);
+    	    			    fieldset.add(ctrl);
                         }
         				else if (dataArray[j].get('devName') == '温控器设置温度') {
                             console.log('温控器设置温度');
@@ -298,13 +292,13 @@ Ext.define('IBApp.view.DeviceControlSimple', {
         						}
         					});
         					fieldset.add(ctrl);
-        				};
-                    }
-                    else
-                    {
-                        fieldset.setTitle( groupNames[i] +":" + '请现场控制' );
-                    }
-    			};
+        				};                                               
+        			};
+                }
+                else
+                {
+                    fieldset.setTitle( groupNames[i] +":" + '请现场控制' );
+                }
     		}
     		else if (groupNames[i].indexOf('投影仪') != -1) {
                 console.log('投影仪');
