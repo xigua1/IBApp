@@ -168,6 +168,7 @@ Ext.define("IBApp.controller.RoomBooking", {
                 me.getRoomBookingView().showRoomsInfo(roomsUseInfo);
             },
             failure: function (response) {
+                me.getRoomBookingView().setMasked(false);
                 me.getRoomBookingView().showMessages('访问失败');
             }
         });
