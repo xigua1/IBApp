@@ -483,9 +483,9 @@ Ext.define('IBApp.view.MeetingRequest', {
         }
 
         /*添加与会人员*/
-        if(0 != details.attenders.length)
+        attenders.removeAll();
+        if(null != details.attenders)
         {
-          attenders.removeAll();
           for(var i = 0; i< details.attenders.length; i++)
           {
               var curAttender = Ext.create('IBApp.model.Attenders', {
@@ -502,7 +502,7 @@ Ext.define('IBApp.view.MeetingRequest', {
           };
         }       
         /*添加服务*/
-        if(0 != details.services.length)
+        if(null != details.services)
         {
           for(var i = 0; i< details.services.length; i++)
           {
@@ -514,7 +514,7 @@ Ext.define('IBApp.view.MeetingRequest', {
           };
         }
         /*添加地点*/
-        if(0 != details.rooms.length)
+        if(null != details.rooms)
         {
           for(var i = 0; i< details.rooms.length; i++)
           {

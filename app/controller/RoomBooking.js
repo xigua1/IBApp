@@ -263,15 +263,15 @@ Ext.define("IBApp.controller.RoomBooking", {
             disableCaching: false,
             params: paramsJson,
             success: function (response) {
-                var ret = response.responseText;
-                if (ret == '0') {
+                var ret = Ext.JSON.decode(response.responseText);
+                if (ret.resultFlag == 0) {
                     me.getRoomSearchResultView().showMessages('申报会议失败');
                 }
-                else if (ret == '2') {
+                else if (ret.resultFlag == 2) {
                     me.getRoomSearchResultView().showMessages('会议有冲突');
                 }
-                else if (ret != null) {
-                    me.getRoomBookSuccessView().showMeetingInfo(paramsObj, roomInfo, ret);
+                else if (ret.resultFlag == 1) {
+                    me.getRoomBookSuccessView().showMeetingInfo(paramsObj, roomInfo, ret.result);
                     me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roombooksuccess'}));
                 };
             },

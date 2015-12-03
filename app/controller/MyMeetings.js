@@ -189,7 +189,6 @@ Ext.define("IBApp.controller.MyMeetings", {
 
     onMeetingRequestModifyDetailsCommand: function(modifiedMtDetails) {
         var paramsJson = Ext.JSON.encode(modifiedMtDetails);
-        // var urlUpdateMeeting = 'http://10.2.49.250:8080/mtservice/restService/0.1/meeting/updateMeeting';
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlUpdateMeeting = URLServer + '/meeting/updateMeeting/';
         Ext.Ajax.request({
@@ -198,14 +197,14 @@ Ext.define("IBApp.controller.MyMeetings", {
             disableCaching: false,
             params: paramsJson,
             success: function (response) {
-                var ret = response.responseText;
-                if(ret == '1') {
+                var ret = Ext.JSON.decode(response.responseText);
+                if(ret.resultFlag == 1) {
                     Ext.Msg.alert('会议修改成功！');
                 }
-                else if(ret == '2') {
+                else if(ret.resultFlag == 2) {
                     Ext.Msg.alert('修改有冲突');
                 }
-                else if(ret == '0') {
+                else if(ret.resultFlag == 0) {
                     Ext.Msg.alert('修改失败');
                 }
             },
@@ -440,11 +439,11 @@ Ext.define("IBApp.controller.MyMeetings", {
             disableCaching: false,
             params: paramsJson,
             success: function (response) {
-                var ret = response.responseText;
+                var ret = Ext.JSON.decode(response.responseText);
 
                   console.log('ret');
                   console.log(ret);
-                if(ret == '1') {
+                if(ret.resultFlag == 1) {
                     Ext.Msg.alert('会议取消成功！');
                 }
                 else
