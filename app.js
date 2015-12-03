@@ -78,6 +78,9 @@ Ext.application({
             if ((curUrl !='#mainmenu') && (curUrl !='#login')) {
                 window.history.go(-1);
             }
+            else {
+                navigator.app.exitApp();
+            }
         }, false);
     },
 
