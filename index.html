@@ -141,7 +141,20 @@
         document.addEventListener("deviceready", function() {
             var updateUrl = "http://10.2.41.228/AppStore/version.xml";
             window.AppUpdate.checkAppUpdate(this.onSuccess, this.onFail, updateUrl);
+            window.plugins.jPushPlugin.init();       
+            window.plugins.jPushPlugin.getRegistrationID(function(id){
+                //将获取到的id存入服务端  
+            window.plugins.jPushPlugin.openNotificationInAndroidCallback= function(data){  
+                var ret = Ext.JSON.decode(data);
+                 Ext.Msg.alert(ret.alert);
+                // alert(ret.alert);
+            }
+                
+            }); 
+        
         }, false);
+
+       
     </script>
     <!-- The line below must be kept intact for Sencha Command to build your application -->
     <script id="microloader" type="text/javascript" src=".sencha/app/microloader/development.js"></script>
