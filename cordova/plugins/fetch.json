@@ -35,5 +35,13 @@
         "variables": {
             "API_KEY": "70347a7eb8710ed198e9c4b6"
         }
+    },
+    "cordova-plugin-app-update": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-app-update"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

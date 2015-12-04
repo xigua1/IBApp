@@ -1848,7 +1848,8 @@ Ext.Loader.addClassPathMappings({
   "Ext.device.sqlite.SQLResultSetRowList": "../../touch/src/device/sqlite/Sencha.js",
   "Ext.device.sqlite.SQLTransaction": "../../touch/src/device/sqlite/Sencha.js",
   "IBApp": "../../app",
-  "TouchCalendarViewModel": "../../touch/src/ux/TouchCalendarView.js"
+  "MeetingRoom": "../../app/view/DevCtrRoomList.js",
+  "TouchCalendarViewModel": "../../app/view/EmptyRoomTable.js"
 });
 
 Ext.ClassManager.addNameAlternateMappings({
@@ -2374,6 +2375,7 @@ Ext.ClassManager.addNameAlternateMappings({
   ],
   "Ext.plugin.ListPaging": [],
   "Ext.plugin.PullRefresh": [],
+  "Ext.plugin.PullRefreshFn": [],
   "Ext.plugin.SortableList": [],
   "Ext.scroll.Indicator": [
     "Ext.util.Indicator"
@@ -2486,6 +2488,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "IBApp.controller.MainMenu": [],
   "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
+  "IBApp.model.Attenders": [],
   "IBApp.model.MeetingType": [],
   "IBApp.model.MyMeetingsEvent": [],
   "IBApp.model.PlaceType": [],
@@ -2493,10 +2496,16 @@ Ext.ClassManager.addNameAlternateMappings({
   "IBApp.model.UserInfo": [],
   "IBApp.store.MeetingType": [],
   "IBApp.store.MyMeetingsEvent": [],
+  "IBApp.store.MyMeetingsSearch": [],
   "IBApp.store.PlaceType": [],
   "IBApp.store.SceneMode": [],
+  "IBApp.store.UrlAddr": [],
   "IBApp.store.UserInfo": [],
+  "IBApp.view.ChooseAttenders": [],
+  "IBApp.view.DevCtrRoomList": [],
   "IBApp.view.DeviceControl": [],
+  "IBApp.view.DeviceControlSimple": [],
+  "IBApp.view.EmptyRoomTable": [],
   "IBApp.view.FuncIcon": [],
   "IBApp.view.Login": [],
   "IBApp.view.Main": [],
@@ -2505,8 +2514,11 @@ Ext.ClassManager.addNameAlternateMappings({
   "IBApp.view.MyMeetings": [],
   "IBApp.view.RoomBookSuccess": [],
   "IBApp.view.RoomBooking": [],
+  "IBApp.view.RoomBookingViaCertainRoom": [],
   "IBApp.view.RoomSearchResult": [],
+  "IBApp.view.Search": [],
   "IBApp.view.UserInfoList": [],
+  "MeetingRoom": [],
   "TouchCalendarViewModel": []
 });
 
@@ -3116,6 +3128,10 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.plugin.PullRefresh": [
     "plugin.pullrefresh"
   ],
+  "Ext.plugin.PullRefreshFn": [
+    "plugin.pullrefreshfn",
+    "widget.refreshFn"
+  ],
   "Ext.plugin.SortableList": [
     "plugin.sortablelist"
   ],
@@ -3242,6 +3258,7 @@ Ext.ClassManager.addNameAliasMappings({
   "IBApp.controller.MainMenu": [],
   "IBApp.controller.MyMeetings": [],
   "IBApp.controller.RoomBooking": [],
+  "IBApp.model.Attenders": [],
   "IBApp.model.MeetingType": [],
   "IBApp.model.MyMeetingsEvent": [],
   "IBApp.model.PlaceType": [],
@@ -3253,17 +3270,35 @@ Ext.ClassManager.addNameAliasMappings({
   "IBApp.store.MyMeetingsEvent": [
     "widget.mymeetingseventstore"
   ],
+  "IBApp.store.MyMeetingsSearch": [
+    "widget.mymeetingssearchstore"
+  ],
   "IBApp.store.PlaceType": [
     "widget.placetypestore"
   ],
   "IBApp.store.SceneMode": [
     "widget.scenemodestore"
   ],
+  "IBApp.store.UrlAddr": [
+    "widget.urladdrstore"
+  ],
   "IBApp.store.UserInfo": [
     "widget.userInfoStore"
   ],
+  "IBApp.view.ChooseAttenders": [
+    "widget.chooseattendersview"
+  ],
+  "IBApp.view.DevCtrRoomList": [
+    "widget.devctrroomlistview"
+  ],
   "IBApp.view.DeviceControl": [
     "widget.devicecontrolview"
+  ],
+  "IBApp.view.DeviceControlSimple": [
+    "widget.devicecontrolsimpleview"
+  ],
+  "IBApp.view.EmptyRoomTable": [
+    "widget.emptyroomtable"
   ],
   "IBApp.view.FuncIcon": [
     "widget.funciconview"
@@ -3289,12 +3324,19 @@ Ext.ClassManager.addNameAliasMappings({
   "IBApp.view.RoomBooking": [
     "widget.roombookingview"
   ],
+  "IBApp.view.RoomBookingViaCertainRoom": [
+    "widget.roombookingviacertainroomview"
+  ],
   "IBApp.view.RoomSearchResult": [
     "widget.roomsearchresultview"
+  ],
+  "IBApp.view.Search": [
+    "widget.searchview"
   ],
   "IBApp.view.UserInfoList": [
     "widget.userinfolist"
   ],
+  "MeetingRoom": [],
   "TouchCalendarViewModel": []
 });
 
