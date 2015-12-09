@@ -115,6 +115,8 @@ Ext.define("IBApp.controller.MainMenu", {
         paramsObj.beginDate = Ext.JSON.encodeDate(bdate); 
         paramsObj.endDate = Ext.JSON.encodeDate(edate); 
         paramsObj.operateFlag = 1;//操作标识 1-手机APP；2-网页 
+        paramsObj.maxresult = -1;//每页最多多少条记录
+        paramsObj.currentpage = -1;//当前页数（从0开始）
         var paramsJson = Ext.JSON.encode(paramsObj);
         /* 从后台进行验证 */
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
