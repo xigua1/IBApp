@@ -9,8 +9,8 @@ Ext.define("IBApp.store.UrlAddr", {
         ],
         data: [
         {
-            urlLogin: 'http://10.2.49.251:8080/pactera-jeesite/restService/userservice/0.2',
-            urlServer: 'http://10.2.49.250:8080/mtservice/restService/0.1',
+            urlLogin: 'http://meetingadmin.crscd.com.cn:8080/pactera-jeesite/restService/userservice/0.2',
+            urlServer: 'http://meeting.crscd.com.cn:8080/mtservice/restService/0.1',
         }, 
 
         ]
