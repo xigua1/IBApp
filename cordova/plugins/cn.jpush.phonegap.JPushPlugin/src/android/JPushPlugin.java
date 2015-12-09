@@ -74,12 +74,12 @@ public class JPushPlugin extends CordovaPlugin {
 		
 		 //JPushPlugin.notificationAlert = alert;
 		 //JPushPlugin.notificationExtras = extras;
-		 if(JPushPlugin.openNotificationAlert != null){
-			 JPushPlugin.transmitOpen(JPushPlugin.openNotificationAlert, JPushPlugin.openNotificationExtras);
-		 }
-		 if(JPushPlugin.notificationAlert!=null){
-			 JPushPlugin.transmitReceive(JPushPlugin.notificationAlert, JPushPlugin.notificationExtras);
-		 }
+		 // if(JPushPlugin.openNotificationAlert != null){
+			//  JPushPlugin.transmitOpen(JPushPlugin.openNotificationAlert, JPushPlugin.openNotificationExtras);
+		 // }
+		 // if(JPushPlugin.notificationAlert!=null){
+			//  JPushPlugin.transmitReceive(JPushPlugin.notificationAlert, JPushPlugin.notificationExtras);
+		 // }
 
 		//JPushInterface.init(cordova.getActivity().getApplicationContext());
 	}
