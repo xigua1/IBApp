@@ -52,7 +52,8 @@ public class JPushPlugin extends CordovaPlugin {
 					"clearLocalNotifications",
 					"onResume",
 					"onPause",
-					"reportNotificationOpened");
+					"reportNotificationOpened",
+					"getPushData");
 	
 	private ExecutorService threadPool = Executors.newFixedThreadPool(1);
 	private static JPushPlugin instance;
@@ -505,6 +506,15 @@ public class JPushPlugin extends CordovaPlugin {
 		
 		JPushInterface.clearLocalNotifications(this.cordova.getActivity());
 
+	}
+
+	//获取推送信息，供App启动或恢复活动时调用
+	//如果有信息返回json字符串，否则返回空
+	void getPushData(JSONArray data, CallbackContext callbackContext) {    
+	    JSONObject jsonData = openNotificationObject(JPushPlugin.notificationAlert,JPushPlugin.notificationExtras);  
+	    callbackContext.success(jsonData.toString());   
+	    JPushPlugin.notificationAlert = null; 
+	    JPushPlugin.notificationExtras = null;
 	}
 	
 	private final TagAliasCallback mTagWithAliasCallback = new TagAliasCallback() {

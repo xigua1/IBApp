@@ -53,6 +53,13 @@ module.exports = [
         "clobbers": [
             "AppUpdate"
         ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.device/www/device.js",
+        "id": "org.apache.cordova.device.device",
+        "clobbers": [
+            "device"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -62,7 +69,8 @@ module.exports.metadata =
     "cordova-plugin-camera": "1.2.1-dev",
     "phonegap-plugin-barcodescanner": "4.1.0",
     "cn.jpush.phonegap.JPushPlugin": "2.0.2",
-    "cordova-plugin-app-update": "0.0.1"
+    "cordova-plugin-app-update": "0.0.1",
+    "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA
 });

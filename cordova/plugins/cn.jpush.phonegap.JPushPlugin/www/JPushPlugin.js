@@ -315,6 +315,15 @@ JPushPlugin.prototype.reportNotificationOpened = function(msgID){
 	}
 }
 
+JPushPlugin.prototype.getPushData = function(callback){       
+    try{        
+        var data=[];       
+        this.call_native("getPushData",[data],callback);    
+    }catch(exception){      
+        console.log(exception); 
+    }
+}
+
 //iOS  single
 
 

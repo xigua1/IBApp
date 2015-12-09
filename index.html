@@ -141,17 +141,35 @@
         document.addEventListener("deviceready", function() {
             var updateUrl = "http://10.2.41.228/AppStore/version.xml";
             window.AppUpdate.checkAppUpdate(this.onSuccess, this.onFail, updateUrl);
+
             window.plugins.jPushPlugin.init();       
             window.plugins.jPushPlugin.getRegistrationID(function(id){
                 //将获取到的id存入服务端  
+            });
+
             window.plugins.jPushPlugin.openNotificationInAndroidCallback= function(data){  
                 var ret = Ext.JSON.decode(data);
-                 Ext.Msg.alert(ret.alert);
-                // alert(ret.alert);
+                Ext.Msg.alert(ret.alert);
+                // Ext.app.Application.getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
             }
-                
-            }); 
-        
+
+            // window.plugins.jPushPlugin.getPushData = function(data) {      
+            //     // if(data!='{}'){         
+            //         // alert(data);
+            //         var ret = Ext.JSON.decode(data);
+            //         Ext.Msg.alert(ret.alert);
+            //     // } 
+            // }
+        }, false);
+
+        document.addEventListener('resume', function(data){    
+            // window.plugins.jPushPlugin.getPushData = function(data) {      
+            //     if(data!='{}'){         
+            //         // alert(data);
+            //         var ret = Ext.JSON.decode(data);
+            //         Ext.Msg.alert(ret.alert); 
+            //     }   
+            // }
         }, false);
 
        

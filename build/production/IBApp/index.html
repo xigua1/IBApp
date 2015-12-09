@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>IBApp</title>
-
-    <link rel="stylesheet" type="text/css" href="resources/css/app.css">
-    <script type="text/javascript" src="touch/sencha-touch-debug.js"></script>
-    <script type="text/javascript" src="app.js"></script>
-
     <style type="text/css">
          /**
          * Example of an initial loading indicator.
@@ -16,7 +11,7 @@
          */
         html, body {
             height: 100%;
-            background-color: #1985D0
+            background-color: #1985D0;
         }
 
         #appLoadingIndicator {
@@ -26,10 +21,10 @@
             text-align: center;
             width: 100%;
             height: 30px;
-            -webkit-animation-name: appLoadingIndicator;
+            /*-webkit-animation-name: appLoadingIndicator;
             -webkit-animation-duration: 0.5s;
             -webkit-animation-iteration-count: infinite;
-            -webkit-animation-direction: linear;
+            -webkit-animation-direction: linear;*/
         }
 
         #appLoadingIndicator > * {
@@ -53,7 +48,114 @@
                 opacity: 0.8
             }
         }
+
+        /* 首页用户Profile信息样式 */
+        .user-profile-title
+        {
+            font-size:130%;
+            line-height:150%;
+            margin-bottom: 15px;
+        }       
+        .user-profile-narrative
+        {
+            color:#666666;
+            padding-left:50px;
+
+        }
+        sup {
+            display: inline-block;
+            width: 30px;
+            height: 20px;
+            font-weight: bold;
+            text-align: center;
+            color:white;
+            background-color: red;
+            line-height:100%;
+            font-size:18px;
+            margin-left: 30px;
+            border-radius: 5px;
+        }
+
+        /* 我的会议列表样式 */
+        .list-item-title
+        {
+            float:left;
+            width:100%;
+            /*font-size:90%;*/
+            /*white-space: nowrap;*/
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right:25px;
+            line-height:150%;
+        }       
+        .list-item-narrative
+        {
+            float:left;
+            width:95%;
+            color:#666666;
+            font-size:80%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-left:25px;
+            line-height:300%;
+        }
+        .meeting-status {
+            color: white;
+            border-radius: 3px;
+            margin-left: 30px;
+            font-size:80%;
+            padding: 3px;
+        }
+        .detail-meeting-status {
+            color: white;
+            border-radius: 3px;
+            margin: 20px 0 10px 20px;
+            padding: 3px;
+            width: 100px;
+            text-align: center;
+        }
+        /*mtFlag:1-正在审核�?2-未开始；3-已结束；4-已取消；5-草稿�?6-删除�?*/
+        .checking {
+            background-color: #CDCDB4;
+        }
+        .waiting {
+            background-color: #4876FF;
+        }
+        .closed {
+            background-color: #EE2C2C;
+        }
+        .canceled {
+            background-color: #32CD32;
+        }
+        .draft {
+            background-color: #32CD32;
+        }
+        .deleted {
+            background-color: #32CD32;
+        }
+
     </style>
+
+    <script type="text/javascript" charset="utf-8">
+        document.addEventListener("deviceready", function() {
+            var updateUrl = "http://10.2.41.228/AppStore/version.xml";
+            window.AppUpdate.checkAppUpdate(this.onSuccess, this.onFail, updateUrl);
+            window.plugins.jPushPlugin.init();       
+            window.plugins.jPushPlugin.getRegistrationID(function(id){
+                //将获取到的id存入服务�?  
+            window.plugins.jPushPlugin.openNotificationInAndroidCallback= function(data){  
+                var ret = Ext.JSON.decode(data);
+                 Ext.Msg.alert(ret.alert);
+                // alert(ret.alert);
+            }
+                
+            }); 
+        
+        }, false);
+
+       
+    </script>
     <!-- The line below must be kept intact for Sencha Command to build your application -->
     <script id="microloader" data-app="d6088aba-32d8-4c8f-a66e-08f4474d2644" type="text/javascript">(function(k){function t(b){function c(a,b){var f=a.length,j,d;for(j=0;j<f;j++){d=a[j];var c=a,e=j,q=void 0;"string"==typeof d&&(d={path:d});d.shared?(d.version=d.shared,q=d.shared+d.path):(G.href=d.path,q=G.href);d.uri=q;d.key=g+"-"+q;h[q]=d;c[e]=d;d.type=b;d.index=j;d.collection=a;d.ready=!1;d.evaluated=!1}return a}var f;"string"==typeof b?(f=b,b=H(f)):f=JSON.stringify(b);var g=b.id,e=g+"-"+I+r,h={};this.key=e;this.css=c(b.css,"css");this.js=c(b.js,"js");l.microloaded=!0;var n=window.Ext.filterPlatform=
 function(a){function b(a){var d=/Mobile(\/|\s)/.test(a);return/(iPhone|iPod)/.test(a)||!/(Silk)/.test(a)&&/(Android)/.test(a)&&(/(Android 2)/.test(a)||d)||/(BlackBerry|BB)/.test(a)&&d||/(Windows Phone)/.test(a)}function f(a){return!b(a)&&(/iPad/.test(a)||/Android|Silk/.test(a)||/(RIM Tablet OS)/.test(a)||/MSIE 10/.test(a)&&/; Touch/.test(a))}var j=!1,d=navigator.userAgent,c,h;a=[].concat(a);c=window.location.search.substr(1).split("\x26");h={};var g;for(g=0;g<c.length;g++){var e=c[g].split("\x3d");
