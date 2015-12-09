@@ -153,26 +153,15 @@
                 // Ext.app.Application.getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
             }
 
-            // window.plugins.jPushPlugin.getPushData = function(data) {      
-            //     // if(data!='{}'){         
-            //         // alert(data);
-            //         var ret = Ext.JSON.decode(data);
-            //         Ext.Msg.alert(ret.alert);
-            //     // } 
-            // }
+            document.addEventListener('resume', function(data){    
+                window.plugins.jPushPlugin.openNotificationInAndroidCallback= function(data){  
+                    var ret = Ext.JSON.decode(data);
+                    Ext.Msg.alert(ret.alert);
+                }
+            }, false);
+
         }, false);
 
-        document.addEventListener('resume', function(data){    
-            // window.plugins.jPushPlugin.getPushData = function(data) {      
-            //     if(data!='{}'){         
-            //         // alert(data);
-            //         var ret = Ext.JSON.decode(data);
-            //         Ext.Msg.alert(ret.alert); 
-            //     }   
-            // }
-        }, false);
-
-       
     </script>
     <!-- The line below must be kept intact for Sencha Command to build your application -->
     <script id="microloader" type="text/javascript" src=".sencha/app/microloader/development.js"></script>
