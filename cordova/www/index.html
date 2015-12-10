@@ -144,35 +144,13 @@
 
             window.plugins.jPushPlugin.init();       
             window.plugins.jPushPlugin.getRegistrationID(function(id){
-                //将获取到的id存入服务�?  
+                //将获取到的id存入服务�? 
             });
 
-            // window.plugins.jPushPlugin.openNotificationInAndroidCallback= function(data){  
-            //     var ret = Ext.JSON.decode(data);
-            //     Ext.Msg.alert(ret.alert);
-            //     // Ext.app.Application.getHistory().add(Ext.create('Ext.app.Action', {url: 'devicecontrol'}));
-            // }
-
-            window.plugins.jPushPlugin.getPushData = function(data) {      
-                // if(data!='{}'){         
-                    // alert(data);
-                    var ret = Ext.JSON.decode(data);
-                    Ext.Msg.alert(ret.alert);
-                // } 
-            }
         }, false);
 
-        document.addEventListener('resume', function(data){    
-            window.plugins.jPushPlugin.getPushData = function(data) {      
-                if(data!='{}'){         
-                    // alert(data);
-                    var ret = Ext.JSON.decode(data);
-                    Ext.Msg.alert(ret.alert); 
-                }   
-            }
-        }, false);
+        
 
-       
     </script>
     <!-- The line below must be kept intact for Sencha Command to build your application -->
     <script id="microloader" data-app="d6088aba-32d8-4c8f-a66e-08f4474d2644" type="text/javascript">(function(d){function l(b,d){var a=document.createElement("meta");a.setAttribute("name",b);a.setAttribute("content",d);p.appendChild(a)}var p=d.document.head||d.document.getElementsByTagName("head")[0],b=d.Ext;"undefined"==typeof b&&(d.Ext=b={});b.blink=function(d){var m=d.js||[];d=d.css||[];var a,h,c,g,n,j;navigator.userAgent.match(/IEMobile\/10\.0/)&&(a=document.createElement("style"),a.appendChild(document.createTextNode("@media screen and (orientation: portrait) {@-ms-viewport {width: 320px !important;}}@media screen and (orientation: landscape) {@-ms-viewport {width: 560px !important;}}")),

@@ -25,17 +25,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cn.jpush.phonegap.JPushPlugin": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/jpush/jpush-phonegap-plugin.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {
-            "API_KEY": "70347a7eb8710ed198e9c4b6"
-        }
-    },
     "cordova-plugin-app-update": {
         "source": {
             "type": "registry",
@@ -51,5 +40,16 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cn.jpush.phonegap.JPushPlugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jpush/jpush-phonegap-plugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "70347a7eb8710ed198e9c4b6"
+        }
     }
 }

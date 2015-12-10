@@ -147,22 +147,6 @@
                 //将获取到的id存入服务端 
             });
 
-            window.plugins.jPushPlugin.getPushData(function(data){      
-                if(data!='{}'){         
-                    var ret = Ext.JSON.decode(data);
-                    Ext.Msg.alert(ret.alert);
-                } 
-            });
-
-            document.addEventListener('resume', function(data){    
-                window.plugins.jPushPlugin.getPushData(function(data){      
-                    if(data!='{}'){         
-                        var ret = Ext.JSON.decode(data);
-                        Ext.Msg.alert(ret.alert);       
-                    }   
-                });
-            }, false);
-
         }, false);
 
         

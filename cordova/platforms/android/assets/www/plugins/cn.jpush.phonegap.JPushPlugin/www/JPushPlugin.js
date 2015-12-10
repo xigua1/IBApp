@@ -170,6 +170,7 @@ JPushPlugin.prototype.openNotificationInAndroidCallback = function(data){
 		var bToObj  = JSON.parse(data);
 		this.openNotification=bToObj;	
 		cordova.fireDocumentEvent('jpush.openNotification',null);
+		
 		Ext.Msg.alert(bToObj.alert);
 	
 		//console.log(data);
@@ -314,15 +315,6 @@ JPushPlugin.prototype.reportNotificationOpened = function(msgID){
 	
 		this.call_native("reportNotificationOpened",[msgID],null);
 	}
-}
-
-JPushPlugin.prototype.getPushData = function(callback){       
-    try{        
-        var data=[];       
-        this.call_native("getPushData",[data],callback);    
-    }catch(exception){      
-        console.log(exception); 
-    }
 }
 
 //iOS  single

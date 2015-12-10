@@ -21,15 +21,15 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"JPushPlugin\"><param name=\"android-package\" value=\"cn.jpush.phonegap.JPushPlugin\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"AppUpdate\"><param name=\"android-package\" value=\"com.xuexiq.appupdate.CheckAppUpdate\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         },
                         {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"JPushPlugin\"><param name=\"android-package\" value=\"cn.jpush.phonegap.JPushPlugin\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -659,14 +659,14 @@
         "phonegap-plugin-barcodescanner": {
             "PACKAGE_NAME": "com.crsc.IBApp"
         },
-        "cn.jpush.phonegap.JPushPlugin": {
-            "API_KEY": "70347a7eb8710ed198e9c4b6",
-            "PACKAGE_NAME": "com.crsc.IBApp"
-        },
         "cordova-plugin-app-update": {
             "PACKAGE_NAME": "com.crsc.IBApp"
         },
         "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.crsc.IBApp"
+        },
+        "cn.jpush.phonegap.JPushPlugin": {
+            "API_KEY": "70347a7eb8710ed198e9c4b6",
             "PACKAGE_NAME": "com.crsc.IBApp"
         }
     },
