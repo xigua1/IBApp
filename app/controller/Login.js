@@ -62,8 +62,9 @@ Ext.define('IBApp.controller.Login', {
 
 	                /* set userInfoStore */
 	                var curUser = Ext.create('IBApp.model.UserInfo', {
-	                	'userId': loginResponse.id,
+	                	'userId': loginResponse.userProfile.id,
 	                	'imgURL': './resources/icons/profile.png',
+	                	'userNo': loginResponse.id,
 	                	'userName': loginResponse.userName,
 	                	'userRoles': loginResponse.userRoles,
 	                	'userPermissions': loginResponse.userPermissions,
