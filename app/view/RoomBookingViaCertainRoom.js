@@ -74,6 +74,7 @@ Ext.define("IBApp.view.RoomBookingViaCertainRoom", {
             id: 'locationTextfield',
             name: 'location',
             label: '地点',
+            readOnly:true,
         };
 
 		/* 会议开始时间 */
@@ -82,6 +83,7 @@ Ext.define("IBApp.view.RoomBookingViaCertainRoom", {
             id: 'beginTimeTextfield',
         	name: 'beginTime',
         	label: '开始时间',
+            readOnly:true,
         };
 
         /* 会议结束时间 */
@@ -90,6 +92,7 @@ Ext.define("IBApp.view.RoomBookingViaCertainRoom", {
             id: 'endTimeTextfield',
         	name: 'endTime',
         	label: '结束时间',
+            readOnly:true,
         };
 
         this.add([
