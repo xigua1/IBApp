@@ -135,6 +135,7 @@ Ext.define('IBApp.view.ChooseAttenders', {
     		        name: name,
     		        id: 'checkbox' + contactsArray[i].userId,
     		        label: contactsArray[i].userName + '(' + contactsArray[i].officeName + ')',
+                    labelWidth: '80%',
     		        value: contactsArray[i].userId,
     		        listeners: {
     		            check: { fn: this.onContactChecked, scope: this },
@@ -159,6 +160,7 @@ Ext.define('IBApp.view.ChooseAttenders', {
                     name: 'inContactsIds',
                     id: 'checkbox' + userList[i].userId,
                     label: userList[i].userName + '(' + userList[i].officeName + ')',
+                    labelWidth: '80%',
                     value: userList[i].userId,
                     listeners: {
                         check: { fn: this.onContactChecked, scope: this },
@@ -195,8 +197,8 @@ Ext.define('IBApp.view.ChooseAttenders', {
 		    		id: 'btn' + store.getAt(i).get('userId'),
 		    		items: [
 		    			{
-		    				text: 'X',
-		    				width: 30
+		    				text: 'x',
+		    				width: 25
 		    			},
 		    			{
 		    				text: store.getAt(i).get('userName'),
@@ -205,7 +207,7 @@ Ext.define('IBApp.view.ChooseAttenders', {
 		    		],
 		    		listeners: {
 				        toggle: function(container, button, pressed){
-				            if ((button.getText() == 'X') && pressed) {
+				            if ((button.getText() == 'x') && pressed) {
 				            	var userId = this.getId().replace('btn', '');
 
     			            	var checkbox = me.down('#checkbox' + userId);
@@ -244,17 +246,17 @@ Ext.define('IBApp.view.ChooseAttenders', {
                 id: 'btn' + checkbox.getValue(),
                 items: [
                     {
-                        text: 'X',
-                        width: 30
+                        text: 'x',
+                        width: 25
                     },
                     {
-                        text: checkbox.getLabel(),
+                        text: checkbox.getLabel().split('(')[0],
                         disabled: true
                     },
                 ],
                 listeners: {
                     toggle: function(container, button, pressed){
-                        if ((button.getText() == 'X') && pressed) {
+                        if ((button.getText() == 'x') && pressed) {
                             var userId = this.getId().replace('btn', '');
 
                             var checkbox = me.down('#checkbox' + userId);
