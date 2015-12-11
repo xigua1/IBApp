@@ -2,7 +2,7 @@
 var storeBuilding = Ext.create("Ext.data.Store", {
     proxy: {
         type: "ajax",
-        url: 'http://10.2.49.250:8080/mtservice/restService/0.1/baFloor/buildingList',
+        url: 'http://meeting.crscd.com.cn:8080/mtservice/restService/0.1/baFloor/buildingList',
         enablePagingParams: false,
         reader: {
             type: 'json',
@@ -21,7 +21,7 @@ var storeBuilding = Ext.create("Ext.data.Store", {
 var storeFloor = Ext.create("Ext.data.Store", {
     proxy: {
         type: "ajax",
-        url: 'http://10.2.49.250:8080/mtservice/restService/0.1/baFloor/floorList/',
+        url: 'http://meeting.crscd.com.cn:8080/mtservice/restService/0.1/baFloor/floorList/',
         enablePagingParams: false,
         reader: {
             type: 'json',

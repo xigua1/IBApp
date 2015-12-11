@@ -3,7 +3,7 @@ var roomInfo = '';
 var mtTypeStore = Ext.create("Ext.data.Store", {
     proxy: {
         type: "ajax",
-        url: 'http://10.2.49.250:8080/mtservice/restService/0.1/mtType/mtTypeListByRoom/',
+        url: 'http://meeting.crscd.com.cn:8080/mtservice/restService/0.1/mtType/mtTypeListByRoom/',
         enablePagingParams: false,
         reader: {
             type: 'json',
