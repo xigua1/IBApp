@@ -30,7 +30,6 @@ Ext.define('IBApp.view.MeetingRequest', {
         var backButton = {
         	xtype: 'button',
         	ui: 'back',
-        	text: '后退',
         	handler: this.onBackButtonTap,
         	scope: this
         };
@@ -182,11 +181,14 @@ Ext.define('IBApp.view.MeetingRequest', {
         
         /*与会人员*/
         var participatorNameText = {
-        	xtype: 'textfield',
+        	xtype: 'textareafield',
         	// name: 'participants',
         	label: '与会人员',
           id:'participatorNameTextid',
           readOnly:true,
+          listeners: {
+              clearicontap: { fn: this.onParticipatorModifyBtn, scope: this },
+          }
         };
         
         /*服务*/
@@ -256,20 +258,7 @@ Ext.define('IBApp.view.MeetingRequest', {
               endDateTime,
               placeTypeText,
               organizerNameText,
-              {
-                xtype: 'panel',
-                items: [
-                  participatorNameText,
-                  {xtype: 'button',
-                  id: 'participatorModifyBtn',
-                  style: 'position: absolute; width:50px; left:75%; top:5px; border:none',
-                  hidden: true,
-                  text: '修改',
-                  scope: this,
-                  handler: this.onParticipatorModifyBtn,
-                  }
-                ]
-              },
+              participatorNameText,
               serviceText,
               meetingText,
               meetingIdText,
@@ -292,12 +281,11 @@ Ext.define('IBApp.view.MeetingRequest', {
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
         var organizerNT = me.down('#organizerNameTextid');
-        var participatorMB = me.down('#participatorModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(false);
-        participatorMB.setHidden(false);
+        me.down('#participatorNameTextid').setReadOnly(false);
         requestB.setHidden(false);
         meetingT.setReadOnly(false);
 
@@ -309,12 +297,11 @@ Ext.define('IBApp.view.MeetingRequest', {
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
         var organizerNT = me.down('#organizerNameTextid');
-        var participatorMB = me.down('#participatorModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(true);
-        participatorMB.setHidden(true);
+        me.down('#participatorNameTextid').setReadOnly(true);
         requestB.setHidden(true);
         meetingT.setReadOnly(true);
 
