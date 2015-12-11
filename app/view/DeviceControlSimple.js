@@ -141,6 +141,7 @@ Ext.define('IBApp.view.DeviceControlSimple', {
                     for (var j = 1; j < dataArray.length; j++) {      
         				var toggle = Ext.create('Ext.field.Toggle', {
         					label: dataArray[j].get('devName'),
+                            labelWidth: '50%',
         					itemId: dataArray[j].get('controlId').replace('I', ''),
         					value: parseInt(dataArray[j].get('instanceValue')),
         					listeners: {
@@ -175,6 +176,7 @@ Ext.define('IBApp.view.DeviceControlSimple', {
                             console.log('温控器开关');
     	    				var ctrl = Ext.create('Ext.field.Toggle', {
     	    					label: dataArray[j].get('devName'),
+                                labelWidth: '50%',
     	    					itemId: dataArray[j].get('controlId').replace('I', ''),
     	    					value: parseInt(dataArray[j].get('instanceValue')),
     	    					listeners: {
@@ -195,6 +197,7 @@ Ext.define('IBApp.view.DeviceControlSimple', {
     						var ctrl = Ext.create('Ext.field.Spinner', {
     							itemId: dataArray[j].get('controlId').replace('I', ''),
     						    label     : dataArray[j].get('devName'),
+                                labelWidth: '50%',
     						    value: dataArray[j].get('instanceValue'),
     						    minValue  : 0,
     						    maxValue  : 100,
@@ -313,6 +316,7 @@ Ext.define('IBApp.view.DeviceControlSimple', {
                     
     				var toggle = Ext.create('Ext.field.Toggle', {
     					label: dataArray[j].get('devName'),
+                        labelWidth: '50%',
     					itemId: dataArray[j].get('controlId').replace('I', ''),
     					value: parseInt(dataArray[j].get('instanceValue')),
     					listeners: {

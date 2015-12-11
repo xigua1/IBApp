@@ -310,6 +310,7 @@ Ext.define("IBApp.view.RoomBooking", {
             var device = Ext.create('Ext.field.Checkbox', {
                 name: 'devTypeIds',
                 label: devicesArray[i].devTypeName,
+                labelWidth: '80%',
                 value: devicesArray[i].devTypeId
             });
             if (devicesArray[i].flag == 1) {

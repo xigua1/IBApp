@@ -32,7 +32,6 @@ Ext.define("IBApp.view.RoomBookingViaCertainRoom", {
         var backButton = {
         	xtype: 'button',
         	ui: 'back',
-        	text: '首页',
         	handler: this.onBackButtonTap,
         	scope: this
         };
@@ -170,6 +169,7 @@ Ext.define("IBApp.view.RoomBookingViaCertainRoom", {
             var device = Ext.create('Ext.field.Checkbox', {
                 name: 'devTypeIds',
                 label: devicesArray[i].devTypeName,
+                labelWidth: '80%',
                 value: devicesArray[i].devTypeId
             });
             if (devicesArray[i].flag == 1) {
