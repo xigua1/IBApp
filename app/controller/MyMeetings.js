@@ -91,8 +91,6 @@ Ext.define("IBApp.controller.MyMeetings", {
         var inContacts = null, outContacts = null;
 
         /* 获取内部常用联系人 */
-        // var urlGetInContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
-        // var urlGetInContacts = 'http://10.2.20.69:8080/mtservice/restService/0.1/topContact/inContactsList/' + userId + '/6';
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlGetInContacts = URLServer + '/topContact/inContactsList/' +  userId + '/6';
         Ext.Ajax.request({
@@ -102,14 +100,43 @@ Ext.define("IBApp.controller.MyMeetings", {
             success: function (response) {
                 inContacts = Ext.JSON.decode(response.responseText);
                 me.getChooseAttendersView().showContacts(inContacts, 1);
+
+                me.getOutContacts(store);
             },
             failure: function (response) {
                 Ext.Msg.alert('获取内部常用联系人失败');
             }
         });
+
+        // /* 获取外部常用联系人 */
+        // var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
+        // var urlGetOutContacts = URLServer + '/topContact/outContactsList/' +  userId + '/6';
+        // Ext.Ajax.request({
+        //     url: urlGetOutContacts,
+        //     method: 'GET',
+        //     disableCaching: false,
+        //     success: function (response) {
+        //         outContacts = Ext.JSON.decode(response.responseText);
+        //         me.getChooseAttendersView().showContacts(outContacts, 2);
+        //     },
+        //     failure: function (response) {
+        //         Ext.Msg.alert('获取外部常用联系人失败');
+        //     }
+        // });
+        
+        // var task = Ext.create('Ext.util.DelayedTask', function () {
+        //     me.getChooseAttendersView().showExistAttenders(store);
+        // });
+        // task.delay(1000);
+        // this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'chooseattenders'}));
+    },
+
+    getOutContacts: function(store) {
+        var me = this;
+        var userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        var outContacts = null;
+
         /* 获取外部常用联系人 */
-        // var urlGetOutContacts = 'http://10.2.49.250:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
-        // var urlGetOutContacts = 'http://10.2.20.69:8080/mtservice/restService/0.1/topContact/outContactsList/' + userId + '/6';
         var URLServer = Ext.getStore("UrlAddr").getAt(0).get('urlServer');
         var urlGetOutContacts = URLServer + '/topContact/outContactsList/' +  userId + '/6';
         Ext.Ajax.request({
@@ -119,17 +146,14 @@ Ext.define("IBApp.controller.MyMeetings", {
             success: function (response) {
                 outContacts = Ext.JSON.decode(response.responseText);
                 me.getChooseAttendersView().showContacts(outContacts, 2);
+
+                me.getChooseAttendersView().showExistAttenders(store);
+                me.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'chooseattenders'}));
             },
             failure: function (response) {
                 Ext.Msg.alert('获取外部常用联系人失败');
             }
         });
-        
-        var task = Ext.create('Ext.util.DelayedTask', function () {
-            me.getChooseAttendersView().showExistAttenders(store);
-        });
-        task.delay(500);
-        this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'chooseattenders'}));
     },
 
     onGetUserByName: function(userName) {

@@ -186,9 +186,7 @@ Ext.define('IBApp.view.MeetingRequest', {
         	label: '与会人员',
           id:'participatorNameTextid',
           readOnly:true,
-          listeners: {
-              clearicontap: { fn: this.onParticipatorModifyBtn, scope: this },
-          }
+          width: '95%',
         };
         
         /*服务*/
@@ -258,7 +256,20 @@ Ext.define('IBApp.view.MeetingRequest', {
               endDateTime,
               placeTypeText,
               organizerNameText,
-              participatorNameText,
+              {
+                xtype: 'panel',
+                items: [
+                  participatorNameText,
+                  {xtype: 'button',
+                    id: 'participatorModifyBtn',
+                    cls: 'participatorIcon',
+                    style: 'position: absolute; left:90%; top:5px; border:none;',
+                    hidden: true,
+                    scope: this,
+                    handler: this.onParticipatorModifyBtn,
+                  }
+                ]
+              },
               serviceText,
               meetingText,
               meetingIdText,
@@ -281,11 +292,12 @@ Ext.define('IBApp.view.MeetingRequest', {
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
         var organizerNT = me.down('#organizerNameTextid');
+        var participatorMB = me.down('#participatorModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(false);
-        me.down('#participatorNameTextid').setReadOnly(false);
+        participatorMB.setHidden(false);
         requestB.setHidden(false);
         meetingT.setReadOnly(false);
 
@@ -297,11 +309,12 @@ Ext.define('IBApp.view.MeetingRequest', {
         var me = this;
         var MeetingNT = me.down('#meetingNameTextid');
         var organizerNT = me.down('#organizerNameTextid');
+        var participatorMB = me.down('#participatorModifyBtn');
         var requestB = me.down('#requestBottonid');
         var meetingT = me.down('#meetingTextid');
 
         MeetingNT.setReadOnly(true);
-        me.down('#participatorNameTextid').setReadOnly(true);
+        participatorMB.setHidden(true);
         requestB.setHidden(true);
         meetingT.setReadOnly(true);
 
