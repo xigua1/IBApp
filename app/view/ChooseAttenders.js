@@ -110,7 +110,8 @@ Ext.define('IBApp.view.ChooseAttenders', {
     },
 
     onBackButtonTap: function() {
-    	this.fireEvent("backToMeetingRequest", null,null);
+    	// this.fireEvent("backToMeetingRequest", null,null);
+        this.onSubmitButtonTap();
     },
 
     showContacts: function(contactsArray, flag) {
