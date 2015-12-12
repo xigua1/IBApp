@@ -21,7 +21,6 @@ Ext.define('IBApp.view.MeetingRequest', {
     ],
   
    config:{
-        scrollable:'vertical'
     },
     initialize: function () {
 
