@@ -185,7 +185,7 @@ Ext.define('IBApp.view.MeetingRequest', {
         	label: '与会人员',
           id:'participatorNameTextid',
           readOnly:true,
-          width: '95%',
+          width: '93%',
         };
         
         /*服务*/
@@ -257,12 +257,12 @@ Ext.define('IBApp.view.MeetingRequest', {
               organizerNameText,
               {
                 xtype: 'panel',
+                layout: 'hbox',
                 items: [
                   participatorNameText,
                   {xtype: 'button',
                     id: 'participatorModifyBtn',
-                    cls: 'participatorIcon',
-                    style: 'position: absolute; left:90%; top:5px; border:none;',
+                    baseCls: 'participatorIcon',
                     hidden: true,
                     scope: this,
                     handler: this.onParticipatorModifyBtn,
