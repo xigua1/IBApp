@@ -469,11 +469,26 @@ Ext.define("IBApp.controller.MyMeetings", {
                   console.log('ret');
                   console.log(ret);
                 if(ret.resultFlag == 1) {
-                    Ext.Msg.alert('会议取消成功！');
+                    if(mtCancelobj.changeFlag == 1)
+                    {
+                        Ext.Msg.alert('会议取消成功！');
+                    }
+                    else if (mtCancelobj.changeFlag == 4)
+                    {
+                        Ext.Msg.alert('会议结束成功！');
+                    }
                 }
                 else
                 {
-                    Ext.Msg.alert('会议取消失败！');       
+                    if(mtCancelobj.changeFlag == 1)
+                    {
+                        Ext.Msg.alert('会议取消失败！');
+                    }
+                    else if (mtCancelobj.changeFlag == 4)
+                    {
+                        Ext.Msg.alert('会议结束失败！');
+                    }
+                           
                 }
             },
             failure: function (response) {

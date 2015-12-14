@@ -47,7 +47,7 @@ Ext.define('IBApp.view.MeetingRequest', {
                   var items = [
                   {
                       text:'回复',
-                      ui:'decline',
+                      // ui:'decline',
                       scope:this,
                       handler:this.onReplyTap,
                   },
@@ -62,6 +62,12 @@ Ext.define('IBApp.view.MeetingRequest', {
                       scope:this,
                       handler:this.onCancelMeetingTap,     
                   },   
+                  {
+                      xtpye:'button',
+                      text:'结束会议',
+                      scope:this,
+                      handler:this.onEndMeetingTap,     
+                  }, 
                   {
                       xtpye:'button',
                       text:'Cancel',
@@ -416,6 +422,16 @@ Ext.define('IBApp.view.MeetingRequest', {
       
       mtCancelobj.changeFlag = 1;
       mtCancelobj.mtId = mtObj.mtId;
+      this.fireEvent("mtCancelCommand", mtCancelobj);
+      me.actions.hide(); 
+    },
+
+    onEndMeetingTap:function() {
+      var me = this;
+      var mtCancelobj = new Object();
+      
+      mtCancelobj.changeFlag = 4;  //更改标识 1.取消会议2.推迟会议3.延长会议4.结束会议5.基本变更
+      mtCancelobj.mtId = mtObj.mtId;  
       this.fireEvent("mtCancelCommand", mtCancelobj);
       me.actions.hide(); 
     },
