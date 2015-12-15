@@ -390,7 +390,7 @@ Ext.define("IBApp.view.RoomBooking", {
         else {
             console.log(obj);
             var roomId = obj.roomId;
-            var beginTime = obj.begin;
+            var beginTime = new Date(obj.begin.getFullYear(), obj.begin.getMonth(), obj.begin.getDate(), obj.begin.getHours(), obj.begin.getMinutes(), obj.begin.getSeconds() + 1);
             var endTime = new Date(obj.end.getFullYear(), obj.end.getMonth(), obj.end.getDate(), obj.end.getHours(), obj.end.getMinutes() + 30);
             this.fireEvent('emptyRoomSubmitCommand', roomId, beginTime, endTime);
         }
