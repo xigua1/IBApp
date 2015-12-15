@@ -82,6 +82,68 @@ Ext.application({
                 navigator.app.exitApp();
             }
         }, false);
+
+        var me = this;
+        window.plugins.jPushPlugin.openNotificationInAndroidCallback= function(data){
+            var bToObj  = Ext.JSON.decode(data);
+
+            var curUrl = window.location.hash;
+            if ( (curUrl !='#login') && (bToObj.alert.indexOf('通知') != -1) ) {
+                Ext.Msg.show({
+                    message: bToObj.extras['cn.jpush.android.EXTRA'].msg,
+                    buttons: [
+                        {
+                          text: '参会',
+                          ui: 'action'
+                        }, 
+                        {
+                          text: '不参会',
+                          ui: 'action'
+                        },
+                        {
+                          text: '未定',
+                          ui: 'action'
+                        },
+                        {
+                          text: '取消',
+                          ui: 'action'
+                        }
+                    ],
+                    fn: function(button) {
+                        if (button.indexOf('取消') == -1 ) {
+                            var mtReplyObj = new Object();
+                            if (button == '参会') {
+                                mtReplyObj.replyResult = 1;
+                            };
+                            if (button == '不参会') {
+                                mtReplyObj.replyResult = 2;
+                            };
+                            if (button == '未定') {
+                                mtReplyObj.replyResult = 3;  
+                            };
+                            mtReplyObj.replyerId = Ext.getStore("UserInfo").getAt(0).get('userId');
+                            mtReplyObj.replyerFlag = 1; //回复人标识 1.内部人员2.外部人员 
+                            mtReplyObj.replyDate =Ext.JSON.encodeDate(new Date());//回复日期
+                            mtReplyObj.meetingId = mtObj.mtId;//会议ID
+                            mtReplyObj.replyMethod = 1; //回复方式1.手机APP 2.网页 3.短信 
+                            me.getApplication().getController('MyMeetings').onMtReplyCommand(mtReplyObj);
+                        };
+                    }
+                });
+            }
+            else {
+                Ext.Msg.show({
+                    message: bToObj.extras['cn.jpush.android.EXTRA'].msg,
+                    buttons: [
+                        {
+                          text: 'OK',
+                          ui: 'action'
+                        }
+                    ]
+                });
+            }
+        };
+
     },
 
     onUpdated: function() {

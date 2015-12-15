@@ -171,8 +171,6 @@ JPushPlugin.prototype.openNotificationInAndroidCallback = function(data){
 		this.openNotification=bToObj;	
 		cordova.fireDocumentEvent('jpush.openNotification',null);
 
-		Ext.Msg.alert(bToObj.alert);
-	
 		//console.log(data);
 		//var bToObj  = JSON.parse(data);
 		//var alert   = bToObj.alert;
