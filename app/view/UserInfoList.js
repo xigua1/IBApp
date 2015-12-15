@@ -1,7 +1,7 @@
 var userInfoTemplate = new Ext.XTemplate(
 	'<tpl for=".">',
 	'<img width=100px height=100px style="float:left;margin-right:40px;margin-left:10px" src="{imgURL}" />',
-	'<div class="user-profile-title">{userName}<sup>2</sup></div>',
+	'<div class="user-profile-title">{userName}</div>',
 	'<div class="user-profile-narrative">',
 	'<p>{userNo}</p>',
 	// '<p>{userRoles}</p>',
@@ -23,9 +23,9 @@ Ext.define('IBApp.view.UserInfoList', {
             disabled: true
         },
 		listeners: {
-		    itemtap: function (list, index, target, record, e, eOpts) {
-		    	Ext.Msg.alert("click " + record.get('userName'));
-		    },
+		    // itemtap: function (list, index, target, record, e, eOpts) {
+		    // 	Ext.Msg.alert("click " + record.get('userName'));
+		    // },
 		}
 	}
 });
