@@ -171,11 +171,10 @@ Ext.define("IBApp.controller.MainMenu", {
                         curUser.set('statusEn','waiting');
                         curUser.set('status','未开始');
 
-                        var today = Ext.Date.clearTime(new Date(), true).getTime();
-                        var startDate = Ext.Date.clearTime(curUser.get('start'), true).getTime();
-                        var endDate = Ext.Date.clearTime(curUser.get('end'), true).getTime();
+                        var now = new Date().getTime();
+                        var startDate = curUser.get('start').getTime();
                         
-                        if((startDate <= today) && (endDate >= today))
+                        if( startDate <= now )
                         {
                             curUser.set('statusEn','begining');
                             curUser.set('status','进行中');

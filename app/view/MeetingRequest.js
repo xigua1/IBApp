@@ -456,13 +456,11 @@ Ext.define('IBApp.view.MeetingRequest', {
             strEn = 'waiting';
             str = '未开始';
 
-            console.log('begining');
-            var today = Ext.Date.clearTime(new Date(), true).getTime();
+            var now = new Date().getTime();
             console.log(details.start);
-            var startDate = Ext.Date.clearTime(new Date(details.mtBeginTime), true).getTime();
-            var endDate = Ext.Date.clearTime(new Date(details.mtEndTime), true).getTime();
+            var startDate = new Date(details.mtBeginTime).getTime();
                         
-            if((startDate <= today) && (endDate >= today))
+            if( startDate <= now )
             {
                 strEn = 'begining';
                 str = '进行中';
