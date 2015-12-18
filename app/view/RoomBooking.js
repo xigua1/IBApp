@@ -12,7 +12,6 @@ var storeBuilding = Ext.create("Ext.data.Store", {
         { name: 'buildingId', type: 'string' },
         { name: 'buildingName', type: 'string' },
     ],
-    autoLoad: true,
     data: [
     ]
 });
@@ -221,11 +220,6 @@ Ext.define("IBApp.view.RoomBooking", {
                             scope: this
                         }
                     ],
-                    // listeners: {
-                    //     show: function() {
-                    //         Ext.Msg.alert('aa');
-                    //     },
-                    // },
                 },
                 {
                     xtype: 'panel',
@@ -267,6 +261,19 @@ Ext.define("IBApp.view.RoomBooking", {
         ]);
 
         panelPages.setActiveItem(0);
+    },
+
+    updateView: function() {
+        var me = this;
+        var userId = Ext.getStore("UserInfo").getAt(0).get('userId');
+        this.updateMeetingTypeSelector(userId);
+        this.updateMeetingTime();
+
+        this.updateBuildingSelector();
+        var task = Ext.create('Ext.util.DelayedTask', function() {
+            me.onCheckRoomBtnTap();
+        });
+        task.delay(500);
     },
 
     onBackButtonTap: function() {
@@ -351,6 +358,10 @@ Ext.define("IBApp.view.RoomBooking", {
 
     showMessages: function(message) {
         Ext.Msg.alert(message);
+    },
+
+    updateBuildingSelector: function() {
+        storeBuilding.load();
     },
 
     onBuildingChange: function(selector, newValue, oldValue, eOpts) {
