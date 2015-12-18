@@ -56,6 +56,7 @@ Ext.define("IBApp.controller.MainMenu", {
         var userId = Ext.getStore("UserInfo").getAt(0).get('userId');
        
         this.getRoomBookingView().updateMeetingTypeSelector(userId);
+        this.getRoomBookingView().updateMeetingTime();
         this.getApplication().getHistory().add(Ext.create('Ext.app.Action', {url: 'roombooking'}));
     },
 

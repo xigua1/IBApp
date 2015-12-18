@@ -77,6 +77,7 @@
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default" />
         <meta-data android:name="JPUSH_APPKEY" android:value="70347a7eb8710ed198e9c4b6" />
     </application>
+    <application android:debuggable="true" />
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="22" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />

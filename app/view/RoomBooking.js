@@ -113,9 +113,10 @@ Ext.define("IBApp.view.RoomBooking", {
 		/* 会议开始时间 */
         var startDateTime = {
         	xtype: 'datetimepickerfield',
+            id: 'beginTime',
         	name: 'beginTime',
         	label: '开始时间',
-        	value: new Date(),
+        	value: this.getDeltaDate(new Date(), 'minute', 2),
         	dateTimeFormat: 'Y-m-d H:i',
         	picker: {
         		minuteInterval: 15,
@@ -127,9 +128,10 @@ Ext.define("IBApp.view.RoomBooking", {
         /* 会议结束时间 */
         var endDateTime = {
         	xtype: 'datetimepickerfield',
+            id: 'endTime',
         	name: 'endTime',
         	label: '结束时间',
-        	value: new Date(),
+            value: this.getDeltaDate(new Date(), 'minute', 17),
         	dateTimeFormat: 'Y-m-d H:i',
         	picker: {
         		minuteInterval: 15,
@@ -218,7 +220,12 @@ Ext.define("IBApp.view.RoomBooking", {
                             handler: this.onSubmitButtonTap,
                             scope: this
                         }
-                    ]
+                    ],
+                    // listeners: {
+                    //     show: function() {
+                    //         Ext.Msg.alert('aa');
+                    //     },
+                    // },
                 },
                 {
                     xtype: 'panel',
@@ -281,6 +288,11 @@ Ext.define("IBApp.view.RoomBooking", {
             }
         }
         this.fireEvent('roomSearchSubmitCommand', this, formValuesObj);
+    },
+
+    updateMeetingTime: function() {
+        this.down('#beginTime').setValue(this.getDeltaDate(new Date(), 'minute', 2));
+        this.down('#endTime').setValue(this.getDeltaDate(new Date(), 'minute', 17));
     },
 
     updateMeetingTypeSelector: function(userId) {
@@ -390,9 +402,20 @@ Ext.define("IBApp.view.RoomBooking", {
         else {
             console.log(obj);
             var roomId = obj.roomId;
-            var beginTime = new Date(obj.begin.getFullYear(), obj.begin.getMonth(), obj.begin.getDate(), obj.begin.getHours(), obj.begin.getMinutes(), obj.begin.getSeconds() + 1);
-            var endTime = new Date(obj.end.getFullYear(), obj.end.getMonth(), obj.end.getDate(), obj.end.getHours(), obj.end.getMinutes() + 30);
+            var beginTime = this.getDeltaDate(obj.begin, 'second', 1);
+            var endTime = this.getDeltaDate(obj.end, 'minute', 30);
             this.fireEvent('emptyRoomSubmitCommand', roomId, beginTime, endTime);
         }
+    },
+
+    getDeltaDate: function(date, flag, delta){
+        if (flag == 'minute') {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + delta);
+        }
+        else if (flag == 'second') {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() + delta);
+        }
+
+        return date;
     },
 });
