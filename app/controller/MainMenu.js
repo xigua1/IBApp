@@ -158,6 +158,8 @@ Ext.define("IBApp.controller.MainMenu", {
                      'mtId':resultResponse[i].mtId,
                      'organizerName':resultResponse[i].organizerName,
                      'mtContent':resultResponse[i].mtContent,
+                     'replyNum':resultResponse[i].replyNum,
+                     'attenderNum':resultResponse[i].attenderNum,
                     });
 
 
