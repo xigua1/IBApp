@@ -178,7 +178,7 @@ Ext.define("IBApp.view.RoomBooking", {
         var roomTable = new Ext.create('IBApp.view.EmptyRoomTable', {
             id: 'roomInfoTable',
             value: new Date(),
-            height: 1000,
+            height: 680,
         });
 
         var panelPages = Ext.create('Ext.Panel', {
@@ -380,8 +380,8 @@ Ext.define("IBApp.view.RoomBooking", {
         var day = date.getDate(),
             month = date.getMonth(),
             year = date.getFullYear();
-        var beginTime = new Date(year, month, day,0,0,0);
-        var endTime = new Date(year, month, day,23,59,59);
+        var beginTime = new Date(year, month, day,7,0,0);
+        var endTime = new Date(year, month, day,23,0,0);
         
         this.fireEvent('checkRoomBtnTapCommand', userId, floorId, beginTime, endTime);
     },
