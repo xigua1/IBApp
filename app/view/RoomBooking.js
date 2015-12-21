@@ -231,13 +231,14 @@ Ext.define("IBApp.view.RoomBooking", {
                             xtype: 'panel',
                             margin: '10 0 10 10',
                             layout: 'hbox',
+                            docked: 'top',
                             items: [
                                 buildingSelector,
                                 floorSelector,
                                 checkRoomDate,
                                 {
                                     xtype: 'button',
-                                    text: '确定',
+                                    text: '查看',
                                     handler: this.onCheckRoomBtnTap,
                                     scope: this
                                 }
@@ -246,7 +247,8 @@ Ext.define("IBApp.view.RoomBooking", {
                         roomTable,
                         {
                             xtype: 'button',
-                            text: '确定',
+                            text: '预定',
+                            docked: 'bottom',
                             handler: this.onEmptyRoomSubmitTap,
                             scope: this
                         }
